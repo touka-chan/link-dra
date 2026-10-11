@@ -79,7 +79,9 @@
   --band: 110px;
   /* Measured off the reference: ~76px headline in a 1440px container. */
   --headline: clamp(38px, 3.6vw, 72px);
-  --shell: 1440px;
+  /* Container width. Tightened from 1440px so it actually binds on common
+     laptop widths; at 1440 the grid ran fluid and the footer columns sprawled. */
+  --shell: 1280px;
 }
 
 :root[data-theme="light"] {
@@ -1163,10 +1165,10 @@ code {
 /* Footer clears the floating chat button rather than sitting under it.
    Spacing follows the reference: generous top padding, ~48px between footer
    links, and a deep rule above the bottom bar. */
-.footer { border-top: 1px solid var(--border); margin-top: 56px; padding: 80px 20px 96px; background: var(--bg-soft); }
+.footer { border-top: 1px solid var(--border); margin-top: 56px; padding: 80px 28px 96px; background: var(--bg-soft); }
 .foot-grid {
   max-width: var(--shell); margin: 0 auto; display: grid;
-  grid-template-columns: 1.45fr repeat(4, 1fr); gap: 40px;
+  grid-template-columns: 1.45fr repeat(4, 1fr); gap: 36px;
 }
 @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
 /* Column headings read as plain caps in the reference, not brand-tinted. */
