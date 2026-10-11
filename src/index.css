@@ -823,7 +823,7 @@ code {
 
 .nfc-card {
   display: block; width: 100%; max-width: 380px; aspect-ratio: 1.6;
-  background: #0b0e0b; border: 1px solid var(--green); border-radius: 18px;
+  background: #0b0e0b; border: 1px solid var(--border); border-radius: 18px;
   color: #fff; padding: 18px; text-align: left;
   box-shadow: var(--shadow);
   transition: transform 0.3s ease;
@@ -841,7 +841,8 @@ code {
     radial-gradient(70% 48% at 88% 26%, rgba(34, 233, 72, 0.4), transparent 60%),
     radial-gradient(120% 70% at 40% 108%, rgba(9, 70, 24, 0.9), transparent 62%),
     linear-gradient(158deg, #0f4520 0%, #071a0d 58%, #050705 100%);
-  border-color: rgba(124, 255, 0, 0.35);
+  /* No stroke: the gradient carries the card edge on its own. */
+  border-color: transparent;
 }
 .nfc-card.glossy { position: relative; overflow: hidden; }
 .nfc-card.glossy::after {
