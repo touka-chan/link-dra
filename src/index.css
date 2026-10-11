@@ -45,6 +45,29 @@
    switch is a single attribute change on <html> and nothing else needs to know.
    ========================================================================== */
 
+/* Spacing scale. Every gap, section rhythm and card padding draws from these so
+   the layout stays on one rhythm. Prefer these over one-off pixel values. */
+:root {
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 80px;
+  --sp-10: 96px;
+  --sp-11: 112px;
+  --sp-12: 128px;
+
+  --gap-grid: var(--sp-5);
+  --gap-stack: var(--sp-4);
+  --radius-card: 18px;
+  --radius-input: 10px;
+  --radius-pill: 999px;
+}
+
 :root,
 :root[data-theme="dark"] {
   --bg: #080d0a;
@@ -75,7 +98,7 @@
   --aura-a: rgba(34, 233, 72, 0.055);
   --aura-b: rgba(22, 201, 57, 0.04);
   --aura-c: rgba(9, 40, 18, 0.5);
-  /* Section rhythm: generous air between bands, tighter inside them. */
+  /* Section rhythm and container width draw from the spacing scale below. */
   --band: 110px;
   /* Measured off the reference: ~76px headline in a 1440px container. */
   --headline: clamp(38px, 3.6vw, 72px);
@@ -154,7 +177,10 @@ img { max-width: 100%; }
 
 .app { min-height: 100vh; }
 
-main { max-width: var(--shell); margin: 0 auto; padding: 150px 28px 56px; }
+main { max-width: var(--shell); margin: 0 auto; padding: var(--sp-11) var(--sp-5) var(--sp-8); }
+@media (max-width: 900px) {
+  main { padding: var(--sp-9) var(--sp-4) var(--sp-7); }
+}
 
 h1, h2, h3, h4 { line-height: 1.18; }
 
@@ -286,12 +312,17 @@ h1, h2, h3, h4 { line-height: 1.18; }
 .nav-cta-btn { padding: 12px 24px; font-size: 15.5px; font-weight: 700; box-shadow: 0 6px 24px rgba(34, 233, 72, 0.3); }
 .nav-cta-btn:hover { box-shadow: 0 10px 30px rgba(34, 233, 72, 0.4); }
 
-.nav-tools { display: none; gap: 8px; align-items: center; }
+.nav-tools { display: none; gap: var(--sp-2); align-items: center; }
 
 /* Below the breakpoint the bar collapses to a single row: logo, then menu. */
 @media (max-width: 900px) {
   .nav { display: flex; }
   .nav-links, .nav-cta { display: none; }
+  /* The toggle lives in .nav-tools and is otherwise inside the desktop-only
+     action group, so it has to be surfaced here or mobile has no way to
+     switch theme at all. */
+  .nav-tools { display: flex; margin-left: auto; }
+  .menu-btn { margin-left: var(--sp-1); }
 }
 
 /* Fixed attachment is costly on touch devices, so the aura scrolls with the
@@ -429,6 +460,10 @@ h1, h2, h3, h4 { line-height: 1.18; }
 
 .band { padding: var(--band) 0; }
 .band-tight { padding: calc(var(--band) * 0.55) 0; }
+@media (max-width: 900px) {
+  .band { padding: var(--sp-8) 0; }
+  .band-tight { padding: var(--sp-7) 0; }
+}
 
 .band-head { text-align: center; max-width: 640px; margin: 0 auto 56px; }
 .band-head h2 { margin: 0 0 16px; font-size: clamp(28px, 3vw, 46px); letter-spacing: -0.015em; }
@@ -744,11 +779,15 @@ h1, h2, h3, h4 { line-height: 1.18; }
 .amount { font-size: 32px; font-weight: 800; color: var(--green); margin: 8px 0; }
 .amount small { font-size: 14px; color: var(--muted); font-weight: 600; }
 
-.cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 18px 0; }
-.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin: 18px 0; }
-.cards4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin: 18px 0; }
+.cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap-grid); margin: var(--sp-4) 0; }
+.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap-grid); margin: var(--sp-4) 0; }
+.cards4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap-grid); margin: var(--sp-4) 0; }
+/* Tablet drops to two columns before the single-column mobile stack. */
+@media (max-width: 1080px) {
+  .cards4 { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 900px) {
-  .cards3, .cards2, .cards4 { grid-template-columns: 1fr; }
+  .cards3, .cards2, .cards4 { grid-template-columns: 1fr; gap: var(--sp-4); }
 }
 
 .grid-side { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
@@ -763,8 +802,8 @@ input, textarea, select {
   background: var(--input-bg);
   border: 1px solid var(--border);
   color: var(--text);
-  border-radius: 10px;
-  padding: 11px 12px;
+  border-radius: var(--radius-input);
+  padding: var(--sp-3) var(--sp-3);
   font: inherit;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
