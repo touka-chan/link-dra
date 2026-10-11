@@ -26,6 +26,10 @@ export const BRAND_COLORS = {
   muted: "#9db3a3",
 };
 
+// Each feature carries an icon key and an off flag, because the pricing cards
+// show exclusions explicitly ("No QR Code") rather than silently omitting them.
+const F = (icon, label, off = false) => ({ icon, label, off });
+
 export const TIERS = [
   {
     id: "basic",
@@ -35,12 +39,11 @@ export const TIERS = [
     pitch: "Essential digital presence",
     desc: "Everything you need to replace a paper card.",
     features: [
-      "Premium PVC card",
-      "Printed name",
-      "NFC tap to open profile",
-      "Overview analytics",
-      "Connections hub",
-      "One-tap vCard save",
+      F("shield", "Premium PVC card"),
+      F("user", "Printed name"),
+      F("qr", "No QR code", true),
+      F("chart", "Overview analytics"),
+      F("network", "Connections"),
     ],
   },
   {
@@ -52,13 +55,14 @@ export const TIERS = [
     desc: "More reach, and a scanner for the cards you still get handed.",
     popular: true,
     features: [
-      "Premium PVC card",
-      "Printed name and phone",
-      "Profile QR code",
-      "Overview and audience analytics",
-      "Connections hub",
-      "AI business card scanner",
-      "Send my details instantly",
+      F("shield", "Premium PVC card"),
+      F("user", "Cardholder's name"),
+      F("qr", "Profile QR code"),
+      F("chart", "Overview analytics"),
+      F("users", "Audience analytics"),
+      F("network", "Connections"),
+      F("scan", "AI business card scanner"),
+      F("send", "Send my details instantly"),
     ],
   },
   {
@@ -69,18 +73,22 @@ export const TIERS = [
     pitch: "For advanced networking professionals",
     desc: "Your logo, an offline vCard QR, and the full analytics suite.",
     features: [
-      "Premium PVC card",
-      "Printed name and phone",
-      "Custom name and logo",
-      "Dual QR (profile and vCard)",
-      "Full analytics with monthly reports",
-      "Connections hub",
-      "AI business card scanner",
-      "Send my details instantly",
-      "Offline vCard access",
+      F("shield", "Premium PVC card"),
+      F("user", "Cardholder's name"),
+      F("qr", "Dual QR (profile + vCard)"),
+      F("chart", "Overview analytics"),
+      F("users", "Audience analytics"),
+      F("bolt", "Engagement tracking"),
+      F("doc", "Monthly reports"),
+      F("network", "Connections"),
+      F("scan", "AI business card scanner"),
+      F("send", "Send my details instantly"),
     ],
   },
 ];
+
+// Plain-text lists for places that cannot render icons (compare table, order summary).
+export const tierFeatureLabels = (tier) => tier.features.map((f) => f.label);
 
 export const tierById = (id) => TIERS.find((t) => t.id === id) ?? TIERS[1];
 export const tierRank = (id) => tierById(id).rank;

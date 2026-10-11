@@ -6,6 +6,21 @@
 
 import { useState } from "react";
 
+// The mark on its own, for the card artwork where the wordmark is set as text.
+export function LogoMark({ size = 40 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <path d="M14 6 C14 3 17 1 20 2 L28 5 C31 6 33 9 33 12 L33 38 C33 41 35 43 38 43 L52 43 C57 43 60 48 57 52 C55 55 52 56 48 56 L24 56 C16 56 10 50 10 42 L10 12 C10 9 12 7 14 6 Z" fill="#ffffff" />
+      <path d="M14 22 C18 30 24 36 33 40 L33 38 C33 34 30 31 27 30 C21 28 16 25 14 22Z" fill="rgba(0,0,0,0.22)" />
+      <g stroke="#ffffff" strokeWidth="4.2" strokeLinecap="round" fill="none">
+        <path d="M40 20 C42 22 43 24 43 27 C43 30 42 32 40 34" />
+        <path d="M46 15 C50 18 52 22 52 27 C52 32 50 36 46 39" />
+        <path d="M52 10 C58 14 61 20 61 27 C61 34 58 40 52 44" />
+      </g>
+    </svg>
+  );
+}
+
 export function Logo({ size = 34, wordmark = true, dark = true }) {
   const green = "#22e948";
   const ink = dark ? "#ffffff" : "#050705";
@@ -45,22 +60,28 @@ export function ContactlessGlyph({ size = 54, color = "#ffffff" }) {
 
 // The hero card is a presentation piece: same artwork as the order preview but
 // fixed to the front face, so it can be tilted and floated without being clickable.
+// Tilted at rest; hovering straightens it face-on, matching the reference.
 export function HeroCard({ name, title, company, phone }) {
   return (
     <div className="card-stage">
       <div className="card-stage-inner">
-        <div className="nfc-card portrait design-gradient glossy" style={{ animation: "none" }}>
-          <div className="nfc-row">
-            <span className="nfc-badge">LINKODRA</span>
-            <span>TAP · CONNECT · SHARE</span>
+        <div className="nfc-card portrait design-gradient glossy">
+          <div className="nfc-wordmark">
+            <LogoMark size={40} />
+            <span>
+              LINKODRA
+              <em>Tap · Connect · Share</em>
+            </span>
           </div>
+
           <div className="nfc-mid" style={{ justifyContent: "center", flex: 1 }}>
-            <ContactlessGlyph size={68} />
+            <ContactlessGlyph size={62} />
           </div>
+
           <div className="card-holder">
             <div className="card-name">{name}</div>
             <div className="card-sub">{[title, company].filter(Boolean).join(", ")}</div>
-            <div className="card-sub">{phone}</div>
+            <div className="card-sub mono-sm">{phone}</div>
           </div>
         </div>
       </div>

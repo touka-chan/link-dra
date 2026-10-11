@@ -180,25 +180,43 @@ export function Chat() {
 
   return (
     <>
-      <button className="chat-fab" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label={open ? "Close chat" : "Chat with the Linkodra Assistant"}>
-        {open ? "Close" : "Chat"}
+      <button
+        className="chat-fab"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-label={open ? "Close chat" : "Chat with the Linkodra Assistant"}
+      >
+        <Icon name={open ? "close" : "chat"} size={22} />
       </button>
+
       {open && (
         <div className="chat-box" role="dialog" aria-label="Linkodra Assistant">
           <div className="chat-head">
-            <strong>Linkodra Assistant</strong>
-            <span>Replies instantly</span>
+            <span className="chat-avatar"><Icon name="bot" size={20} /></span>
+            <span className="chat-id">
+              <strong>Linkodra Assistant</strong>
+              <small><i /> Usually replies instantly</small>
+            </span>
+            <button className="chat-close" onClick={() => setOpen(false)} aria-label="Close chat">
+              <Icon name="close" size={15} />
+            </button>
           </div>
+
           <div className="chat-msgs">
             {msgs.map((m, i) => (
-              <div key={i} className={`msg ${m.from}`}>{m.text}</div>
+              <div className={`chat-line ${m.from}`} key={i}>
+                {m.from === "bot" && <span className="chat-avatar sm"><Icon name="bot" size={15} /></span>}
+                <div className={`msg ${m.from}`}>{m.text}</div>
+              </div>
             ))}
           </div>
+
           <div className="chat-quick">
             {CHAT_PROMPTS.map((q) => (
               <button key={q} onClick={() => send(q)}>{q}</button>
             ))}
           </div>
+
           <div className="chat-input">
             <input
               value={value}
@@ -207,9 +225,11 @@ export function Chat() {
               placeholder="Ask about Linkodra..."
               aria-label="Message"
             />
-            <button onClick={() => send()}>Send</button>
+            <button onClick={() => send()} aria-label="Send message" disabled={!value.trim()}>
+              <Icon name="arrowUp" size={17} />
+            </button>
           </div>
-          <small className="chat-note">Demo assistant. Replies are generated on this page, not sent anywhere.</small>
+          <small className="chat-note">Powered by Linkodra AI. Replies are generated in this browser and may be inaccurate.</small>
         </div>
       )}
     </>

@@ -30,7 +30,10 @@ function TierCard({ tier, onSelect, compact = false }) {
       <p className="tier-desc">{tier.pitch}</p>
       <ul className="tier-features">
         {tier.features.map((f) => (
-          <li key={f}>{f}</li>
+          <li key={f.label} className={f.off ? "off" : ""}>
+            <Icon name={f.off ? "close" : f.icon} size={17} />
+            {f.label}
+          </li>
         ))}
       </ul>
       <button
