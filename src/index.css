@@ -419,7 +419,12 @@ h1, h2, h3, h4 { line-height: 1.18; }
   .hero-copy { max-width: 100%; }
 }
 
-.hero-copy { max-width: 560px; }
+.hero-copy {
+  max-width: 560px;
+  /* Nudged off the container edge so the text block is not flush left. */
+  margin-left: 48px;
+}
+@media (max-width: 1040px) { .hero-copy { margin-left: 0; } }
 
 /* Two-tone headline: first line inherits, the rest takes the accent. */
 .display {
