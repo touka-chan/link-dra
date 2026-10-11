@@ -69,24 +69,26 @@ export function ContactlessGlyph({ size = 54, color = "#ffffff" }) {
 export function HeroCard({ name, title, company, phone }) {
   return (
     <div className="card-stage">
-      <div className="card-stage-inner">
-        <div className="nfc-card portrait design-gradient glossy">
-          <div className="nfc-wordmark">
-            <LogoMark size={40} />
-            <span>
-              LINKODRA
-              <em>Tap · Connect · Share</em>
-            </span>
-          </div>
+      <div className="card-stage-float">
+        <div className="card-stage-inner">
+          <div className="nfc-card portrait design-gradient glossy">
+            <div className="nfc-wordmark">
+              <LogoMark size={40} />
+              <span>
+                LINKODRA
+                <em>Tap · Connect · Share</em>
+              </span>
+            </div>
 
-          <div className="nfc-mid" style={{ justifyContent: "center", flex: 1 }}>
-            <ContactlessGlyph size={62} />
-          </div>
+            <div className="nfc-mid" style={{ justifyContent: "center", flex: 1 }}>
+              <ContactlessGlyph size={62} />
+            </div>
 
-          <div className="card-holder">
-            <div className="card-name">{name}</div>
-            <div className="card-sub">{[title, company].filter(Boolean).join(", ")}</div>
-            <div className="card-sub mono-sm">{phone}</div>
+            <div className="card-holder">
+              <div className="card-name">{name}</div>
+              <div className="card-sub">{[title, company].filter(Boolean).join(", ")}</div>
+              <div className="card-sub mono-sm">{phone}</div>
+            </div>
           </div>
         </div>
       </div>

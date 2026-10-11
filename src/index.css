@@ -467,14 +467,21 @@ h1, h2, h3, h4 { line-height: 1.18; }
 }
 .cta-ghost:hover { border-color: var(--green); background: var(--accent-soft); }
 
-/* 3D presentation card: perspective on the wrapper, transform on the card.
-   It rests tilted and floats; hovering straightens it face-on. */
-.card-stage { display: flex; justify-content: center; perspective: 1200px; }
+/* 3D presentation card.
+   The float animation lives on a wrapper so it cannot collide with the hover
+   transform on the card itself: a paused CSS animation still applies its
+   transform, and animations outrank normal declarations, so keeping both on
+   one element meant hover never took effect. */
+.card-stage { display: flex; justify-content: center; }
+.card-stage-float {
+  position: relative;
+  perspective: 1200px;
+  animation: cardFloat 7s ease-in-out infinite;
+}
 .card-stage-inner {
   position: relative;
   transform: rotateY(-12deg) rotateX(5deg) rotateZ(7deg);
   transform-style: preserve-3d;
-  animation: cardFloat 7s ease-in-out infinite;
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
   filter: saturate(0.92);
   cursor: pointer;
@@ -487,21 +494,18 @@ h1, h2, h3, h4 { line-height: 1.18; }
   transition: opacity 0.5s ease;
 }
 /* Hover flattens the perspective and lets the card fill the frame. */
-.card-stage:hover .card-stage-inner,
-.card-stage:focus-within .card-stage-inner {
+.card-stage:hover .card-stage-inner {
   transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg) scale(1.06);
   filter: saturate(1.08);
 }
 .card-stage:hover .card-stage-inner::after { opacity: 1.7; }
 
 @keyframes cardFloat {
-  0%, 100% { transform: rotateY(-12deg) rotateX(5deg) rotateZ(7deg) translateY(0); }
-  50% { transform: rotateY(-8deg) rotateX(3deg) rotateZ(9deg) translateY(-14px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
 }
-/* The float owns the transform while hovering, so pause it to let the hover win. */
-.card-stage:hover .card-stage-inner { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
-  .card-stage-inner { animation: none; }
+  .card-stage-float { animation: none; }
 }
 
 /* --------------------------------------------------------------- icon card */
