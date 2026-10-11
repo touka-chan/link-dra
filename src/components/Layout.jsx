@@ -26,14 +26,14 @@ const MOBILE_ITEMS = [
 function ThemeToggle() {
   const { isDark, toggle } = useTheme();
   return (
-    <button className="btn icon ghost" onClick={toggle} aria-label={`Switch to ${isDark ? "light" : "dark"} mode`} title={`Switch to ${isDark ? "light" : "dark"} mode`}>
+    <button className="theme-toggle" onClick={toggle} aria-label={`Switch to ${isDark ? "light" : "dark"} mode`} title={`Switch to ${isDark ? "light" : "dark"} mode`}>
       {isDark ? (
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">
           <circle cx="12" cy="12" r="4.2" />
           <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6" />
         </svg>
       ) : (
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20 14.2A8.2 8.2 0 019.8 4a8.2 8.2 0 1010.2 10.2z" />
         </svg>
       )}
@@ -53,7 +53,10 @@ export function Navbar({ route, go }) {
   return (
     <header className="nav">
       <button className="nav-logo" onClick={() => go("home")} aria-label="Linkodra home">
-        <Logo size={30} dark={theme === "dark"} />
+        <span className="nav-mark">
+          <Logo size={26} dark={theme === "dark"} wordmark={false} />
+        </span>
+        <Logo size={26} dark={theme === "dark"} />
       </button>
 
       <nav className="nav-links desktop" aria-label="Primary">
@@ -65,8 +68,12 @@ export function Navbar({ route, go }) {
       </nav>
 
       <div className="nav-cta desktop">
-        <button className="btn ghost" onClick={() => go("login")}>Login</button>
-        <button className="btn primary" onClick={() => go("order")}>Get Your Card</button>
+        <button className="nav-login" onClick={() => go("login")}>
+          <Icon name="person" size={17} />
+          Login
+        </button>
+        <ThemeToggle />
+        <button className="btn primary nav-cta-btn" onClick={() => go("order")}>Get Your Card</button>
       </div>
 
       <div className="nav-tools">

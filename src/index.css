@@ -152,16 +152,56 @@ h1, h2, h3, h4 { line-height: 1.18; }
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
-.nav-logo { background: none; border: 0; padding: 0; }
-.nav-links { display: flex; gap: 4px; margin-left: 12px; }
+/* The mark sits in a rounded badge with an accent bloom, as in the reference. */
+.nav-logo {
+  background: none; border: 0; padding: 0;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.nav-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 11px;
+  background: var(--green); color: var(--on-green);
+  box-shadow: 0 6px 22px rgba(34, 233, 72, 0.4);
+  flex: none;
+}
+
+.nav-links { display: flex; gap: 2px; margin-left: 42px; }
 .nav-links button {
   background: none; border: 0; color: var(--muted);
-  padding: 8px 10px; border-radius: 8px; font-weight: 600;
+  padding: 9px 12px; border-radius: 8px;
+  font-size: 15px; font-weight: 500; letter-spacing: 0.01em;
+  transition: color 0.18s ease, background 0.18s ease;
 }
 .nav-links button.active,
 .nav-links button:hover { color: var(--text); background: var(--green-soft); }
-.nav-cta { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-.nav-tools { display: flex; gap: 8px; align-items: center; }
+
+.nav-cta { margin-left: auto; display: flex; gap: 12px; align-items: center; }
+
+/* Login is a plain text link with a person mark, not a pill button. */
+.nav-login {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: none; border: 0; color: var(--muted);
+  font-size: 15px; font-weight: 500; padding: 8px 4px;
+  transition: color 0.18s ease;
+}
+.nav-login:hover { color: var(--text); }
+.nav-login svg { opacity: 0.8; }
+
+/* The theme switch is a bordered square, matching the reference control. */
+.theme-toggle {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--muted); flex: none;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.theme-toggle:hover { border-color: var(--border-strong); color: var(--text); }
+
+.nav-cta-btn { padding: 12px 24px; font-size: 15.5px; font-weight: 700; box-shadow: 0 6px 24px rgba(34, 233, 72, 0.3); }
+.nav-cta-btn:hover { box-shadow: 0 10px 30px rgba(34, 233, 72, 0.4); }
+
+.nav-tools { display: none; gap: 8px; align-items: center; }
+@media (min-width: 901px) { .nav-tools { display: none; } }
 
 .desktop { display: flex; }
 .menu-btn {
