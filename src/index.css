@@ -1160,21 +1160,24 @@ code {
 
 /* ----------------------------------------------------------------- footer */
 
-/* Footer clears the floating chat button rather than sitting under it. */
-.footer { border-top: 1px solid var(--border); margin-top: 56px; padding: 48px 20px 96px; background: var(--bg-soft); }
+/* Footer clears the floating chat button rather than sitting under it.
+   Spacing follows the reference: generous top padding, ~48px between footer
+   links, and a deep rule above the bottom bar. */
+.footer { border-top: 1px solid var(--border); margin-top: 56px; padding: 80px 20px 96px; background: var(--bg-soft); }
 .foot-grid {
   max-width: var(--shell); margin: 0 auto; display: grid;
-  grid-template-columns: 1.5fr repeat(4, 1fr); gap: 28px;
+  grid-template-columns: 1.45fr repeat(4, 1fr); gap: 40px;
 }
 @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
 /* Column headings read as plain caps in the reference, not brand-tinted. */
-.footer h4 { color: var(--text); font-size: 11px; letter-spacing: 1.6px; margin: 0 0 14px; text-transform: uppercase; font-weight: 700; }
+.footer h4 { color: var(--text); font-size: 11.5px; letter-spacing: 1.8px; margin: 4px 0 18px; text-transform: uppercase; font-weight: 700; }
 .footer button {
   display: block; background: none; border: 0; color: var(--muted);
-  padding: 6px 0; text-align: left; font-size: 14.5px;
+  padding: 11px 0; text-align: left; font-size: 15.5px; line-height: 1.4;
+  transition: color 0.18s ease;
 }
 .footer button:hover { color: var(--green); }
-.footer p { line-height: 1.75; color: var(--muted); font-size: 14.5px; max-width: 34ch; }
+.footer p { line-height: 1.95; color: var(--muted); font-size: 15px; max-width: 30ch; }
 /* Contact links were falling back to the browser's default blue. */
 .footer a { color: var(--muted); text-decoration: none; }
 .footer a:hover { color: var(--green); }
@@ -1183,28 +1186,28 @@ code {
 .foot-lockup { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
 .foot-mark {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 42px; height: 42px; border-radius: 12px; flex: none;
+  width: 46px; height: 46px; border-radius: 13px; flex: none;
   background: var(--green); box-shadow: 0 6px 20px rgba(34, 233, 72, 0.36);
 }
-.foot-lockup .wordmark { font-size: 24px; }
+.foot-lockup .wordmark { font-size: 26px; }
 .foot-tag {
-  font-size: 10px; font-weight: 700; letter-spacing: 2.6px;
-  text-transform: uppercase; color: var(--accent-ink); margin: 6px 0 18px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 2.8px;
+  text-transform: uppercase; color: var(--accent-ink); margin: 8px 0 20px;
 }
 
-.pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
 .pill-row span {
-  display: inline-flex; align-items: center; gap: 7px;
+  display: inline-flex; align-items: center; gap: 8px;
   border: 1px solid var(--border); border-radius: 999px;
-  padding: 7px 15px; font-size: 12.5px; color: var(--muted); font-weight: 600;
+  padding: 10px 18px; font-size: 13px; color: var(--muted); font-weight: 600;
   background: var(--panel-2);
 }
 .pill-row span:hover { color: var(--green); border-color: var(--border-strong); }
 .foot-base {
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; flex-wrap: wrap;
-  max-width: var(--shell); margin: 26px auto 0; padding-top: 22px;
-  border-top: 1px solid var(--border); color: var(--muted); font-size: 13px;
+  max-width: var(--shell); margin: 40px auto 0; padding-top: 40px;
+  border-top: 1px solid var(--border); color: var(--muted); font-size: 14px;
 }
 .foot-made { display: inline-flex; align-items: center; gap: 6px; }
 .foot-made svg { color: var(--green); }
