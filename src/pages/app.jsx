@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { BRAND, REFERRAL_RATE, TIERS, tierById } from "../brand.js";
 import { LogoMark, Wordmark } from "../components/brand.jsx";
 import { GoogleMark, Icon } from "../components/icons.jsx";
-import { BarChart, Empty, Field, Locked, Stat } from "../components/ui.jsx";
+import { BarChart, Empty, Field, Locked, Segmented, Stat } from "../components/ui.jsx";
 import { read, remove, write } from "../store.js";
 import {
   DEMO_ANALYTICS,
@@ -138,6 +138,7 @@ export function Forgot({ go }) {
 
 function ProfileTab({ profile, setProfile, user, go }) {
   const [saved, setSaved] = useState(false);
+  const isPublic = profile.visibility !== "private";
   const set = (key) => (e) => {
     setProfile({ ...profile, [key]: e.target.value });
     setSaved(false);
@@ -145,6 +146,13 @@ function ProfileTab({ profile, setProfile, user, go }) {
 
   const save = () => {
     write(LS_PROFILE, profile);
+    setSaved(true);
+  };
+
+  const setVisibility = (visibility) => {
+    const next = { ...profile, visibility };
+    setProfile(next);
+    write(LS_PROFILE, next);
     setSaved(true);
   };
 
@@ -187,6 +195,22 @@ function ProfileTab({ profile, setProfile, user, go }) {
         </p>
         <p className="muted small">{profile.bio}</p>
         <div className="summary-row"><span>Profile link</span><strong className="green">{BRAND.url}/{user.code ?? "yourcode"}</strong></div>
+
+        <label className="field-label">Profile visibility</label>
+        <Segmented
+          value={profile.visibility ?? "public"}
+          onChange={setVisibility}
+          options={[
+            { value: "public", label: "Public" },
+            { value: "private", label: "Private" },
+          ]}
+        />
+        <p className="field-note">
+          {isPublic
+            ? "Anyone who taps your card can open this profile. That is what makes the card work."
+            : "Your profile is hidden. Visitors tapping your card will see a private notice. Your card and analytics keep working."}
+        </p>
+
         <button className="btn ghost full" onClick={() => go("profile")}>Open public profile</button>
       </div>
     </div>
@@ -629,6 +653,28 @@ export function PublicProfile({ code, go }) {
     setSent(true);
     setTimeout(() => setSent(false), 2000);
   };
+
+  // A private profile shows a notice instead of the cardholder's details, which
+  // is what the help centre and privacy policy promise.
+  if (profile.visibility === "private") {
+    return (
+      <section className="section narrow">
+        <div className="profile-card">
+          <span className="icon-badge" style={{ margin: "0 auto 20px" }}>
+            <Icon name="shield" size={26} />
+          </span>
+          <h1>This profile is private</h1>
+          <p className="muted">
+            The cardholder has chosen not to publish their details. Nothing is shown to visitors, but the card
+            itself is still working.
+          </p>
+          <button className="btn primary full" onClick={() => go("login")}>
+            Sign in to manage your profile
+          </button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="section narrow">
