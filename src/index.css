@@ -75,7 +75,7 @@
   /* Section rhythm: generous air between bands, tighter inside them. */
   --band: 110px;
   /* Measured off the reference: ~76px headline in a 1440px container. */
-  --headline: clamp(38px, 4vw, 76px);
+  --headline: clamp(38px, 3.6vw, 72px);
   --shell: 1440px;
 }
 
@@ -403,20 +403,23 @@ h1, h2, h3, h4 { line-height: 1.18; }
 /* ------------------------------------------------------------------- hero */
 
 /* Two columns: a fixed-width copy track and a flexible stage for the card,
-   matching the reference proportions rather than splitting evenly. */
+   matching the reference proportions rather than splitting evenly.
+   min-height holds the hero to a full screen so the next band starts below
+   the fold instead of peeking in. */
 .hero-split {
   display: grid;
-  grid-template-columns: minmax(0, 620px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
   gap: 48px;
   align-items: center;
-  padding: 0 0 var(--band);
+  min-height: calc(100vh - 240px);
+  padding: 0 0 20px;
 }
 @media (max-width: 1040px) {
-  .hero-split { grid-template-columns: 1fr; gap: 44px; }
+  .hero-split { grid-template-columns: 1fr; gap: 44px; min-height: 0; }
   .hero-copy { max-width: 100%; }
 }
 
-.hero-copy { max-width: 620px; }
+.hero-copy { max-width: 560px; }
 
 /* Two-tone headline: first line inherits, the rest takes the accent. */
 .display {
@@ -429,7 +432,7 @@ h1, h2, h3, h4 { line-height: 1.18; }
 .display .accent { color: var(--accent-ink); }
 .display .line { display: block; }
 
-.hero-lede { font-size: 17px; line-height: 1.75; color: var(--muted); max-width: 540px; margin: 0 0 12px; }
+.hero-lede { font-size: 17px; line-height: 1.75; color: var(--muted); max-width: 500px; margin: 0 0 12px; }
 .hero-lede a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: var(--green); }
 .hero-lede a:hover { color: var(--green); }
 
