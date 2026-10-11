@@ -1,0 +1,211 @@
+// FAQ content, grouped by topic. Rendered on /faq with collapsible answers.
+export const FAQ_GROUPS = [
+	"About Linkodra",
+	"The NFC Card",
+	"Your Digital Profile",
+	"Analytics",
+	"Ordering & Delivery",
+	"Privacy & Security"
+];
+export const FAQS = [
+	(
+	// About Linkodra
+	{
+		g: "About Linkodra",
+		q: "What is Linkodra?",
+		a: "Linkodra is an NFC business card made in Batangas. It is a PVC card with a chip inside that opens a live digital profile when someone taps it to their phone, so you stop reprinting cards every time a job title changes."
+	}),
+	{
+		g: "About Linkodra",
+		q: "How is this different from a normal business card?",
+		a: "A paper card gets lost, runs out, and is wrong the moment anything changes. A Linkodra card is bought once and points at a profile you can edit forever, and you can see how often it is used."
+	},
+	{
+		g: "About Linkodra",
+		q: "Is there a monthly subscription?",
+		a: "No. You pay once for your tier. Your profile and analytics stay active with no recurring fees and no hidden charges."
+	},
+	{
+		g: "About Linkodra",
+		q: "Who is it for?",
+		a: "Professionals, freelancers, entrepreneurs, creatives and sales teams who exchange contact details constantly. If you hand out more than a few cards a month, it pays for itself on the first lost wallet."
+	},
+	{
+		g: "About Linkodra",
+		q: "Do you ship outside the Philippines?",
+		a: "We ship nationwide across the Philippines. International shipping is something we look at case by case, so talk to us if you need it."
+	},
+	{
+		g: "About Linkodra",
+		q: "Where are the cards made?",
+		a: "In Batangas. The whole operation is local, from the NFC chips to the printing and quality checks."
+	},
+	(
+	// The NFC Card
+	{
+		g: "The NFC Card",
+		q: "What is NFC?",
+		a: "Near Field Communication. It is the short-range wireless already built into modern phones. The chip in your card hands your profile link to the phone on contact, which then opens it in the browser."
+	}),
+	{
+		g: "The NFC Card",
+		q: "Do I need an app?",
+		a: "No, and neither does the person you hand the card to. Tapping uses the reader already inside iOS and Android."
+	},
+	{
+		g: "The NFC Card",
+		q: "Will it work on every phone?",
+		a: "With any NFC-enabled phone, which covers virtually every modern handset. For devices without NFC, Standard and Pro cards also carry a QR code that any camera app can read."
+	},
+	{
+		g: "The NFC Card",
+		q: "What is the card made of?",
+		a: "Premium PVC, the same material banks use for payment cards. It resists water and is built to survive a wallet for years."
+	},
+	{
+		g: "The NFC Card",
+		q: "Can I print my own logo?",
+		a: "Yes on Pro. You upload an SVG or high-resolution PNG during checkout. Basic prints Linkodra branding with your name, Standard prints your name and phone number."
+	},
+	{
+		g: "The NFC Card",
+		q: "What if I lose it?",
+		a: "Your profile stays live and keeps working. You can order a replacement whenever you want and it links to the same profile with no setup."
+	},
+	{
+		g: "The NFC Card",
+		q: "Can the chip be reprogrammed?",
+		a: "The chip ships pre-programmed with your permanent profile link. We advise against changing it, since it would break the link to your live profile."
+	},
+	{
+		g: "The NFC Card",
+		q: "Do I need internet for someone to use it?",
+		a: "The profile itself needs a connection, but Pro cards print an offline vCard QR code, so your contact details can still be saved with no internet at all."
+	},
+	(
+	// Your Digital Profile
+	{
+		g: "Your Digital Profile",
+		q: "What can I put on my profile?",
+		a: "Name, title, company, bio, photo, cover image, email, two phone numbers, WhatsApp, website, address, and links to LinkedIn, Facebook, Instagram, TikTok and YouTube."
+	}),
+	{
+		g: "Your Digital Profile",
+		q: "Can I update it after delivery?",
+		a: "Yes, and freely. The card only holds a link, so edits appear immediately and never require a reprint."
+	},
+	{
+		g: "Your Digital Profile",
+		q: "Can visitors save my number?",
+		a: "Yes. Every profile has a Save Contact button that downloads a vCard straight to their phone. Pro adds a printed QR that does the same offline."
+	},
+	{
+		g: "Your Digital Profile",
+		q: "Is my profile public?",
+		a: "By default it is, which is what makes the card work. You can switch it to private from your dashboard if you need to."
+	},
+	{
+		g: "Your Digital Profile",
+		q: "What is my profile URL?",
+		a: "It is linkodra.ph followed by your code, for example linkodra.ph/k7m2qx9p. It works as an ordinary link, so it is fine in an email signature."
+	},
+	(
+	// Analytics
+	{
+		g: "Analytics",
+		q: "What analytics do I get?",
+		a: "All tiers get Overview. Standard adds Audience, covering device, browser, operating system, source and peak hours. Pro adds Engagement, which ranks your links, plus monthly reports."
+	}),
+	{
+		g: "Analytics",
+		q: "Do you track who viewed my profile?",
+		a: "We record anonymous data like device and browser, never names. The exception is another cardholder who is signed in when they visit, which shows as an identified viewer unless they are browsing privately."
+	},
+	{
+		g: "Analytics",
+		q: "How often does it update?",
+		a: "Every view, click and save is recorded as it happens and appears the next time you open your dashboard."
+	},
+	{
+		g: "Analytics",
+		q: "Can I see which links get clicked?",
+		a: "On Pro. The Engagement tab breaks clicks down by type: email, phone, WhatsApp, website, each social icon, and the share button."
+	},
+	{
+		g: "Analytics",
+		q: "What is the difference between views and unique visitors?",
+		a: "Views counts every time your profile opens, including repeat visits. Unique visitors counts each person once, so the gap between the two tells you how often people come back."
+	},
+	{
+		g: "Analytics",
+		q: "Can I get a report by email?",
+		a: "Monthly reports land in your inbox on Pro. Every tier can pull the current numbers from the dashboard at any time."
+	},
+	(
+	// Ordering & Delivery
+	{
+		g: "Ordering & Delivery",
+		q: "How do I order?",
+		a: "Go to Order, pick a tier, personalise the print details, enter your delivery address, and pay. Your profile is ready to edit as soon as payment clears."
+	}),
+	{
+		g: "Ordering & Delivery",
+		q: "How long does shipping take?",
+		a: "Metro Manila two to four business days, Luzon three to five, Visayas four to six, Mindanao five to seven. Printed Standard and Pro cards add two to three days for production and quality checks."
+	},
+	{
+		g: "Ordering & Delivery",
+		q: "What do the cards cost?",
+		a: "Basic is ₱699, Standard is ₱1,399, and Pro is ₱1,999, per card. The pricing page has the full comparison."
+	},
+	{
+		g: "Ordering & Delivery",
+		q: "How is shipping calculated?",
+		a: "By the province you enter at checkout, grouped into zones by island group. The fee appears on the review step before you pay."
+	},
+	{
+		g: "Ordering & Delivery",
+		q: "Can I order in bulk?",
+		a: "Yes. Order as many cards as you need at checkout, or contact us for volume pricing and shared branding for an organisation."
+	},
+	{
+		g: "Ordering & Delivery",
+		q: "Can I upgrade later?",
+		a: "Yes. Contact us and we will issue the higher-tier card and switch on the extra features against your existing profile."
+	},
+	{
+		g: "Ordering & Delivery",
+		q: "How does the AI card scanner handle a bad photo?",
+		a: "It reads what it can and marks the rest for you to fill in, so a shadow across the phone number does not lose the entry. You always review a scan before it saves."
+	},
+	{
+		g: "Ordering & Delivery",
+		q: "Do you offer custom designs?",
+		a: "The three built-in designs cover most people. For organisation branding across a whole team, contact us and we will talk through what is possible at volume."
+	},
+	(
+	// Privacy & Security
+	{
+		g: "Privacy & Security",
+		q: "Is my data safe?",
+		a: "It is encrypted in transit and at rest. We do not sell your data and run no advertising or tracking cookies on your profile."
+	}),
+	{
+		g: "Privacy & Security",
+		q: "Can I delete my account?",
+		a: "Yes, any time. Contact us and we will remove your account and all associated data."
+	},
+	{
+		g: "Privacy & Security",
+		q: "Do you use cookies?",
+		a: "Only essential ones, to keep you signed in and your session secure. No advertising and no behavioural tracking."
+	},
+	{
+		g: "Privacy & Security",
+		q: "Who can see my contact details?",
+		a: "Anyone who opens your profile, which is the point of a business card. That is why we collect analytics anonymously rather than building a dossier of who looked."
+	}
+];
+export const faqCount = FAQS.length;
+
+//# sourceMappingURL=data:application/json;base64,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InNvdXJjZXNDb250ZW50IjpbIi8vIEZBUSBjb250ZW50LCBncm91cGVkIGJ5IHRvcGljLiBSZW5kZXJlZCBvbiAvZmFxIHdpdGggY29sbGFwc2libGUgYW5zd2Vycy5cblxuZXhwb3J0IGNvbnN0IEZBUV9HUk9VUFMgPSBbXG4gIFwiQWJvdXQgTGlua29kcmFcIixcbiAgXCJUaGUgTkZDIENhcmRcIixcbiAgXCJZb3VyIERpZ2l0YWwgUHJvZmlsZVwiLFxuICBcIkFuYWx5dGljc1wiLFxuICBcIk9yZGVyaW5nICYgRGVsaXZlcnlcIixcbiAgXCJQcml2YWN5ICYgU2VjdXJpdHlcIixcbl07XG5cbmV4cG9ydCBjb25zdCBGQVFTID0gW1xuICAvLyBBYm91dCBMaW5rb2RyYVxuICB7IGc6IFwiQWJvdXQgTGlua29kcmFcIiwgcTogXCJXaGF0IGlzIExpbmtvZHJhP1wiLCBhOiBcIkxpbmtvZHJhIGlzIGFuIE5GQyBidXNpbmVzcyBjYXJkIG1hZGUgaW4gQmF0YW5nYXMuIEl0IGlzIGEgUFZDIGNhcmQgd2l0aCBhIGNoaXAgaW5zaWRlIHRoYXQgb3BlbnMgYSBsaXZlIGRpZ2l0YWwgcHJvZmlsZSB3aGVuIHNvbWVvbmUgdGFwcyBpdCB0byB0aGVpciBwaG9uZSwgc28geW91IHN0b3AgcmVwcmludGluZyBjYXJkcyBldmVyeSB0aW1lIGEgam9iIHRpdGxlIGNoYW5nZXMuXCIgfSxcbiAgeyBnOiBcIkFib3V0IExpbmtvZHJhXCIsIHE6IFwiSG93IGlzIHRoaXMgZGlmZmVyZW50IGZyb20gYSBub3JtYWwgYnVzaW5lc3MgY2FyZD9cIiwgYTogXCJBIHBhcGVyIGNhcmQgZ2V0cyBsb3N0LCBydW5zIG91dCwgYW5kIGlzIHdyb25nIHRoZSBtb21lbnQgYW55dGhpbmcgY2hhbmdlcy4gQSBMaW5rb2RyYSBjYXJkIGlzIGJvdWdodCBvbmNlIGFuZCBwb2ludHMgYXQgYSBwcm9maWxlIHlvdSBjYW4gZWRpdCBmb3JldmVyLCBhbmQgeW91IGNhbiBzZWUgaG93IG9mdGVuIGl0IGlzIHVzZWQuXCIgfSxcbiAgeyBnOiBcIkFib3V0IExpbmtvZHJhXCIsIHE6IFwiSXMgdGhlcmUgYSBtb250aGx5IHN1YnNjcmlwdGlvbj9cIiwgYTogXCJOby4gWW91IHBheSBvbmNlIGZvciB5b3VyIHRpZXIuIFlvdXIgcHJvZmlsZSBhbmQgYW5hbHl0aWNzIHN0YXkgYWN0aXZlIHdpdGggbm8gcmVjdXJyaW5nIGZlZXMgYW5kIG5vIGhpZGRlbiBjaGFyZ2VzLlwiIH0sXG4gIHsgZzogXCJBYm91dCBMaW5rb2RyYVwiLCBxOiBcIldobyBpcyBpdCBmb3I/XCIsIGE6IFwiUHJvZmVzc2lvbmFscywgZnJlZWxhbmNlcnMsIGVudHJlcHJlbmV1cnMsIGNyZWF0aXZlcyBhbmQgc2FsZXMgdGVhbXMgd2hvIGV4Y2hhbmdlIGNvbnRhY3QgZGV0YWlscyBjb25zdGFudGx5LiBJZiB5b3UgaGFuZCBvdXQgbW9yZSB0aGFuIGEgZmV3IGNhcmRzIGEgbW9udGgsIGl0IHBheXMgZm9yIGl0c2VsZiBvbiB0aGUgZmlyc3QgbG9zdCB3YWxsZXQuXCIgfSxcbiAgeyBnOiBcIkFib3V0IExpbmtvZHJhXCIsIHE6IFwiRG8geW91IHNoaXAgb3V0c2lkZSB0aGUgUGhpbGlwcGluZXM/XCIsIGE6IFwiV2Ugc2hpcCBuYXRpb253aWRlIGFjcm9zcyB0aGUgUGhpbGlwcGluZXMuIEludGVybmF0aW9uYWwgc2hpcHBpbmcgaXMgc29tZXRoaW5nIHdlIGxvb2sgYXQgY2FzZSBieSBjYXNlLCBzbyB0YWxrIHRvIHVzIGlmIHlvdSBuZWVkIGl0LlwiIH0sXG4gIHsgZzogXCJBYm91dCBMaW5rb2RyYVwiLCBxOiBcIldoZXJlIGFyZSB0aGUgY2FyZHMgbWFkZT9cIiwgYTogXCJJbiBCYXRhbmdhcy4gVGhlIHdob2xlIG9wZXJhdGlvbiBpcyBsb2NhbCwgZnJvbSB0aGUgTkZDIGNoaXBzIHRvIHRoZSBwcmludGluZyBhbmQgcXVhbGl0eSBjaGVja3MuXCIgfSxcblxuICAvLyBUaGUgTkZDIENhcmRcbiAgeyBnOiBcIlRoZSBORkMgQ2FyZFwiLCBxOiBcIldoYXQgaXMgTkZDP1wiLCBhOiBcIk5lYXIgRmllbGQgQ29tbXVuaWNhdGlvbi4gSXQgaXMgdGhlIHNob3J0LXJhbmdlIHdpcmVsZXNzIGFscmVhZHkgYnVpbHQgaW50byBtb2Rlcm4gcGhvbmVzLiBUaGUgY2hpcCBpbiB5b3VyIGNhcmQgaGFuZHMgeW91ciBwcm9maWxlIGxpbmsgdG8gdGhlIHBob25lIG9uIGNvbnRhY3QsIHdoaWNoIHRoZW4gb3BlbnMgaXQgaW4gdGhlIGJyb3dzZXIuXCIgfSxcbiAgeyBnOiBcIlRoZSBORkMgQ2FyZFwiLCBxOiBcIkRvIEkgbmVlZCBhbiBhcHA/XCIsIGE6IFwiTm8sIGFuZCBuZWl0aGVyIGRvZXMgdGhlIHBlcnNvbiB5b3UgaGFuZCB0aGUgY2FyZCB0by4gVGFwcGluZyB1c2VzIHRoZSByZWFkZXIgYWxyZWFkeSBpbnNpZGUgaU9TIGFuZCBBbmRyb2lkLlwiIH0sXG4gIHsgZzogXCJUaGUgTkZDIENhcmRcIiwgcTogXCJXaWxsIGl0IHdvcmsgb24gZXZlcnkgcGhvbmU/XCIsIGE6IFwiV2l0aCBhbnkgTkZDLWVuYWJsZWQgcGhvbmUsIHdoaWNoIGNvdmVycyB2aXJ0dWFsbHkgZXZlcnkgbW9kZXJuIGhhbmRzZXQuIEZvciBkZXZpY2VzIHdpdGhvdXQgTkZDLCBTdGFuZGFyZCBhbmQgUHJvIGNhcmRzIGFsc28gY2FycnkgYSBRUiBjb2RlIHRoYXQgYW55IGNhbWVyYSBhcHAgY2FuIHJlYWQuXCIgfSxcbiAgeyBnOiBcIlRoZSBORkMgQ2FyZFwiLCBxOiBcIldoYXQgaXMgdGhlIGNhcmQgbWFkZSBvZj9cIiwgYTogXCJQcmVtaXVtIFBWQywgdGhlIHNhbWUgbWF0ZXJpYWwgYmFua3MgdXNlIGZvciBwYXltZW50IGNhcmRzLiBJdCByZXNpc3RzIHdhdGVyIGFuZCBpcyBidWlsdCB0byBzdXJ2aXZlIGEgd2FsbGV0IGZvciB5ZWFycy5cIiB9LFxuICB7IGc6IFwiVGhlIE5GQyBDYXJkXCIsIHE6IFwiQ2FuIEkgcHJpbnQgbXkgb3duIGxvZ28/XCIsIGE6IFwiWWVzIG9uIFByby4gWW91IHVwbG9hZCBhbiBTVkcgb3IgaGlnaC1yZXNvbHV0aW9uIFBORyBkdXJpbmcgY2hlY2tvdXQuIEJhc2ljIHByaW50cyBMaW5rb2RyYSBicmFuZGluZyB3aXRoIHlvdXIgbmFtZSwgU3RhbmRhcmQgcHJpbnRzIHlvdXIgbmFtZSBhbmQgcGhvbmUgbnVtYmVyLlwiIH0sXG4gIHsgZzogXCJUaGUgTkZDIENhcmRcIiwgcTogXCJXaGF0IGlmIEkgbG9zZSBpdD9cIiwgYTogXCJZb3VyIHByb2ZpbGUgc3RheXMgbGl2ZSBhbmQga2VlcHMgd29ya2luZy4gWW91IGNhbiBvcmRlciBhIHJlcGxhY2VtZW50IHdoZW5ldmVyIHlvdSB3YW50IGFuZCBpdCBsaW5rcyB0byB0aGUgc2FtZSBwcm9maWxlIHdpdGggbm8gc2V0dXAuXCIgfSxcbiAgeyBnOiBcIlRoZSBORkMgQ2FyZFwiLCBxOiBcIkNhbiB0aGUgY2hpcCBiZSByZXByb2dyYW1tZWQ/XCIsIGE6IFwiVGhlIGNoaXAgc2hpcHMgcHJlLXByb2dyYW1tZWQgd2l0aCB5b3VyIHBlcm1hbmVudCBwcm9maWxlIGxpbmsuIFdlIGFkdmlzZSBhZ2FpbnN0IGNoYW5naW5nIGl0LCBzaW5jZSBpdCB3b3VsZCBicmVhayB0aGUgbGluayB0byB5b3VyIGxpdmUgcHJvZmlsZS5cIiB9LFxuICB7IGc6IFwiVGhlIE5GQyBDYXJkXCIsIHE6IFwiRG8gSSBuZWVkIGludGVybmV0IGZvciBzb21lb25lIHRvIHVzZSBpdD9cIiwgYTogXCJUaGUgcHJvZmlsZSBpdHNlbGYgbmVlZHMgYSBjb25uZWN0aW9uLCBidXQgUHJvIGNhcmRzIHByaW50IGFuIG9mZmxpbmUgdkNhcmQgUVIgY29kZSwgc28geW91ciBjb250YWN0IGRldGFpbHMgY2FuIHN0aWxsIGJlIHNhdmVkIHdpdGggbm8gaW50ZXJuZXQgYXQgYWxsLlwiIH0sXG5cbiAgLy8gWW91ciBEaWdpdGFsIFByb2ZpbGVcbiAgeyBnOiBcIllvdXIgRGlnaXRhbCBQcm9maWxlXCIsIHE6IFwiV2hhdCBjYW4gSSBwdXQgb24gbXkgcHJvZmlsZT9cIiwgYTogXCJOYW1lLCB0aXRsZSwgY29tcGFueSwgYmlvLCBwaG90bywgY292ZXIgaW1hZ2UsIGVtYWlsLCB0d28gcGhvbmUgbnVtYmVycywgV2hhdHNBcHAsIHdlYnNpdGUsIGFkZHJlc3MsIGFuZCBsaW5rcyB0byBMaW5rZWRJbiwgRmFjZWJvb2ssIEluc3RhZ3JhbSwgVGlrVG9rIGFuZCBZb3VUdWJlLlwiIH0sXG4gIHsgZzogXCJZb3VyIERpZ2l0YWwgUHJvZmlsZVwiLCBxOiBcIkNhbiBJIHVwZGF0ZSBpdCBhZnRlciBkZWxpdmVyeT9cIiwgYTogXCJZZXMsIGFuZCBmcmVlbHkuIFRoZSBjYXJkIG9ubHkgaG9sZHMgYSBsaW5rLCBzbyBlZGl0cyBhcHBlYXIgaW1tZWRpYXRlbHkgYW5kIG5ldmVyIHJlcXVpcmUgYSByZXByaW50LlwiIH0sXG4gIHsgZzogXCJZb3VyIERpZ2l0YWwgUHJvZmlsZVwiLCBxOiBcIkNhbiB2aXNpdG9ycyBzYXZlIG15IG51bWJlcj9cIiwgYTogXCJZZXMuIEV2ZXJ5IHByb2ZpbGUgaGFzIGEgU2F2ZSBDb250YWN0IGJ1dHRvbiB0aGF0IGRvd25sb2FkcyBhIHZDYXJkIHN0cmFpZ2h0IHRvIHRoZWlyIHBob25lLiBQcm8gYWRkcyBhIHByaW50ZWQgUVIgdGhhdCBkb2VzIHRoZSBzYW1lIG9mZmxpbmUuXCIgfSxcbiAgeyBnOiBcIllvdXIgRGlnaXRhbCBQcm9maWxlXCIsIHE6IFwiSXMgbXkgcHJvZmlsZSBwdWJsaWM/XCIsIGE6IFwiQnkgZGVmYXVsdCBpdCBpcywgd2hpY2ggaXMgd2hhdCBtYWtlcyB0aGUgY2FyZCB3b3JrLiBZb3UgY2FuIHN3aXRjaCBpdCB0byBwcml2YXRlIGZyb20geW91ciBkYXNoYm9hcmQgaWYgeW91IG5lZWQgdG8uXCIgfSxcbiAgeyBnOiBcIllvdXIgRGlnaXRhbCBQcm9maWxlXCIsIHE6IFwiV2hhdCBpcyBteSBwcm9maWxlIFVSTD9cIiwgYTogXCJJdCBpcyBsaW5rb2RyYS5waCBmb2xsb3dlZCBieSB5b3VyIGNvZGUsIGZvciBleGFtcGxlIGxpbmtvZHJhLnBoL2s3bTJxeDlwLiBJdCB3b3JrcyBhcyBhbiBvcmRpbmFyeSBsaW5rLCBzbyBpdCBpcyBmaW5lIGluIGFuIGVtYWlsIHNpZ25hdHVyZS5cIiB9LFxuXG4gIC8vIEFuYWx5dGljc1xuICB7IGc6IFwiQW5hbHl0aWNzXCIsIHE6IFwiV2hhdCBhbmFseXRpY3MgZG8gSSBnZXQ/XCIsIGE6IFwiQWxsIHRpZXJzIGdldCBPdmVydmlldy4gU3RhbmRhcmQgYWRkcyBBdWRpZW5jZSwgY292ZXJpbmcgZGV2aWNlLCBicm93c2VyLCBvcGVyYXRpbmcgc3lzdGVtLCBzb3VyY2UgYW5kIHBlYWsgaG91cnMuIFBybyBhZGRzIEVuZ2FnZW1lbnQsIHdoaWNoIHJhbmtzIHlvdXIgbGlua3MsIHBsdXMgbW9udGhseSByZXBvcnRzLlwiIH0sXG4gIHsgZzogXCJBbmFseXRpY3NcIiwgcTogXCJEbyB5b3UgdHJhY2sgd2hvIHZpZXdlZCBteSBwcm9maWxlP1wiLCBhOiBcIldlIHJlY29yZCBhbm9ueW1vdXMgZGF0YSBsaWtlIGRldmljZSBhbmQgYnJvd3NlciwgbmV2ZXIgbmFtZXMuIFRoZSBleGNlcHRpb24gaXMgYW5vdGhlciBjYXJkaG9sZGVyIHdobyBpcyBzaWduZWQgaW4gd2hlbiB0aGV5IHZpc2l0LCB3aGljaCBzaG93cyBhcyBhbiBpZGVudGlmaWVkIHZpZXdlciB1bmxlc3MgdGhleSBhcmUgYnJvd3NpbmcgcHJpdmF0ZWx5LlwiIH0sXG4gIHsgZzogXCJBbmFseXRpY3NcIiwgcTogXCJIb3cgb2Z0ZW4gZG9lcyBpdCB1cGRhdGU/XCIsIGE6IFwiRXZlcnkgdmlldywgY2xpY2sgYW5kIHNhdmUgaXMgcmVjb3JkZWQgYXMgaXQgaGFwcGVucyBhbmQgYXBwZWFycyB0aGUgbmV4dCB0aW1lIHlvdSBvcGVuIHlvdXIgZGFzaGJvYXJkLlwiIH0sXG4gIHsgZzogXCJBbmFseXRpY3NcIiwgcTogXCJDYW4gSSBzZWUgd2hpY2ggbGlua3MgZ2V0IGNsaWNrZWQ/XCIsIGE6IFwiT24gUHJvLiBUaGUgRW5nYWdlbWVudCB0YWIgYnJlYWtzIGNsaWNrcyBkb3duIGJ5IHR5cGU6IGVtYWlsLCBwaG9uZSwgV2hhdHNBcHAsIHdlYnNpdGUsIGVhY2ggc29jaWFsIGljb24sIGFuZCB0aGUgc2hhcmUgYnV0dG9uLlwiIH0sXG4gIHsgZzogXCJBbmFseXRpY3NcIiwgcTogXCJXaGF0IGlzIHRoZSBkaWZmZXJlbmNlIGJldHdlZW4gdmlld3MgYW5kIHVuaXF1ZSB2aXNpdG9ycz9cIiwgYTogXCJWaWV3cyBjb3VudHMgZXZlcnkgdGltZSB5b3VyIHByb2ZpbGUgb3BlbnMsIGluY2x1ZGluZyByZXBlYXQgdmlzaXRzLiBVbmlxdWUgdmlzaXRvcnMgY291bnRzIGVhY2ggcGVyc29uIG9uY2UsIHNvIHRoZSBnYXAgYmV0d2VlbiB0aGUgdHdvIHRlbGxzIHlvdSBob3cgb2Z0ZW4gcGVvcGxlIGNvbWUgYmFjay5cIiB9LFxuICB7IGc6IFwiQW5hbHl0aWNzXCIsIHE6IFwiQ2FuIEkgZ2V0IGEgcmVwb3J0IGJ5IGVtYWlsP1wiLCBhOiBcIk1vbnRobHkgcmVwb3J0cyBsYW5kIGluIHlvdXIgaW5ib3ggb24gUHJvLiBFdmVyeSB0aWVyIGNhbiBwdWxsIHRoZSBjdXJyZW50IG51bWJlcnMgZnJvbSB0aGUgZGFzaGJvYXJkIGF0IGFueSB0aW1lLlwiIH0sXG5cbiAgLy8gT3JkZXJpbmcgJiBEZWxpdmVyeVxuICB7IGc6IFwiT3JkZXJpbmcgJiBEZWxpdmVyeVwiLCBxOiBcIkhvdyBkbyBJIG9yZGVyP1wiLCBhOiBcIkdvIHRvIE9yZGVyLCBwaWNrIGEgdGllciwgcGVyc29uYWxpc2UgdGhlIHByaW50IGRldGFpbHMsIGVudGVyIHlvdXIgZGVsaXZlcnkgYWRkcmVzcywgYW5kIHBheS4gWW91ciBwcm9maWxlIGlzIHJlYWR5IHRvIGVkaXQgYXMgc29vbiBhcyBwYXltZW50IGNsZWFycy5cIiB9LFxuICB7IGc6IFwiT3JkZXJpbmcgJiBEZWxpdmVyeVwiLCBxOiBcIkhvdyBsb25nIGRvZXMgc2hpcHBpbmcgdGFrZT9cIiwgYTogXCJNZXRybyBNYW5pbGEgdHdvIHRvIGZvdXIgYnVzaW5lc3MgZGF5cywgTHV6b24gdGhyZWUgdG8gZml2ZSwgVmlzYXlhcyBmb3VyIHRvIHNpeCwgTWluZGFuYW8gZml2ZSB0byBzZXZlbi4gUHJpbnRlZCBTdGFuZGFyZCBhbmQgUHJvIGNhcmRzIGFkZCB0d28gdG8gdGhyZWUgZGF5cyBmb3IgcHJvZHVjdGlvbiBhbmQgcXVhbGl0eSBjaGVja3MuXCIgfSxcbiAgeyBnOiBcIk9yZGVyaW5nICYgRGVsaXZlcnlcIiwgcTogXCJXaGF0IGRvIHRoZSBjYXJkcyBjb3N0P1wiLCBhOiBcIkJhc2ljIGlzIOKCsTY5OSwgU3RhbmRhcmQgaXMg4oKxMSwzOTksIGFuZCBQcm8gaXMg4oKxMSw5OTksIHBlciBjYXJkLiBUaGUgcHJpY2luZyBwYWdlIGhhcyB0aGUgZnVsbCBjb21wYXJpc29uLlwiIH0sXG4gIHsgZzogXCJPcmRlcmluZyAmIERlbGl2ZXJ5XCIsIHE6IFwiSG93IGlzIHNoaXBwaW5nIGNhbGN1bGF0ZWQ/XCIsIGE6IFwiQnkgdGhlIHByb3ZpbmNlIHlvdSBlbnRlciBhdCBjaGVja291dCwgZ3JvdXBlZCBpbnRvIHpvbmVzIGJ5IGlzbGFuZCBncm91cC4gVGhlIGZlZSBhcHBlYXJzIG9uIHRoZSByZXZpZXcgc3RlcCBiZWZvcmUgeW91IHBheS5cIiB9LFxuICB7IGc6IFwiT3JkZXJpbmcgJiBEZWxpdmVyeVwiLCBxOiBcIkNhbiBJIG9yZGVyIGluIGJ1bGs/XCIsIGE6IFwiWWVzLiBPcmRlciBhcyBtYW55IGNhcmRzIGFzIHlvdSBuZWVkIGF0IGNoZWNrb3V0LCBvciBjb250YWN0IHVzIGZvciB2b2x1bWUgcHJpY2luZyBhbmQgc2hhcmVkIGJyYW5kaW5nIGZvciBhbiBvcmdhbmlzYXRpb24uXCIgfSxcbiAgeyBnOiBcIk9yZGVyaW5nICYgRGVsaXZlcnlcIiwgcTogXCJDYW4gSSB1cGdyYWRlIGxhdGVyP1wiLCBhOiBcIlllcy4gQ29udGFjdCB1cyBhbmQgd2Ugd2lsbCBpc3N1ZSB0aGUgaGlnaGVyLXRpZXIgY2FyZCBhbmQgc3dpdGNoIG9uIHRoZSBleHRyYSBmZWF0dXJlcyBhZ2FpbnN0IHlvdXIgZXhpc3RpbmcgcHJvZmlsZS5cIiB9LFxuICB7IGc6IFwiT3JkZXJpbmcgJiBEZWxpdmVyeVwiLCBxOiBcIkhvdyBkb2VzIHRoZSBBSSBjYXJkIHNjYW5uZXIgaGFuZGxlIGEgYmFkIHBob3RvP1wiLCBhOiBcIkl0IHJlYWRzIHdoYXQgaXQgY2FuIGFuZCBtYXJrcyB0aGUgcmVzdCBmb3IgeW91IHRvIGZpbGwgaW4sIHNvIGEgc2hhZG93IGFjcm9zcyB0aGUgcGhvbmUgbnVtYmVyIGRvZXMgbm90IGxvc2UgdGhlIGVudHJ5LiBZb3UgYWx3YXlzIHJldmlldyBhIHNjYW4gYmVmb3JlIGl0IHNhdmVzLlwiIH0sXG4gIHsgZzogXCJPcmRlcmluZyAmIERlbGl2ZXJ5XCIsIHE6IFwiRG8geW91IG9mZmVyIGN1c3RvbSBkZXNpZ25zP1wiLCBhOiBcIlRoZSB0aHJlZSBidWlsdC1pbiBkZXNpZ25zIGNvdmVyIG1vc3QgcGVvcGxlLiBGb3Igb3JnYW5pc2F0aW9uIGJyYW5kaW5nIGFjcm9zcyBhIHdob2xlIHRlYW0sIGNvbnRhY3QgdXMgYW5kIHdlIHdpbGwgdGFsayB0aHJvdWdoIHdoYXQgaXMgcG9zc2libGUgYXQgdm9sdW1lLlwiIH0sXG5cbiAgLy8gUHJpdmFjeSAmIFNlY3VyaXR5XG4gIHsgZzogXCJQcml2YWN5ICYgU2VjdXJpdHlcIiwgcTogXCJJcyBteSBkYXRhIHNhZmU/XCIsIGE6IFwiSXQgaXMgZW5jcnlwdGVkIGluIHRyYW5zaXQgYW5kIGF0IHJlc3QuIFdlIGRvIG5vdCBzZWxsIHlvdXIgZGF0YSBhbmQgcnVuIG5vIGFkdmVydGlzaW5nIG9yIHRyYWNraW5nIGNvb2tpZXMgb24geW91ciBwcm9maWxlLlwiIH0sXG4gIHsgZzogXCJQcml2YWN5ICYgU2VjdXJpdHlcIiwgcTogXCJDYW4gSSBkZWxldGUgbXkgYWNjb3VudD9cIiwgYTogXCJZZXMsIGFueSB0aW1lLiBDb250YWN0IHVzIGFuZCB3ZSB3aWxsIHJlbW92ZSB5b3VyIGFjY291bnQgYW5kIGFsbCBhc3NvY2lhdGVkIGRhdGEuXCIgfSxcbiAgeyBnOiBcIlByaXZhY3kgJiBTZWN1cml0eVwiLCBxOiBcIkRvIHlvdSB1c2UgY29va2llcz9cIiwgYTogXCJPbmx5IGVzc2VudGlhbCBvbmVzLCB0byBrZWVwIHlvdSBzaWduZWQgaW4gYW5kIHlvdXIgc2Vzc2lvbiBzZWN1cmUuIE5vIGFkdmVydGlzaW5nIGFuZCBubyBiZWhhdmlvdXJhbCB0cmFja2luZy5cIiB9LFxuICB7IGc6IFwiUHJpdmFjeSAmIFNlY3VyaXR5XCIsIHE6IFwiV2hvIGNhbiBzZWUgbXkgY29udGFjdCBkZXRhaWxzP1wiLCBhOiBcIkFueW9uZSB3aG8gb3BlbnMgeW91ciBwcm9maWxlLCB3aGljaCBpcyB0aGUgcG9pbnQgb2YgYSBidXNpbmVzcyBjYXJkLiBUaGF0IGlzIHdoeSB3ZSBjb2xsZWN0IGFuYWx5dGljcyBhbm9ueW1vdXNseSByYXRoZXIgdGhhbiBidWlsZGluZyBhIGRvc3NpZXIgb2Ygd2hvIGxvb2tlZC5cIiB9LFxuXTtcblxuZXhwb3J0IGNvbnN0IGZhcUNvdW50ID0gRkFRUy5sZW5ndGg7Il19

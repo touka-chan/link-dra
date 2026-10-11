@@ -44,8 +44,6 @@ function ThemeToggle() {
 export function Navbar({ route, go }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { theme } = useTheme();
-
   // The bar stays fully transparent at the top of the page so the background
   // gradient runs through it unbroken, and only takes a surface once content
   // is passing underneath.
@@ -56,18 +54,13 @@ export function Navbar({ route, go }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Keep <html> in sync before first paint of the themed tree.
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
-
   return (
     <header className={scrolled ? "nav is-scrolled" : "nav"}>
       <button className="nav-logo" onClick={() => go("home")} aria-label="Linkodra home">
         <span className="nav-mark">
           <LogoMark size={24} />
         </span>
-        <Wordmark dark={theme === "dark"} />
+        <Wordmark />
       </button>
 
       <nav className="nav-links desktop" aria-label="Primary">

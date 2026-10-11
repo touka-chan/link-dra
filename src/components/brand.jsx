@@ -23,16 +23,21 @@ export function LogoMark({ size = 40 }) {
 
 // The wordmark on its own, so surfaces that place the mark in a separate
 // badge do not have to render the SVG twice.
-export function Wordmark({ dark = true }) {
+//
+// Ink comes from .wordmark in CSS, which resolves var(--text). It used to be an
+// inline hex chosen by a `dark` prop, which meant the colour was decided in JS
+// while the rest of the palette was decided in CSS - two sources of truth that
+// disagreed on the first frame after a reload.
+export function Wordmark() {
   return (
-    <span className="wordmark" style={{ color: dark ? "#ffffff" : "#050705" }}>
+    <span className="wordmark">
       Link<span className="o-split">o</span>dra
       <sup className="ph">PH</sup>
     </span>
   );
 }
 
-export function Logo({ size = 34, wordmark = true, dark = true }) {
+export function Logo({ size = 34, wordmark = true }) {
   const green = "#22e948";
   return (
     <span className="logo-wrap" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
@@ -45,7 +50,7 @@ export function Logo({ size = 34, wordmark = true, dark = true }) {
           <path d="M52 10 C58 14 61 20 61 27 C61 34 58 40 52 44" />
         </g>
       </svg>
-      {wordmark && <Wordmark dark={dark} />}
+      {wordmark && <Wordmark />}
     </span>
   );
 }

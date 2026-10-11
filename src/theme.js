@@ -19,10 +19,22 @@ const read = () => {
 
 let current = read();
 
-const apply = (theme) => {
-  current = theme;
+// The whole palette is scoped to :root[data-theme], so a bare <html> has no
+// --bg and no --panel at all - it is not "dark by default", it is undefined.
+// The attribute therefore has to be on the element before the first paint. An
+// effect cannot do this: the browser paints before any component mounts, which
+// left the page rendering unthemed for one frame and any JS-driven ink
+// calculation a frame out of step with the CSS behind it.
+const paint = (theme) => {
   document.documentElement.setAttribute("data-theme", theme);
   document.documentElement.style.colorScheme = theme;
+};
+
+paint(current);
+
+const apply = (theme) => {
+  current = theme;
+  paint(theme);
   try {
     localStorage.setItem(KEY, theme);
   } catch {
