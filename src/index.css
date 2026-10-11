@@ -978,8 +978,64 @@ code {
 
 /* --------------------------------------------------------- auth/dashboard */
 
-.auth .or { text-align: center; color: var(--muted); margin: 14px 0; }
-.auth h1 { text-align: center; }
+/* --------------------------------------------------------------- sign in */
+
+.auth-wrap { max-width: 500px; }
+.auth { padding: 38px 40px 34px; }
+
+.auth-lockup { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 26px; }
+.auth-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; border-radius: 14px; flex: none;
+  background: var(--green); box-shadow: 0 8px 26px rgba(34, 233, 72, 0.38);
+}
+.auth-lockup > div { display: flex; flex-direction: column; gap: 5px; }
+.auth-lockup .wordmark { font-size: 27px; }
+.auth-lockup em {
+  font-style: normal; font-size: 10px; font-weight: 700;
+  letter-spacing: 2.6px; text-transform: uppercase; color: var(--accent-ink);
+}
+
+.auth h1 { text-align: center; font-size: 28px; margin: 0 0 26px; letter-spacing: -0.02em; }
+
+/* White pill with the Google mark, as in the reference. */
+.btn-google {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; background: #ffffff; color: #1f1f1f;
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 13px 20px; font-weight: 600; font-size: 15px;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+.btn-google:hover { background: #f2f2f2; transform: translateY(-1px); }
+
+/* OR with rules running out to both edges. */
+.auth .or {
+  display: flex; align-items: center; gap: 16px;
+  margin: 22px 0; color: var(--muted); font-size: 12.5px;
+}
+.auth .or::before, .auth .or::after {
+  content: ""; flex: 1; height: 1px; background: var(--border);
+}
+.auth .or span { flex: none; }
+
+.auth label { text-transform: uppercase; letter-spacing: 1.1px; font-size: 11px; font-weight: 700; color: var(--accent-ink); }
+
+.password-wrap { position: relative; }
+.password-wrap input { padding-right: 46px; }
+.reveal {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  background: none; border: 0; color: var(--faint);
+  padding: 6px; border-radius: 8px; display: flex; transition: color 0.18s ease;
+}
+.reveal:hover { color: var(--text); }
+
+.auth-submit { margin-top: 18px; text-transform: uppercase; letter-spacing: 1.4px; font-weight: 700; padding: 14px 20px; }
+.auth-forgot { display: block; margin: 16px auto 0; color: var(--muted); font-weight: 500; font-size: 14px; }
+.auth-forgot:hover { color: var(--green); }
+.auth-demo { margin: 18px 0 0; }
+
+.auth .check { margin: 18px 0 0; }
+.auth .check label { text-transform: none; letter-spacing: 0; font-size: 14px; font-weight: 500; color: var(--muted); }
 
 .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
 .tabs button {

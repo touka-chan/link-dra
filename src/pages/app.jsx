@@ -3,6 +3,8 @@
 
 import { useMemo, useState } from "react";
 import { BRAND, REFERRAL_RATE, TIERS, tierById } from "../brand.js";
+import { LogoMark, Wordmark } from "../components/brand.jsx";
+import { GoogleMark, Icon } from "../components/icons.jsx";
 import { BarChart, Empty, Field, Locked, Stat } from "../components/ui.jsx";
 import { read, remove, write } from "../store.js";
 import {
@@ -22,6 +24,7 @@ export function Login({ go }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
+  const [reveal, setReveal] = useState(false);
 
   const signIn = (method) => {
     write(LS_USER, {
@@ -34,19 +37,54 @@ export function Login({ go }) {
   };
 
   return (
-    <section className="section narrow">
+    <section className="section narrow auth-wrap">
       <div className="panel auth">
-        <h1>Welcome back</h1>
-        <p className="muted center small">Sign in to manage your profile, analytics and connections.</p>
+        <div className="auth-lockup">
+          <span className="auth-mark"><LogoMark size={30} /></span>
+          <div>
+            <Wordmark />
+            <em>TAP · CONNECT · SHARE</em>
+          </div>
+        </div>
 
-        <button className="btn ghost full" onClick={() => signIn("google")}>Sign in with Google</button>
-        <div className="or">OR</div>
+        <h1>Welcome back</h1>
+
+        <button className="btn-google" onClick={() => signIn("google")}>
+          <GoogleMark />
+          Sign in with Google
+        </button>
+
+        <div className="or"><span>OR</span></div>
 
         <Field label="Email or username" id="email">
-          <input id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.ph" autoComplete="username" />
+          <input
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            autoComplete="username"
+          />
         </Field>
+
         <Field label="Password" id="password">
-          <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete="current-password" />
+          <div className="password-wrap">
+            <input
+              id="password"
+              type={reveal ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="reveal"
+              onClick={() => setReveal((v) => !v)}
+              aria-label={reveal ? "Hide password" : "Show password"}
+            >
+              <Icon name={reveal ? "eyeOff" : "eye"} size={18} />
+            </button>
+          </div>
         </Field>
 
         <div className="check">
@@ -54,9 +92,15 @@ export function Login({ go }) {
           <label htmlFor="remember">Remember me</label>
         </div>
 
-        <button className="btn primary full" onClick={() => signIn("password")}>Sign in</button>
-        <button className="link full" onClick={() => go("forgot")}>Forgot your password?</button>
-        <p className="small muted center">Demo sign-in. Any details work and nothing leaves this browser.</p>
+        <button className="btn primary full auth-submit" onClick={() => signIn("password")}>
+          Sign in
+        </button>
+
+        <button className="link full auth-forgot" onClick={() => go("forgot")}>
+          Forgot your password?
+        </button>
+
+        <p className="small muted center auth-demo">Demo sign-in. Any details work and nothing leaves this browser.</p>
       </div>
     </section>
   );

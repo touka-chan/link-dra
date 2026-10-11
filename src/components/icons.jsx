@@ -135,6 +135,20 @@ const paths = {
     </>
   ),
   chevronDown: <path d="m6 9 6 6 6-6" />,
+  eye: (
+    <>
+      <path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
+  eyeOff: (
+    <>
+      <path d="M4 4l16 16" />
+      <path d="M9.9 5.2A9.6 9.6 0 0 1 12 5c6 0 9.5 6.2 9.5 6.2a17 17 0 0 1-3.2 3.9" />
+      <path d="M6.4 7.3A16.6 16.6 0 0 0 2.5 11.2S6 17.4 12 17.4a9.4 9.4 0 0 0 3.6-.7" />
+      <path d="M10 10.1a3 3 0 0 0 4 4.1" />
+    </>
+  ),
   wallet: (
     <>
       <path d="M3.5 7.5A2 2 0 0 1 5.5 5.5h11a2 2 0 0 1 2 2v1" />
@@ -213,6 +227,18 @@ const FILLED = new Set(["heart"]);
 
 // Icons that read as heavy marks rather than hairline strokes.
 const HEAVY = new Set(["plus"]);
+
+// Google's mark, kept as a dedicated component because it is four-colour.
+export function GoogleMark({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
+      <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.7-2.1 5-4.4 6.6v5.5h7.1c4.2-3.8 6.6-9.4 6.6-16.1Z" />
+      <path fill="#34A853" d="M24 46c6 0 11-2 14.6-5.4l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.8 0-10.7-3.9-12.4-9.2H4.3v5.7C7.9 41.1 15.4 46 24 46Z" />
+      <path fill="#FBBC05" d="M11.6 28c-.5-1.3-.7-2.7-.7-4s.3-2.7.7-4V14.3H4.3C2.9 17 2 20.4 2 24s.9 7 2.3 9.7l7.3-5.7Z" />
+      <path fill="#EA4335" d="M24 10.8c3.3 0 6.2 1.1 8.5 3.3l6.3-6.3C35 4 30 2 24 2 15.4 2 7.9 6.9 4.3 14.3l7.3 5.7c1.7-5.3 6.6-9.2 12.4-9.2Z" />
+    </svg>
+  );
+}
 
 export function Icon({ name, size = 20, className = "", style, weight }) {
   const solid = FILLED.has(name);
