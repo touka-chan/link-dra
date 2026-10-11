@@ -1,0 +1,326 @@
+{
+  "1013": {
+    "name": "Bukidnon",
+    "island": "mindanao"
+  },
+  "1018": {
+    "name": "Camiguin",
+    "island": "mindanao"
+  },
+  "1035": {
+    "name": "Lanao Del Norte",
+    "island": "mindanao"
+  },
+  "1042": {
+    "name": "Misamis Occidental",
+    "island": "mindanao"
+  },
+  "1043": {
+    "name": "Misamis Oriental",
+    "island": "mindanao"
+  },
+  "1123": {
+    "name": "Davao Del Norte",
+    "island": "mindanao"
+  },
+  "1124": {
+    "name": "Davao Del Sur",
+    "island": "mindanao"
+  },
+  "1125": {
+    "name": "Davao Oriental",
+    "island": "mindanao"
+  },
+  "1182": {
+    "name": "Davao De Oro",
+    "island": "mindanao"
+  },
+  "1186": {
+    "name": "Davao Occidental",
+    "island": "mindanao"
+  },
+  "1247": {
+    "name": "Cotabato",
+    "island": "mindanao"
+  },
+  "1263": {
+    "name": "South Cotabato",
+    "island": "mindanao"
+  },
+  "1265": {
+    "name": "Sultan Kudarat",
+    "island": "mindanao"
+  },
+  "1280": {
+    "name": "Sarangani",
+    "island": "mindanao"
+  },
+  "1401": {
+    "name": "Abra",
+    "island": "luzon"
+  },
+  "1411": {
+    "name": "Benguet",
+    "island": "luzon"
+  },
+  "1427": {
+    "name": "Ifugao",
+    "island": "luzon"
+  },
+  "1432": {
+    "name": "Kalinga",
+    "island": "luzon"
+  },
+  "1444": {
+    "name": "Mountain Province",
+    "island": "luzon"
+  },
+  "1481": {
+    "name": "Apayao",
+    "island": "luzon"
+  },
+  "1507": {
+    "name": "Basilan",
+    "island": "mindanao"
+  },
+  "1536": {
+    "name": "Lanao Del Sur",
+    "island": "mindanao"
+  },
+  "1538": {
+    "name": "Maguindanao",
+    "island": "mindanao"
+  },
+  "1566": {
+    "name": "Sulu",
+    "island": "mindanao"
+  },
+  "1570": {
+    "name": "Tawi-Tawi",
+    "island": "mindanao"
+  },
+  "1602": {
+    "name": "Agusan Del Norte",
+    "island": "mindanao"
+  },
+  "1603": {
+    "name": "Agusan Del Sur",
+    "island": "mindanao"
+  },
+  "1667": {
+    "name": "Surigao Del Norte",
+    "island": "mindanao"
+  },
+  "1668": {
+    "name": "Surigao Del Sur",
+    "island": "mindanao"
+  },
+  "1685": {
+    "name": "Dinagat Islands",
+    "island": "mindanao"
+  },
+  "1740": {
+    "name": "Marinduque",
+    "island": "luzon"
+  },
+  "1751": {
+    "name": "Occidental Mindoro",
+    "island": "luzon"
+  },
+  "1752": {
+    "name": "Oriental Mindoro",
+    "island": "luzon"
+  },
+  "1753": {
+    "name": "Palawan",
+    "island": "luzon"
+  },
+  "1759": {
+    "name": "Romblon",
+    "island": "luzon"
+  },
+  "0128": {
+    "name": "Ilocos Norte",
+    "island": "luzon"
+  },
+  "0129": {
+    "name": "Ilocos Sur",
+    "island": "luzon"
+  },
+  "0133": {
+    "name": "La Union",
+    "island": "luzon"
+  },
+  "0155": {
+    "name": "Pangasinan",
+    "island": "luzon"
+  },
+  "0209": {
+    "name": "Batanes",
+    "island": "luzon"
+  },
+  "0215": {
+    "name": "Cagayan",
+    "island": "luzon"
+  },
+  "0231": {
+    "name": "Isabela",
+    "island": "luzon"
+  },
+  "0250": {
+    "name": "Nueva Vizcaya",
+    "island": "luzon"
+  },
+  "0257": {
+    "name": "Quirino",
+    "island": "luzon"
+  },
+  "0308": {
+    "name": "Bataan",
+    "island": "luzon"
+  },
+  "0314": {
+    "name": "Bulacan",
+    "island": "luzon"
+  },
+  "0349": {
+    "name": "Nueva Ecija",
+    "island": "luzon"
+  },
+  "0354": {
+    "name": "Pampanga",
+    "island": "luzon"
+  },
+  "0369": {
+    "name": "Tarlac",
+    "island": "luzon"
+  },
+  "0371": {
+    "name": "Zambales",
+    "island": "luzon"
+  },
+  "0377": {
+    "name": "Aurora",
+    "island": "luzon"
+  },
+  "0410": {
+    "name": "Batangas",
+    "island": "luzon"
+  },
+  "0421": {
+    "name": "Cavite",
+    "island": "luzon"
+  },
+  "0434": {
+    "name": "Laguna",
+    "island": "luzon"
+  },
+  "0456": {
+    "name": "Quezon",
+    "island": "luzon"
+  },
+  "0458": {
+    "name": "Rizal",
+    "island": "luzon"
+  },
+  "0505": {
+    "name": "Albay",
+    "island": "luzon"
+  },
+  "0516": {
+    "name": "Camarines Norte",
+    "island": "luzon"
+  },
+  "0517": {
+    "name": "Camarines Sur",
+    "island": "luzon"
+  },
+  "0520": {
+    "name": "Catanduanes",
+    "island": "luzon"
+  },
+  "0541": {
+    "name": "Masbate",
+    "island": "luzon"
+  },
+  "0562": {
+    "name": "Sorsogon",
+    "island": "luzon"
+  },
+  "0604": {
+    "name": "Aklan",
+    "island": "visayas"
+  },
+  "0606": {
+    "name": "Antique",
+    "island": "visayas"
+  },
+  "0619": {
+    "name": "Capiz",
+    "island": "visayas"
+  },
+  "0630": {
+    "name": "Iloilo",
+    "island": "visayas"
+  },
+  "0645": {
+    "name": "Negros Occidental",
+    "island": "visayas"
+  },
+  "0679": {
+    "name": "Guimaras",
+    "island": "visayas"
+  },
+  "0712": {
+    "name": "Bohol",
+    "island": "visayas"
+  },
+  "0722": {
+    "name": "Cebu",
+    "island": "visayas"
+  },
+  "0746": {
+    "name": "Negros Oriental",
+    "island": "visayas"
+  },
+  "0761": {
+    "name": "Siquijor",
+    "island": "visayas"
+  },
+  "0826": {
+    "name": "Eastern Samar",
+    "island": "visayas"
+  },
+  "0837": {
+    "name": "Leyte",
+    "island": "visayas"
+  },
+  "0848": {
+    "name": "Northern Samar",
+    "island": "visayas"
+  },
+  "0860": {
+    "name": "Samar",
+    "island": "visayas"
+  },
+  "0864": {
+    "name": "Southern Leyte",
+    "island": "visayas"
+  },
+  "0878": {
+    "name": "Biliran",
+    "island": "visayas"
+  },
+  "0972": {
+    "name": "Zamboanga Del Norte",
+    "island": "mindanao"
+  },
+  "0973": {
+    "name": "Zamboanga Del Sur",
+    "island": "mindanao"
+  },
+  "0983": {
+    "name": "Zamboanga Sibugay",
+    "island": "mindanao"
+  }
+}

@@ -1,21 +1,27 @@
+// Linkodra identity marks and the live card preview.
+//
+// The card renders the same physical layout the brief calls for: wordmark at the
+// top, contactless mark in the middle, and the cardholder's name, title and phone
+// anchored at the bottom, in Linkodra's green palette.
+
 import { useState } from "react";
 
-// Solid-color logo, no gradient
-export function Logo({ size = 34, wordmark = true }) {
-  const solid = "#22e948";
+export function Logo({ size = 34, wordmark = true, dark = true }) {
+  const green = "#22e948";
+  const ink = dark ? "#ffffff" : "#050705";
   return (
     <span className="logo-wrap" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
-      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-label="Linkodra logo">
-        <path d="M14 6 C14 3 17 1 20 2 L28 5 C31 6 33 9 33 12 L33 38 C33 41 35 43 38 43 L52 43 C57 43 60 48 57 52 C55 55 52 56 48 56 L24 56 C16 56 10 50 10 42 L10 12 C10 9 12 7 14 6 Z" fill={solid} />
+      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" role="img" aria-label="Linkodra logo">
+        <path d="M14 6 C14 3 17 1 20 2 L28 5 C31 6 33 9 33 12 L33 38 C33 41 35 43 38 43 L52 43 C57 43 60 48 57 52 C55 55 52 56 48 56 L24 56 C16 56 10 50 10 42 L10 12 C10 9 12 7 14 6 Z" fill={green} />
         <path d="M14 22 C18 30 24 36 33 40 L33 38 C33 34 30 31 27 30 C21 28 16 25 14 22Z" fill="rgba(0,0,0,0.28)" />
-        <g stroke={solid} strokeWidth="4.2" strokeLinecap="round" fill="none">
+        <g stroke={green} strokeWidth="4.2" strokeLinecap="round" fill="none">
           <path d="M40 20 C42 22 43 24 43 27 C43 30 42 32 40 34" />
           <path d="M46 15 C50 18 52 22 52 27 C52 32 50 36 46 39" />
           <path d="M52 10 C58 14 61 20 61 27 C61 34 58 40 52 44" />
         </g>
       </svg>
       {wordmark && (
-        <span className="wordmark">
+        <span className="wordmark" style={{ color: ink }}>
           Link<span className="o-split">o</span>dra
           <sup className="ph">PH</sup>
         </span>
@@ -24,38 +30,108 @@ export function Logo({ size = 34, wordmark = true }) {
   );
 }
 
-export function CardPreview({ name = "Your Name", phone = "", tier = "standard", design = "minimalist", orientation = "landscape", flip = false }) {
-  const [isBack, setIsBack] = useState(flip);
-  const isPortrait = orientation === "portrait";
+export function ContactlessGlyph({ size = 54, color = "#ffffff" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <g stroke={color} strokeWidth="4" strokeLinecap="round" fill="none">
+        <path d="M38 22 C40 25 41 28 41 32 C41 36 40 39 38 42" />
+        <path d="M46 16 C51 20 53 26 53 32 C53 38 51 44 46 48" />
+        <path d="M54 10 C61 16 64 24 64 32 C64 40 61 48 54 54" opacity="0.55" />
+      </g>
+      <circle cx="20" cy="32" r="6" fill={color} opacity="0.85" />
+    </svg>
+  );
+}
+
+export function CardPreview({
+  name = "Your Name",
+  title = "",
+  company = "",
+  phone = "",
+  tier = "standard",
+  design = "gradient",
+  orientation = "portrait",
+  finish = "glossy",
+  code = "yourcode",
+}) {
+  const [isBack, setIsBack] = useState(false);
+  const portrait = orientation === "portrait";
+  const subtitle = [title, company].filter(Boolean).join(", ");
+  const showPhone = tier !== "basic" && !!phone;
+
+  const classes = [
+    "nfc-card",
+    portrait ? "portrait" : "",
+    `design-${design}`,
+    finish === "glossy" ? "glossy" : "matte",
+    isBack ? "back" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <div className="card-preview-zone">
       <button
         type="button"
-        aria-label="Card preview, click to flip"
-        onClick={() => setIsBack(!isBack)}
-        className={`nfc-card ${isPortrait ? "portrait" : ""} design-${design} ${isBack ? "back" : ""}`}
+        className={classes}
+        aria-label={isBack ? "Card back. Click to see the front." : "Card front. Click to see the back."}
+        onClick={() => setIsBack((v) => !v)}
       >
         {!isBack ? (
-          <>
-            <div className="nfc-row">
-              <span className="nfc-badge">TAP CONNECT SHARE</span>
-              <span className="nfc-icon">NFC</span>
-            </div>
-            <div className="nfc-mid">
-              <svg width="54" height="54" viewBox="0 0 64 64"><path d="M14 6 L28 5 L33 12 L33 38 L52 43 L48 56 L24 56 L10 42 L10 12 Z" fill="#22E948" /><g stroke="#fff" strokeWidth="4" fill="none" strokeLinecap="round"><path d="M40 20 C42 22 43 24 43 27 C43 30 42 32 40 34" /><path d="M46 15 C50 18 52 22 52 27 C52 32 50 36 46 39" /></g></svg>
-              <div><div className="card-name">{name || "Your Name"}</div><div className="card-sub">{tier === "pro" ? phone || "Linkodra Pro" : phone || "linkodra.ph"}</div></div>
-            </div>
-            <div className="card-foot"><strong>Linkodra</strong><span>One Tap. Endless Connections.</span></div>
-          </>
+          portrait ? (
+            <>
+              <div className="nfc-row">
+                <span className="nfc-badge">LINKODRA</span>
+                <span>TAP · CONNECT · SHARE</span>
+              </div>
+              <div className="nfc-mid" style={{ justifyContent: "center", flex: 1 }}>
+                <ContactlessGlyph size={68} />
+              </div>
+              <div className="card-holder">
+                <div className="card-name">{name || "Your Name"}</div>
+                {subtitle && <div className="card-sub">{subtitle}</div>}
+                {showPhone && <div className="card-sub">{phone}</div>}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="nfc-row">
+                <span className="nfc-badge">LINKODRA PH</span>
+                <span>TAP · CONNECT · SHARE</span>
+              </div>
+              <div className="nfc-mid">
+                <ContactlessGlyph />
+                <div>
+                  <div className="card-name">{name || "Your Name"}</div>
+                  {subtitle && <div className="card-sub">{subtitle}</div>}
+                  {showPhone && <div className="card-sub">{phone}</div>}
+                </div>
+              </div>
+              <div className="card-foot">
+                <strong>Linkodra</strong>
+                <span>One Tap. Endless Connections.</span>
+              </div>
+            </>
+          )
         ) : (
           <>
-            <div className="qr-box">{tier === "basic" ? "NO QR - TAP ONLY" : tier === "pro" ? "DUAL QR" : "QR"}</div>
-            <div className="fake-qr" />
-            <div className="card-sub">{tier === "pro" ? "Profile + vCard offline" : "linkodra.ph/yourname"}</div>
+            <div className="nfc-row">
+              <span className="nfc-badge">SCAN TO OPEN</span>
+              <ContactlessGlyph size={26} />
+            </div>
+            {tier === "basic" ? (
+              <div className="qr-box" style={{ marginTop: 18 }}>NO QR ON THIS TIER</div>
+            ) : (
+              <div className="fake-qr" />
+            )}
+            {tier === "pro" && <div className="qr-box" style={{ marginTop: 8 }}>PROFILE + vCard</div>}
+            <div className="card-sub" style={{ textAlign: "center", marginTop: 10 }}>
+              linkodra.ph/{code}
+            </div>
           </>
         )}
       </button>
-      <small>Live preview - click card to flip. Actual print finish may vary.</small>
+      <small>Click the card to flip it. Print finish may vary slightly from screen.</small>
     </div>
   );
 }

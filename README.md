@@ -1,34 +1,77 @@
-# Linkodra PH — Smart NFC Business Cards (React frontend only)
+# Linkodra PH — Smart NFC Business Cards (React frontend)
 
-Exact workflow clone of taplinkconnect.com, rebranded to **Linkodra PH** with your logo/colors:
-- Black `#050705` + neon green `#22e948` / lime `#7cff00` gradient. No mistakes on palette.
-- Logo recreated as SVG (L + NFC waves + Linkodra PH wordmark).
+Smart NFC business cards for the Philippine market. Black `#050705` with neon green
+`#22e948`, logo recreated as SVG. Frontend only — every data flow is simulated in the
+browser so the real product can be reviewed before any backend work starts.
 
 ## Run
+
 ```
 npm install
 npm run dev     # http://localhost:5173
 npm run build   # → dist/ (upload to WordPress)
+npm run lint    # oxlint
+npm run gen:geo # regenerate the Philippine address dataset
 ```
 
-## What’s included (all frontend mock, no backend)
-- Home: hero “Your Business Card. Smarter.”, TAP CONNECT SHARE, live card + phone mock, tech, lineup, testimonial
-- How It Works: Tap → Profile Loads → Save, iOS/Android/QR
-- Features: 7 core + AI Scanner, Audience/Engagement, Offline vCard
-- Pricing: Basic ₱699 / Standard ₱1399 / Pro ₱1999 + compare table + FAQ
-- Order: 3-step wizard — 1 Configure (tier, live flip preview, landscape/portrait, 3 designs, matte/glossy, name/phone/logo) → 2 Your Details → 3 Review & Pay (QRPh/BPI/UBP mock, promo LINKODRA10, FREESHIP, simulate failure) → confirmation with linkodra.ph/CODE
-- Login/Forgot (any input works, localStorage session) + Google button mock
-- Dashboard: Profile editor, Analytics, Connections Hub + Send My Details, AI Scan upload, Refer & Earn with link, Org/Teams
-- Public profile `/c/john`: Call/Message/Email/Location, socials, real .vcf Save Contact download, Connect button
-- Help Center (24 articles, search + category), FAQ (12), Contact, About, Teams, 5 Legal pages
-- Chat widget (Linkodra Assistant, 4 quick prompts), Cookie banner, responsive nav/footer
+## Pages
 
-Hash routing (`#/order`, `#/c/john`…) so `dist/index.html` works as static file inside WordPress.
+| Route | What it does |
+|---|---|
+| `#/` | Home: hero, live card, tap flow, technology, tiers, testimonial |
+| `#/how-it-works` | Tap → profile loads → save contact, device support |
+| `#/features` | 7 core features, Standard/Pro exclusives, analytics breakdown |
+| `#/pricing` | 3 tiers, 10-row compare table, FAQ |
+| `#/order` | 3-step wizard: configure → details → review and pay |
+| `#/login`, `#/forgot-password` | Sign in, password reset |
+| `#/dashboard` | Profile, analytics, connections, AI scan, referrals, organization |
+| `#/c/john` | Public profile: actions, vCard download, Connect capture |
+| `#/help-center` | 47 articles, 9 categories, search and sorting |
+| `#/faq` | 37 questions across 6 groups |
+| `#/about`, `#/teams`, `#/contact`, `#/coming-soon` | Company pages |
+| `#/legal/*` | privacy, terms, cookies, shipping, dispute |
 
-## Host in WordPress later
+## Notable implementation details
+
+**Themes.** Every colour resolves through CSS variables on `:root`, so dark and light are
+one attribute change on `<html>`. `src/theme.js` is a tiny external store read through
+`useSyncExternalStore` — deliberately no Provider component, so files that export
+components stay fast-refresh clean.
+
+**Philippine addresses.** `src/data/geo.js` is generated, never hand-edited. It holds 83
+provinces, 1,617 cities and 40,746 barangays (~540 KB raw), derived from the PSA PSGC via
+the `psgc` package. Two things worth knowing:
+
+- The hierarchy is built from the barangay table, not joined against the municipality
+  table. The two use different spellings for the same place (`City Of Vigan Capital` vs
+  `Vigan City`), and joining drops 352 large cities.
+- Provinces carry an island group so shipping zones are derived from the address rather
+  than hardcoded per province.
+
+The file is a separate chunk loaded only when checkout reaches step 2, so the landing
+page stays at ~101 kB gzipped. Regenerate with `npm run gen:geo` (province codes are
+cached in `scripts/psgc-provinces.json`, so regeneration works offline).
+
+**Tier gating.** `src/brand.js` is the single source of truth for pricing, feature
+matrices, shipping zones and promo codes, so marketing pages, checkout and dashboard
+cannot drift apart. Locked features render as real UI with an upgrade prompt.
+
+**Backend seams.** Six contained points, all frontend for now:
+`src/store.js` (localStorage), `placeOrder()` (PayMongo), `signIn()` (auth),
+`AddressFields` (geo API), `/c/:code` (profile endpoint), contact form submit.
+
+## Shipping and promos
+
+Shipping follows the island group of the selected province: Metro Manila ₱99, Luzon ₱149,
+Visayas ₱199, Mindanao ₱249. Promo codes `LINKODRA10` (10% off) and `FREESHIP` (free
+shipping) apply on the review step. The checkout has a "simulate declined payment"
+checkbox to exercise the failure path.
+
+## Hosting in WordPress
+
 1. `npm run build`
-2. Upload `dist/` contents via FTP to e.g. `/wp-content/linkodra/` or use “Custom HTML / iframe” / Redirection plugin pointing to hosted build.
-3. Or: WP Dashboard → Pages → Add static block → upload `dist/assets/*`, paste `dist/index.html` body. Easiest: host dist on subdomain `cards.linkodra.ph` and link from WP menu.
-4. Replace mocks: Order → PayMongo, Login → WP users / Firebase, Dashboard → REST API, `localStorage lk-*` keys are your integration points.
+2. Upload `dist/` contents to `/wp-content/linkodra/`, host on a subdomain such as
+   `cards.linkodra.ph`, or embed via an iframe/custom HTML block.
+3. Hash routing means `dist/index.html` works as a static file without server config.
 
-Promo codes in demo: `LINKODRA10` = 10% off, `FREESHIP` = free shipping.
+Legal page text is placeholder and needs counsel-approved wording before launch.
