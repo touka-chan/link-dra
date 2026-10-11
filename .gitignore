@@ -13,6 +13,9 @@ dist-ssr
 *.local
 .openchamber
 
+# Screenshot sweep output, including the throwaway Chrome profiles it seeds.
+.shots
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
