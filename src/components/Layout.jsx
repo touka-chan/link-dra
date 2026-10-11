@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { BRAND } from "../brand.js";
-import { Logo } from "./brand.jsx";
+import { Logo, LogoMark, Wordmark } from "./brand.jsx";
 import { Icon } from "./icons.jsx";
 import { useTheme } from "../theme.js";
 import { CHAT_PROMPTS } from "../data/profile.js";
@@ -54,9 +54,9 @@ export function Navbar({ route, go }) {
     <header className="nav">
       <button className="nav-logo" onClick={() => go("home")} aria-label="Linkodra home">
         <span className="nav-mark">
-          <Logo size={26} dark={theme === "dark"} wordmark={false} />
+          <LogoMark size={24} />
         </span>
-        <Logo size={26} dark={theme === "dark"} />
+        <Wordmark dark={theme === "dark"} />
       </button>
 
       <nav className="nav-links desktop" aria-label="Primary">
