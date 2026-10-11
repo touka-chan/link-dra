@@ -203,9 +203,10 @@ h1, h2, h3, h4 { line-height: 1.18; }
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 14px;
-  padding: 12px 28px;
-  max-width: var(--shell);
-  margin: 0 auto;
+  /* Full-bleed background and rule, with the content held to the shell width
+     via padding. Capping the bar itself left a visible rectangle that stopped
+     short of the screen edges. */
+  padding: 12px max(28px, calc((100% - var(--shell)) / 2));
   background: var(--nav-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
