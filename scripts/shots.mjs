@@ -16,9 +16,15 @@ const outDir = path.join(root, ".shots");
 const CHROME = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const base = "http://localhost:5173/";
 
-const themeArg = process.argv.indexOf("--theme");
-const theme = themeArg > -1 ? process.argv[themeArg + 1] : "dark";
-const only = process.argv.find((a) => a.startsWith("--only="))?.split("=")[1];
+// Accepts both --theme=light and --theme light.
+const flag = (name) => {
+  const inline = process.argv.find((a) => a.startsWith(`--${name}=`));
+  if (inline) return inline.split("=").slice(1).join("=");
+  const i = process.argv.indexOf(`--${name}`);
+  return i > -1 ? process.argv[i + 1] : undefined;
+};
+const theme = flag("theme") ?? "dark";
+const only = flag("only");
 
 const ROUTES = [
   ["home", ""],
@@ -44,6 +50,15 @@ const WIDTHS = [
   ["mobile", 390, 844],
 ];
 
+// Chrome on Windows refuses window widths below roughly 500px: it lays out
+// wider than asked and still writes the smaller image, so the capture is
+// cropped rather than showing a real phone. That reads exactly like a layout
+// overflow and sent me chasing a CSS bug that does not exist. Doubling the
+// window and the device scale factor halves the CSS viewport instead, which
+// Chrome honours, so the capture shows what a real phone shows.
+const MIN_WINDOW = 520;
+const scaleFor = (w) => (w < MIN_WINDOW ? 2 : 1);
+
 fs.mkdirSync(outDir, { recursive: true });
 
 // The theme lives in localStorage, falling back to prefers-color-scheme, so
@@ -56,6 +71,7 @@ let shots = 0;
 for (const [name, hash] of ROUTES) {
   if (only && name !== only) continue;
   for (const [label, w, h] of WIDTHS) {
+    const scale = scaleFor(w);
     const file = path.join(outDir, `${name}-${label}-${theme}.png`);
     try {
       execFileSync(
@@ -66,7 +82,8 @@ for (const [name, hash] of ROUTES) {
           "--hide-scrollbars",
           "--no-first-run",
           "--no-default-browser-check",
-          `--window-size=${w},${h}`,
+          `--window-size=${w * scale},${h * scale}`,
+          `--force-device-scale-factor=${scale}`,
           seed,
           scheme,
           `--screenshot=${file}`,
