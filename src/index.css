@@ -122,6 +122,10 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
+  /* The hero rule is 100vw, which includes the scrollbar gutter. Clip rather
+     than hide, so no horizontal scrollbar appears and no scroll container is
+     created. */
+  overflow-x: clip;
   background-color: var(--bg);
   /* Two very soft brand-tinted blooms keep the dark theme from reading as
      flat black, without lifting it enough to compete with the copy. */
@@ -435,14 +439,25 @@ h1, h2, h3, h4 { line-height: 1.18; }
    min-height holds the hero to a full screen so the next band starts below
    the fold instead of peeking in. */
 .hero-split {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
   gap: 48px;
   align-items: center;
   min-height: calc(100vh - 240px);
   padding: 0 0 20px;
-  /* Rule across the base of the hero, as in the reference. */
-  border-bottom: 1px solid var(--border);
+}
+/* Rule across the base of the hero. Drawn on a 100vw pseudo-element so it
+   spans the viewport like the nav rule, rather than stopping at the shell. */
+.hero-split::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 1px;
+  background: var(--border);
 }
 @media (max-width: 1040px) {
   .hero-split { grid-template-columns: 1fr; gap: 44px; min-height: 0; }
