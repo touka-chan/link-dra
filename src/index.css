@@ -413,6 +413,8 @@ h1, h2, h3, h4 { line-height: 1.18; }
   align-items: center;
   min-height: calc(100vh - 240px);
   padding: 0 0 20px;
+  /* Rule across the base of the hero, as in the reference. */
+  border-bottom: 1px solid var(--border);
 }
 @media (max-width: 1040px) {
   .hero-split { grid-template-columns: 1fr; gap: 44px; min-height: 0; }
@@ -422,7 +424,7 @@ h1, h2, h3, h4 { line-height: 1.18; }
 .hero-copy {
   max-width: 560px;
   /* Nudged off the container edge so the text block is not flush left. */
-  margin-left: 48px;
+  margin-left: 92px;
 }
 @media (max-width: 1040px) { .hero-copy { margin-left: 0; } }
 
