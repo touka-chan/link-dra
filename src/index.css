@@ -482,7 +482,11 @@ h1, h2, h3, h4 { line-height: 1.18; }
   position: relative;
   transform: rotateY(-12deg) rotateX(5deg) rotateZ(7deg);
   transform-style: preserve-3d;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.5s ease;
+  /* Longer, softer curve: the rotation has real distance to travel, so a short
+     expo-out reads as a snap. filter trails slightly behind the geometry. */
+  transition:
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.6s ease;
   filter: saturate(0.92);
   cursor: pointer;
 }
@@ -491,11 +495,11 @@ h1, h2, h3, h4 { line-height: 1.18; }
   position: absolute; inset: 8% -12% -14% 12%;
   background: radial-gradient(closest-side, var(--green-soft), transparent 72%);
   filter: blur(28px); z-index: -1;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.75s ease;
 }
-/* Hover flattens the perspective and lets the card fill the frame. */
+/* Hover flattens the perspective, lifts the card and lets it fill the frame. */
 .card-stage:hover .card-stage-inner {
-  transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg) scale(1.06);
+  transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg) translateY(-12px) scale(1.06);
   filter: saturate(1.08);
 }
 .card-stage:hover .card-stage-inner::after { opacity: 1.7; }
