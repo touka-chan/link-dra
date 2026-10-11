@@ -128,12 +128,93 @@ const paths = {
       <path d="M14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5z" />
     </>
   ),
+  plus: (
+    <>
+      <path d="M12 5v14" />
+      <path d="M5 12h14" />
+    </>
+  ),
+  chevronDown: <path d="m6 9 6 6 6-6" />,
+  wallet: (
+    <>
+      <path d="M3.5 7.5A2 2 0 0 1 5.5 5.5h11a2 2 0 0 1 2 2v1" />
+      <path d="M3.5 7.5v9a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-13" />
+      <circle cx="16.5" cy="13" r="1.3" />
+    </>
+  ),
+  gift: (
+    <>
+      <path d="M4 9.5h16V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V9.5Z" />
+      <path d="M3 6.5h18v3H3z" />
+      <path d="M12 6.5V21" />
+      <path d="M12 6.5S10.5 3 8.5 3a2 2 0 0 0 0 4M12 6.5s1.5-3.5 3.5-3.5a2 2 0 0 1 0 4" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7v5.2l3.4 2" />
+    </>
+  ),
+  fingerprint: (
+    <>
+      <path d="M6.5 11a5.5 5.5 0 0 1 11 0v3" />
+      <path d="M9 11.5a3 3 0 0 1 6 0v5" />
+      <path d="M12 12v5.5" />
+      <path d="M4 17c.6 1.6 1.7 2.9 3.2 3.8" />
+      <path d="M20 17c-.4 1-1 1.9-1.8 2.7" />
+    </>
+  ),
+  home: (
+    <>
+      <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1v-9.5Z" />
+    </>
+  ),
+  image: (
+    <>
+      <rect x="3.5" y="5" width="17" height="14" rx="2" />
+      <circle cx="8.5" cy="10" r="1.6" />
+      <path d="m4 17 4.5-4.5 3.5 3.5 3-3 5 5" />
+    </>
+  ),
+  pin: (
+    <>
+      <path d="M12 21c4-4.4 6-7.7 6-10.5A6 6 0 0 0 6 10.5C6 13.3 8 16.6 12 21Z" />
+      <circle cx="12" cy="10.3" r="2.3" />
+    </>
+  ),
+  mail: (
+    <>
+      <rect x="3" y="5.5" width="18" height="13" rx="2" />
+      <path d="m3.6 7 8.4 6 8.4-6" />
+    </>
+  ),
+  phone: (
+    <path d="M6.5 3.5h3l1.5 4-2 1.4a12 12 0 0 0 6.1 6.1l1.4-2 4 1.5v3a2 2 0 0 1-2.2 2A17.5 17.5 0 0 1 4.5 5.7a2 2 0 0 1 2-2.2Z" />
+  ),
+  target: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <circle cx="12" cy="12" r="4.5" />
+      <circle cx="12" cy="12" r="1" />
+    </>
+  ),
+  layers: (
+    <>
+      <path d="m12 3 8.5 4.5L12 12 3.5 7.5 12 3Z" />
+      <path d="m3.5 12 8.5 4.5 8.5-4.5" />
+      <path d="m3.5 16.5 8.5 4.5 8.5-4.5" />
+    </>
+  ),
 };
 
 // Stroke-based marks read as line art; fill-based ones are solid glyphs.
 const FILLED = new Set(["heart"]);
 
-export function Icon({ name, size = 20, className = "", style }) {
+// Icons that read as heavy marks rather than hairline strokes.
+const HEAVY = new Set(["plus"]);
+
+export function Icon({ name, size = 20, className = "", style, weight }) {
   const solid = FILLED.has(name);
   return (
     <svg
@@ -142,7 +223,7 @@ export function Icon({ name, size = 20, className = "", style }) {
       viewBox="0 0 24 24"
       fill={solid ? "currentColor" : "none"}
       stroke={solid ? "none" : "currentColor"}
-      strokeWidth="1.7"
+      strokeWidth={weight ?? (HEAVY.has(name) ? 2.6 : 1.7)}
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}

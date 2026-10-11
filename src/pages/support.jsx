@@ -6,12 +6,26 @@ import { Empty, Field, SectionHead } from "../components/ui.jsx";
 import { ABOUT } from "../data/content.js";
 import { FAQS, FAQ_GROUPS } from "../data/faq.js";
 import { HELP_ARTICLES, HELP_CATEGORIES } from "../data/help.js";
+import { Icon } from "../components/icons.jsx";
 
 const SORTS = [
-  { id: "category", label: "Sort: Category" },
+  { id: "category", label: "By Category" },
   { id: "az", label: "Title A-Z" },
   { id: "za", label: "Title Z-A" },
 ];
+
+// Each category gets its own mark so the filter chips read at a glance.
+const CATEGORY_ICON = {
+  "Getting Started": "sparkle",
+  "Ordering & Pricing": "wallet",
+  "Your Digital Profile": "user",
+  "Analytics & Insights": "chart",
+  Connections: "users",
+  "Referral Program": "gift",
+  "Account & Security": "shield",
+  Troubleshooting: "fingerprint",
+  "Teams & Organizations": "layers",
+};
 
 export function HelpCenter({ go }) {
   const [query, setQuery] = useState("");
@@ -58,21 +72,33 @@ export function HelpCenter({ go }) {
         />
       </Field>
 
-      <div className="seg wrap">
+      <div className="chips">
         {["All topics", ...HELP_CATEGORIES].map((c) => (
-          <button key={c} className={category === c ? "sel" : ""} onClick={() => setCategory(c)}>
-            {c} <small className="muted">({counts[c] ?? 0})</small>
+          <button
+            key={c}
+            className={category === c ? "chip sel" : "chip"}
+            onClick={() => setCategory(c)}
+          >
+            <Icon name={c === "All topics" ? "layers" : CATEGORY_ICON[c] ?? "tag"} size={15} />
+            {c}
+            <small>{counts[c] ?? 0}</small>
           </button>
         ))}
       </div>
 
-      <div className="btn-row left" style={{ margin: "10px 0 18px" }}>
-        <span className="muted small">{results.length} {results.length === 1 ? "article" : "articles"}</span>
-        <select style={{ width: "auto" }} value={sort} onChange={(e) => setSort(e.target.value)} aria-label="Sort articles">
+      <div className="sort-row">
+        <label htmlFor="help-sort" style={{ margin: 0 }}>Sort</label>
+        <select
+          id="help-sort"
+          style={{ width: "auto" }}
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+        >
           {SORTS.map((s) => (
             <option key={s.id} value={s.id}>{s.label}</option>
           ))}
         </select>
+        <span className="muted small">{results.length} {results.length === 1 ? "article" : "articles"}</span>
       </div>
 
       {results.length === 0 ? (
@@ -86,18 +112,24 @@ export function HelpCenter({ go }) {
           }
         />
       ) : (
-        <div className="cards2">
-          {results.map((a) => (
-            <div className="panel" key={a.t}>
-              <span className="eyebrow">{a.cat}</span>
-              <h3>{a.t}</h3>
-              <p className="muted small">{a.d}</p>
-              {open === a.t && <p className="muted">{a.body}</p>}
-              <button className="link" onClick={() => setOpen(open === a.t ? null : a.t)}>
-                {open === a.t ? "Hide answer" : "Read answer"}
-              </button>
-            </div>
-          ))}
+        <div className="article-list">
+          {results.map((a) => {
+            const isOpen = open === a.t;
+            return (
+              <div className={isOpen ? "article is-open" : "article"} key={a.t}>
+                <button className="article-head" onClick={() => setOpen(isOpen ? null : a.t)} aria-expanded={isOpen}>
+                  <span className="icon-badge sm"><Icon name={CATEGORY_ICON[a.cat] ?? "tag"} size={16} /></span>
+                  <span className="article-text">
+                    <strong>{a.t}</strong>
+                    <small>{a.d}</small>
+                    <em>{a.cat}</em>
+                  </span>
+                  <Icon name="chevronDown" size={17} className={isOpen ? "chev open" : "chev"} />
+                </button>
+                {isOpen && <p className="article-body muted">{a.body}</p>}
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -106,6 +138,20 @@ export function HelpCenter({ go }) {
         <button className="btn primary sm" onClick={() => go("contact")}>Contact us</button>
       </div>
     </section>
+  );
+}
+
+// A plus that rotates into a minus when the row opens, matching the reference.
+function FaqRow({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={open ? "faq-row is-open" : "faq-row"}>
+      <button onClick={() => setOpen(!open)} aria-expanded={open}>
+        <strong>{q}</strong>
+        <span className="faq-sign" aria-hidden="true" />
+      </button>
+      {open && <p className="muted">{a}</p>}
+    </div>
   );
 }
 
@@ -128,14 +174,9 @@ export function Faq() {
         ))}
       </div>
 
-      <div className="faq" style={{ marginTop: 14 }}>
-        {FAQS.filter((f) => f.g === group).map((f) => (
-          <details key={f.q}>
-            <summary>{f.q}</summary>
-            <p>{f.a}</p>
-          </details>
-        ))}
-      </div>
+      {FAQS.filter((f) => f.g === group).map((f) => (
+        <FaqRow key={f.q} q={f.q} a={f.a} />
+      ))}
     </section>
   );
 }
@@ -152,32 +193,45 @@ export function Contact() {
 
   return (
     <section className="section narrow">
-      <SectionHead eyebrow="Let's talk" title="Get in touch" lede="Questions about a card, an order, or a team rollout? Send us a message and we will reply." />
+      <SectionHead eyebrow="Let's talk" title="Let's Connect" lede="Have questions about our smart NFC business cards? Drop us a message." />
 
-      <div className="panel">
-        <div className="summary-row"><span>Phone</span><a href={`tel:${BRAND.phone.replace(/\s/g, "")}`}>{BRAND.phone}</a></div>
-        <div className="summary-row"><span>Email</span><a href={`mailto:${BRAND.email}`}>{BRAND.email}</a></div>
-        <div className="summary-row"><span>Address</span><span style={{ textAlign: "right" }}>{BRAND.address}</span></div>
-      </div>
-
-      {sent ? (
-        <div className="panel success" style={{ marginTop: 16 }}>
-          <h3>Message sent</h3>
-          <p className="muted">
-            Thanks {form.name.split(" ")[0]}, we have your message and will reply to {form.email} shortly.
-          </p>
-          <button className="btn ghost" onClick={() => { setSent(false); setForm({ name: "", email: "", message: "" }); }}>
-            Send another
-          </button>
+      <div className="contact-split">
+        <div className="contact-info">
+          <h2>Connect with us</h2>
+          {[
+            ["phone", "Phone", BRAND.phone, `tel:${BRAND.phone.replace(/\s/g, "")}`],
+            ["mail", "Email", BRAND.email, `mailto:${BRAND.email}`],
+            ["pin", "Address", BRAND.address, null],
+          ].map(([icon, label, value, href]) => (
+            <div className="contact-row" key={label}>
+              <span className="icon-badge sm"><Icon name={icon} size={16} /></span>
+              <div>
+                <em>{label}</em>
+                {href ? <a href={href}>{value}</a> : <p>{value}</p>}
+              </div>
+            </div>
+          ))}
         </div>
-      ) : (
-        <form className="panel" style={{ marginTop: 16 }} onSubmit={submit}>
-          <Field label="Name" id="c-name"><input id="c-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></Field>
-          <Field label="Email" id="c-email"><input id="c-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></Field>
-          <Field label="Message" id="c-msg"><textarea id="c-msg" rows="5" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /></Field>
-          <button className="btn primary full" type="submit">Send message</button>
-        </form>
-      )}
+
+        {sent ? (
+          <div className="panel success">
+            <h3>Message sent</h3>
+            <p className="muted">
+              Thanks {form.name.split(" ")[0]}, we have your message and will reply to {form.email} shortly.
+            </p>
+            <button className="btn ghost" onClick={() => { setSent(false); setForm({ name: "", email: "", message: "" }); }}>
+              Send another
+            </button>
+          </div>
+        ) : (
+          <form className="panel" onSubmit={submit}>
+            <Field label="Name" id="c-name"><input id="c-name" placeholder="Your name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></Field>
+            <Field label="Email" id="c-email"><input id="c-email" type="email" placeholder="you@example.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></Field>
+            <Field label="Message" id="c-msg"><textarea id="c-msg" rows="6" placeholder="How can we help?" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} /></Field>
+            <button className="btn primary full" type="submit">Send message</button>
+          </form>
+        )}
+      </div>
     </section>
   );
 }
