@@ -15,17 +15,6 @@ export const BRAND = {
   address: "Balagtas, Batangas City, Philippines",
 };
 
-export const BRAND_COLORS = {
-  bg: "#050705",
-  bgSoft: "#0a0f0b",
-  panel: "#0c130d",
-  panelBorder: "rgba(34,233,72,0.18)",
-  primary: "#22e948",
-  primaryHover: "#16c939",
-  text: "#ffffff",
-  muted: "#9db3a3",
-};
-
 // Each feature carries an icon key and an off flag, because the pricing cards
 // show exclusions explicitly ("No QR Code") rather than silently omitting them.
 const F = (icon, label, off = false) => ({ icon, label, off });
