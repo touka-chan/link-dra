@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { BRAND } from "../brand.js";
-import { Logo, LogoMark, Wordmark } from "./brand.jsx";
+import { LogoMark, Wordmark } from "./brand.jsx";
 import { Icon } from "./icons.jsx";
 import { useTheme } from "../theme.js";
 import { CHAT_PROMPTS } from "../data/profile.js";
@@ -124,8 +124,12 @@ export function Footer({ go }) {
   return (
     <footer className="footer">
       <div className="foot-grid">
-        <div>
-          <Logo size={30} />
+        <div className="foot-brand">
+          <div className="foot-lockup">
+            <span className="foot-mark"><LogoMark size={24} /></span>
+            <Wordmark />
+          </div>
+          <p className="foot-tag">Tap · Connect · Share</p>
           <p>
             Your professional identity, always up to date. One NFC tap replaces the paper business card: share
             everything about yourself instantly, and change any of it whenever you like.

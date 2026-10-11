@@ -1160,25 +1160,46 @@ code {
 
 /* ----------------------------------------------------------------- footer */
 
-.footer { border-top: 1px solid var(--border); margin-top: 56px; padding: 36px 20px; background: var(--bg-soft); }
+/* Footer clears the floating chat button rather than sitting under it. */
+.footer { border-top: 1px solid var(--border); margin-top: 56px; padding: 48px 20px 96px; background: var(--bg-soft); }
 .foot-grid {
   max-width: var(--shell); margin: 0 auto; display: grid;
   grid-template-columns: 1.5fr repeat(4, 1fr); gap: 28px;
 }
 @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
-.footer h4 { color: var(--green); font-size: 11px; letter-spacing: 1.4px; margin: 0 0 10px; text-transform: uppercase; }
+/* Column headings read as plain caps in the reference, not brand-tinted. */
+.footer h4 { color: var(--text); font-size: 11px; letter-spacing: 1.6px; margin: 0 0 14px; text-transform: uppercase; font-weight: 700; }
 .footer button {
   display: block; background: none; border: 0; color: var(--muted);
-  padding: 5px 0; text-align: left; font-size: 14px;
+  padding: 6px 0; text-align: left; font-size: 14.5px;
 }
 .footer button:hover { color: var(--green); }
-.footer p { line-height: 1.7; color: var(--muted); font-size: 14px; }
+.footer p { line-height: 1.75; color: var(--muted); font-size: 14.5px; max-width: 34ch; }
+/* Contact links were falling back to the browser's default blue. */
+.footer a { color: var(--muted); text-decoration: none; }
+.footer a:hover { color: var(--green); }
+
+.foot-brand { display: flex; flex-direction: column; align-items: flex-start; }
+.foot-lockup { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.foot-mark {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 12px; flex: none;
+  background: var(--green); box-shadow: 0 6px 20px rgba(34, 233, 72, 0.36);
+}
+.foot-lockup .wordmark { font-size: 24px; }
+.foot-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 2.6px;
+  text-transform: uppercase; color: var(--accent-ink); margin: 6px 0 18px;
+}
+
 .pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .pill-row span {
   display: inline-flex; align-items: center; gap: 7px;
   border: 1px solid var(--border); border-radius: 999px;
-  padding: 6px 13px; font-size: 12px; color: var(--green); font-weight: 600;
+  padding: 7px 15px; font-size: 12.5px; color: var(--muted); font-weight: 600;
+  background: var(--panel-2);
 }
+.pill-row span:hover { color: var(--green); border-color: var(--border-strong); }
 .foot-base {
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; flex-wrap: wrap;
