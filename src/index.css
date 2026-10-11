@@ -1,4 +1,45 @@
 /* ==========================================================================
+   Poppins, self-hosted (latin subset only, ~38 KB total).
+   Geometric sans matching the reference. Swap the family below to change it.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/poppins-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/poppins-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/poppins-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/poppins-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/poppins-800.woff2") format("woff2");
+}
+
+/* ==========================================================================
    Linkodra PH - design tokens
    Every colour in the app resolves through these variables, so the light/dark
    switch is a single attribute change on <html> and nothing else needs to know.
@@ -77,7 +118,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: Inter, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: "Poppins", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
   transition: background 0.25s ease, color 0.25s ease;
 }
 
@@ -238,7 +279,7 @@ h1, h2, h3, h4 { line-height: 1.18; }
 
 /* ------------------------------------------------------------------ wordmark */
 
-.wordmark { font-weight: 800; font-size: 22px; letter-spacing: -0.5px; color: var(--text); }
+.wordmark { font-weight: 700; font-size: 21px; letter-spacing: -0.02em; color: var(--text); }
 .wordmark .o-split { color: var(--green); }
 .wordmark .ph { font-size: 11px; color: var(--green); margin-left: 4px; }
 
@@ -344,7 +385,7 @@ h1, h2, h3, h4 { line-height: 1.18; }
 .band-tight { padding: calc(var(--band) * 0.55) 0; }
 
 .band-head { text-align: center; max-width: 640px; margin: 0 auto 56px; }
-.band-head h2 { margin: 0 0 16px; font-size: clamp(28px, 3vw, 46px); letter-spacing: -0.025em; }
+.band-head h2 { margin: 0 0 16px; font-size: clamp(28px, 3vw, 46px); letter-spacing: -0.015em; }
 .band-head p { color: var(--muted); margin: 0; line-height: 1.7; font-size: 16.5px; }
 
 /* ------------------------------------------------------------------- hero */
@@ -368,8 +409,8 @@ h1, h2, h3, h4 { line-height: 1.18; }
 /* Two-tone headline: first line inherits, the rest takes the accent. */
 .display {
   font-size: var(--headline);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   font-weight: 800;
   margin: 0 0 24px;
 }
@@ -500,7 +541,7 @@ h1, h2, h3, h4 { line-height: 1.18; }
 }
 .tier-card.is-featured .tier-name { color: var(--green); }
 .tier-price {
-  font-size: 42px; font-weight: 800; letter-spacing: -0.035em;
+  font-size: 42px; font-weight: 800; letter-spacing: -0.025em;
   line-height: 1; margin: 20px 0 0;
 }
 .tier-price .cur { font-size: 26px; vertical-align: 7px; margin-right: 1px; }
@@ -543,8 +584,8 @@ h1, h2, h3, h4 { line-height: 1.18; }
 
 .final-cta { text-align: center; }
 .final-cta h2 {
-  font-size: clamp(30px, 3.6vw, 54px); line-height: 1.08;
-  letter-spacing: -0.03em; margin: 0 0 22px;
+  font-size: clamp(30px, 3.6vw, 54px); line-height: 1.12;
+  letter-spacing: -0.02em; margin: 0 0 22px;
 }
 .final-cta p { color: var(--muted); max-width: 620px; margin: 0 auto; line-height: 1.7; font-size: 16.5px; }
 .final-cta .cta-row { justify-content: center; margin-top: 38px; }
