@@ -71,7 +71,7 @@
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
   --card-ink: #ffffff;
   --card-ink-dim: rgba(255, 255, 255, 0.68);
-  --nav-bg: rgba(8, 13, 10, 0.92);
+  --nav-bg: rgba(10, 16, 12, 0.82);
   --aura-a: rgba(34, 233, 72, 0.055);
   --aura-b: rgba(22, 201, 57, 0.04);
   --aura-c: rgba(9, 40, 18, 0.5);
@@ -107,7 +107,7 @@
   --shadow: 0 24px 60px rgba(16, 40, 24, 0.12);
   --card-ink: #ffffff;
   --card-ink-dim: rgba(255, 255, 255, 0.75);
-  --nav-bg: rgba(244, 247, 244, 0.92);
+  --nav-bg: rgba(246, 248, 246, 0.85);
   --aura-a: rgba(22, 201, 57, 0.07);
   --aura-b: rgba(34, 233, 72, 0.05);
   --aura-c: rgba(226, 240, 228, 0.75);
@@ -207,9 +207,16 @@ h1, h2, h3, h4 { line-height: 1.18; }
      via padding. Capping the bar itself left a visible rectangle that stopped
      short of the screen edges. */
   padding: 12px max(28px, calc((100% - var(--shell)) / 2));
+  /* Transparent at rest so the page gradient runs through the bar unbroken;
+     a surface and rule appear only once content scrolls underneath. */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+.nav.is-scrolled {
   background: var(--nav-bg);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom-color: var(--border);
 }
 /* The mark sits in a rounded badge with an accent bloom, as in the reference. */
 .nav-logo {

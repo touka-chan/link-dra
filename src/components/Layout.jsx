@@ -43,7 +43,18 @@ function ThemeToggle() {
 
 export function Navbar({ route, go }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { theme } = useTheme();
+
+  // The bar stays fully transparent at the top of the page so the background
+  // gradient runs through it unbroken, and only takes a surface once content
+  // is passing underneath.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Keep <html> in sync before first paint of the themed tree.
   useEffect(() => {
@@ -51,7 +62,7 @@ export function Navbar({ route, go }) {
   }, [theme]);
 
   return (
-    <header className="nav">
+    <header className={scrolled ? "nav is-scrolled" : "nav"}>
       <button className="nav-logo" onClick={() => go("home")} aria-label="Linkodra home">
         <span className="nav-mark">
           <LogoMark size={24} />
