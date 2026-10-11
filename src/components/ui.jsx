@@ -2,6 +2,23 @@
 // pages stay focused on flow and the look stays consistent across the site.
 
 import { TIERS, tierRank } from "../brand.js";
+import { Icon } from "./icons.jsx";
+
+export function IconBadge({ name, size = 26, small = false }) {
+  return (
+    <span className={small ? "icon-badge sm" : "icon-badge"}>
+      <Icon name={name} size={small ? 17 : size} />
+    </span>
+  );
+}
+
+export function QuoteMark({ size = 44 }) {
+  return (
+    <span className="quote-mark" style={{ display: "block" }}>
+      <Icon name="quote" size={size} />
+    </span>
+  );
+}
 
 export function Field({ label, hint, error, children, id }) {
   return (

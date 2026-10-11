@@ -43,6 +43,31 @@ export function ContactlessGlyph({ size = 54, color = "#ffffff" }) {
   );
 }
 
+// The hero card is a presentation piece: same artwork as the order preview but
+// fixed to the front face, so it can be tilted and floated without being clickable.
+export function HeroCard({ name, title, company, phone }) {
+  return (
+    <div className="card-stage">
+      <div className="card-stage-inner">
+        <div className="nfc-card portrait design-gradient glossy" style={{ animation: "none" }}>
+          <div className="nfc-row">
+            <span className="nfc-badge">LINKODRA</span>
+            <span>TAP · CONNECT · SHARE</span>
+          </div>
+          <div className="nfc-mid" style={{ justifyContent: "center", flex: 1 }}>
+            <ContactlessGlyph size={68} />
+          </div>
+          <div className="card-holder">
+            <div className="card-name">{name}</div>
+            <div className="card-sub">{[title, company].filter(Boolean).join(", ")}</div>
+            <div className="card-sub">{phone}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function CardPreview({
   name = "Your Name",
   title = "",

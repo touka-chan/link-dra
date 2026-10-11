@@ -34,24 +34,28 @@ export const CORE_FEATURES = [
 
 export const TIER_FEATURES = [
   {
+    icon: "sparkle",
     title: "AI business card scanner",
     body: "Photograph a paper business card and Linkodra reads the name, title, company, phone and email straight into your connections. No typing.",
     minTier: 2,
     tierLabel: "Standard and Pro",
   },
   {
+    icon: "sparkle",
     title: "Audience analytics",
     body: "Understand who is tapping and when, so you know which events and follow-ups are actually working.",
     minTier: 2,
     tierLabel: "Standard and Pro",
   },
   {
+    icon: "bolt",
     title: "Engagement tracking",
     body: "See which buttons on your profile get pressed, and which ones nobody touches.",
     minTier: 3,
     tierLabel: "Pro only",
   },
   {
+    icon: "shield",
     title: "Offline vCard QR",
     body: "A second QR code that saves your contact with no internet connection at all. Built for venues with patchy signal.",
     minTier: 3,
@@ -117,14 +121,17 @@ export const DEVICE_SUPPORT = [
 
 export const TECHNOLOGY = [
   {
+    icon: "bolt",
     title: "Instant networking",
     body: "A single tap transfers your complete professional profile to any modern phone, with nothing to download.",
   },
   {
+    icon: "sync",
     title: "Profiles that stay current",
     body: "Update from the dashboard and the card follows along. Your physical card always points at your latest information.",
   },
   {
+    icon: "leaf",
     title: "Less waste",
     body: "One durable PVC card replaces thousands of paper ones, and outlives most of what it replaces.",
   },

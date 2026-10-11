@@ -1,13 +1,14 @@
 // Public marketing pages: home, how it works, features and pricing.
 
-import { BRAND, TIERS, COMPARE } from "../brand.js";
-import { CardPreview } from "../components/brand.jsx";
+import { TIERS, COMPARE } from "../brand.js";
+import { HeroCard } from "../components/brand.jsx";
+import { Icon } from "../components/icons.jsx";
+import { IconBadge, QuoteMark } from "../components/ui.jsx";
 import {
   ANALYTICS_TABS,
   CORE_FEATURES,
   DEVICE_SUPPORT,
   HOW_STEPS,
-  PROFILE_ACTIONS,
   TECHNOLOGY,
   TESTIMONIAL,
   TIER_FEATURES,
@@ -15,88 +16,73 @@ import {
 import { FAQS } from "../data/faq.js";
 import { DEMO_PROFILE } from "../data/profile.js";
 
-function CtaRow({ go, label = "Get Your Card", tier }) {
+function TierCard({ tier, onSelect, compact = false }) {
+  const featured = tier.popular;
   return (
-    <div className="btn-row">
-      <button className="btn primary big" onClick={() => go("order", tier)}>{label}</button>
-      <button className="btn ghost big" onClick={() => go("how")}>How It Works</button>
+    <div className={featured ? "tier-card is-featured" : "tier-card"}>
+      {featured && <span className="tier-flag">Most Popular</span>}
+      <div className="tier-name">{tier.name}</div>
+      <div className="tier-price">
+        <span className="cur">₱</span>
+        {tier.price.toLocaleString()}
+        {!compact && <span className="per"> / card</span>}
+      </div>
+      <p className="tier-desc">{tier.pitch}</p>
+      <ul className="tier-features">
+        {tier.features.map((f) => (
+          <li key={f}>{f}</li>
+        ))}
+      </ul>
+      <button
+        className={featured ? "btn primary" : "btn ghost"}
+        onClick={() => onSelect(tier.id)}
+      >
+        Get {tier.name}
+      </button>
     </div>
   );
 }
 
 export function Home({ go }) {
   const p = DEMO_PROFILE;
+
   return (
     <>
-      <section className="hero">
-        <div className="hero-badge">Premium NFC technology</div>
-        <h1>
-          Your Business Card. <span className="green">Smarter.</span>
-        </h1>
-        <p className="lede">
-          Premium NFC business cards made in the Philippines. Tap once and your profile, portfolio and contact
-          details are on their phone, with no app and no account to create.
-        </p>
-        <div className="mantra">
-          {BRAND.mantra.map((word, i) => (
-            <span key={word}>
-              {word}
-              {i < BRAND.mantra.length - 1 && <span className="green"> · </span>}
-            </span>
-          ))}
+      <section className="hero-split">
+        <div className="hero-copy">
+          <div className="hero-badge">Premium NFC technology</div>
+
+          <h1 className="display">
+            <span className="line">Your Business Card.</span>
+            <span className="line accent">Smarter.</span>
+          </h1>
+
+          <p className="hero-lede">
+            Premium <a href="#/how-it-works">NFC business cards</a> made in the Philippines. Tap once and your
+            profile, portfolio and contact details are on their phone, with no app and no account to create.
+          </p>
+
+          <div className="cta-row">
+            <button className="cta-primary" onClick={() => go("order")}>
+              Get Your Card
+              <Icon name="arrowRight" size={18} />
+            </button>
+            <button className="cta-ghost" onClick={() => go("how")}>How It Works</button>
+          </div>
         </div>
-        <CtaRow go={go} />
+
+        <HeroCard name={p.name} title={p.title} company={p.company} phone={p.phone} />
       </section>
 
-      <div className="icon-strip">
-        {PROFILE_ACTIONS.map((label) => (
-          <div key={label}>
-            <span className="green">●</span>
-            <span>{label}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Live card next to the profile it opens, so the tap is legible without scrolling. */}
-      <div className="hero-grid">
-        <div className="hero-visual" style={{ gridTemplateColumns: "minmax(0,1fr)" }}>
-          <div className="dash-grid">
-            <CardPreview name={p.name} title={p.title} company={p.company} phone={p.phone} tier="pro" design="gradient" orientation="portrait" finish="glossy" code="john" />
-            <div className="phone-mock">
-              <div className="phone-url">
-                <svg width="10" height="12" viewBox="0 0 10 12" fill="none" style={{ verticalAlign: "-1px", marginRight: 5 }} aria-hidden="true">
-                  <path d="M2 4.5V3a3 3 0 0 1 6 0v1.5" stroke="currentColor" strokeWidth="1.2" />
-                  <rect x="1" y="4.5" width="8" height="6" rx="1.4" fill="currentColor" />
-                </svg>
-                linkodra.ph/john
-              </div>
-              <div className="avatar big">JS</div>
-              <span className="phone-name">{p.name}</span>
-              <span className="phone-sub">{p.title} · {p.company}</span>
-              <button className="btn primary full">Call</button>
-              <button className="btn ghost full">Message</button>
-              <button className="btn ghost full">Email</button>
-              <button className="btn ghost full">Location</button>
-              <div className="socials">
-                {p.socials.map((s) => (
-                  <span key={s.label}>{s.short}</span>
-                ))}
-              </div>
-              <button className="btn primary full">Save Contact</button>
-            </div>
-          </div>
+      <section className="band">
+        <div className="band-head">
+          <h2>The Technology</h2>
+          <p>Engineered for a seamless introduction. The card merges physical presence with digital efficiency.</p>
         </div>
-      </div>
-
-      <section className="section">
-        <div className="eyebrow" style={{ textAlign: "center" }}>The technology</div>
-        <h2 className="center">Physical presence, digital efficiency</h2>
-        <p className="lede">
-          The card stays simple. Everything clever happens in the second after someone touches it to their phone.
-        </p>
         <div className="cards3">
           {TECHNOLOGY.map((t) => (
-            <div className="panel" key={t.title}>
+            <div className="panel feature-card" key={t.title}>
+              <IconBadge name={t.icon} />
               <h3>{t.title}</h3>
               <p className="muted">{t.body}</p>
             </div>
@@ -104,45 +90,54 @@ export function Home({ go }) {
         </div>
       </section>
 
-      <section className="section">
-        <div className="eyebrow" style={{ textAlign: "center" }}>The lineup</div>
-        <h2 className="center">Pick the tier that fits how you network</h2>
-        <p className="lede">Every tier is premium PVC with reliable NFC. The difference is what gets printed and what the dashboard can tell you.</p>
-        <div className="cards3">
+      <section className="band">
+        <div className="band-head">
+          <h2>The Lineup</h2>
+          <p>Choose the tier that fits how you network. Every card is premium PVC with reliable NFC.</p>
+        </div>
+        <div className="tier-set">
           {TIERS.map((t) => (
-            <div className="panel price" key={t.id}>
-              {t.popular && <span className="flag">MOST POPULAR</span>}
-              <h3>{t.name}</h3>
-              <p className="muted small">{t.pitch}</p>
-              <div className="amount">
-                ₱{t.price.toLocaleString()} <small>/ card</small>
-              </div>
-              <ul className="ticks">
-                {t.features.map((f) => (
-                  <li key={f}>{f}</li>
-                ))}
-              </ul>
-              <button className="btn primary full" onClick={() => go("order", t.id)}>
-                Get {t.name}
-              </button>
-            </div>
+            <TierCard key={t.id} tier={t} onSelect={(id) => go("order", id)} />
+          ))}
+        </div>
+        <div className="carousel-dots" aria-hidden="true">
+          {TIERS.map((t) => (
+            <span key={t.id} />
           ))}
         </div>
       </section>
 
-      <section className="section quote">
-        <blockquote>“{TESTIMONIAL.quote}”</blockquote>
-        <p>
-          <strong>{TESTIMONIAL.name}</strong>
-          <br />
-          <span className="muted">{TESTIMONIAL.role}</span>
-        </p>
+      <section className="band">
+        <div className="testimonial">
+          <QuoteMark />
+          <blockquote>
+            “I used to spend a conference weekend handing out cards I knew were{" "}
+            <span className="accent">already out of date</span>. Now I hand out one card and edit everything else
+            from my phone the night before.”
+          </blockquote>
+          <div className="person-line">
+            <span className="avatar">AV</span>
+            <span className="who">
+              <strong>{TESTIMONIAL.name}</strong>
+              <span>{TESTIMONIAL.role}</span>
+            </span>
+          </div>
+        </div>
       </section>
 
-      <section className="section center">
-        <h2>Ready to make your introduction count?</h2>
-        <p className="lede">Join the professionals across the Philippines who replaced the paper handshake.</p>
-        <CtaRow go={go} label="Get Your Card Today" />
+      <section className="band final-cta">
+        <h2>
+          Ready to make your
+          <br />
+          introduction count?
+        </h2>
+        <p>Join the professionals across the Philippines who replaced the paper handshake.</p>
+        <div className="cta-row">
+          <button className="cta-primary" onClick={() => go("order")}>
+            Get Your Card Today
+            <Icon name="arrowRight" size={18} />
+          </button>
+        </div>
       </section>
     </>
   );
@@ -278,24 +273,9 @@ export function Pricing({ go }) {
         Three tiers, one price each, no subscription. Start with what you need now and move up whenever you want.
       </p>
 
-      <div className="cards3">
+      <div className="tier-set">
         {TIERS.map((t) => (
-          <div className="panel price" key={t.id}>
-            {t.popular && <span className="flag">MOST POPULAR</span>}
-            <h3>{t.name}</h3>
-            <p className="muted small">{t.pitch}</p>
-            <div className="amount">
-              ₱{t.price.toLocaleString()} <small>/ card</small>
-            </div>
-            <ul className="ticks">
-              {t.features.map((f) => (
-                  <li key={f}>{f}</li>
-              ))}
-            </ul>
-            <button className="btn primary full" onClick={() => go("order", t.id)}>
-              Choose {t.name}
-            </button>
-          </div>
+          <TierCard key={t.id} tier={t} onSelect={(id) => go("order", id)} />
         ))}
       </div>
 

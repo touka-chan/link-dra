@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { BRAND } from "../brand.js";
 import { Logo } from "./brand.jsx";
+import { Icon } from "./icons.jsx";
 import { useTheme } from "../theme.js";
 import { CHAT_PROMPTS } from "../data/profile.js";
 
@@ -112,9 +113,8 @@ export function Footer({ go }) {
             everything about yourself instantly, and change any of it whenever you like.
           </p>
           <div className="pill-row">
-            <span>Instant share</span>
-            <span>Paperless</span>
-            <span>Made in Batangas</span>
+            <span><Icon name="bolt" size={13} /> Instant Share</span>
+            <span><Icon name="leaf" size={13} /> Paperless</span>
           </div>
         </div>
 
@@ -139,7 +139,12 @@ export function Footer({ go }) {
         </div>
       </div>
       <div className="foot-base">
-        © 2026 <strong>Linkodra PH</strong> — TAP · CONNECT · SHARE — Made in Batangas, PH
+        <span>
+          © 2026 <strong>Linkodra PH</strong> — TAP · CONNECT · SHARE. All rights reserved.
+        </span>
+        <span className="foot-made">
+          Made with <Icon name="heart" size={13} /> in Batangas, PH
+        </span>
       </div>
     </footer>
   );
