@@ -169,6 +169,32 @@ code or git. Two senders, first configured wins:
 Until anything is configured, sending is skipped silently and checkout works
 normally.
 
+## Localhost email test (no PHP, no hosting)
+
+You have Node but no PHP, so a Node twin of the endpoint is included:
+
+Terminal 1 — the site:
+```
+npm run dev
+```
+
+Terminal 2 — the mail endpoint (PowerShell, keys stay in this window only):
+```
+$env:RESEND_API_KEY = "re_..."
+$env:LINKODRA_MAIL_TOKEN = "ccb5183db855d2fc733b24778b1842f1ea0e93aac5fcbf05"
+npm run mail:local
+```
+
+Browser console on the site (one time):
+```
+localStorage.setItem("lk-mail-endpoint", "http://127.0.0.1:8080/send")
+```
+
+Then place a test order. Two Resend rules apply on localhost too: the API key
+must be real, and until your domain is verified Resend only delivers to your
+own Resend account email — so use that address as the order email for the
+test. Watch Terminal 2 for `resend failed` lines if nothing arrives.
+
 ## Shipping and promos
 
 Shipping follows the island group of the selected province: Metro Manila ₱99, Luzon ₱149,

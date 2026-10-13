@@ -55,14 +55,20 @@ function loadSmtpJs() {
 /**
  * Email the buyer their payment confirmation after the receipt is verified.
  * Resolves { sent: true } or { sent: false, reason } - never rejects.
+ *
+ * A browser-console override (`localStorage lk-mail-endpoint`) wins over the
+ * committed config, so localhost testing never leaks test URLs into git.
  */
 export async function sendPaymentSuccessEmail({ to, name, tierName, amount, refNo }) {
   if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
     return { sent: false, reason: "bad-recipient" };
   }
+  const endpoint =
+    (typeof localStorage !== "undefined" && localStorage.getItem("lk-mail-endpoint")) ||
+    MAIL_CONFIG.resendEndpoint;
   try {
-    if (MAIL_CONFIG.resendEndpoint && MAIL_CONFIG.mailToken) {
-      const res = await fetch(MAIL_CONFIG.resendEndpoint, {
+    if (endpoint && MAIL_CONFIG.mailToken) {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

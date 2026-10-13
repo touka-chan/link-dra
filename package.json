@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "gen:geo": "node scripts/gen-geo.mjs"
+    "gen:geo": "node scripts/gen-geo.mjs",
+    "mail:local": "node server/resend-local.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",
