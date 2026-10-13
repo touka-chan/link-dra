@@ -361,7 +361,7 @@ const LEGAL = {
     updated: "Last updated 1 October 2026",
     body: [
       "We collect the information you give us when you order a card or fill in a form: your name, email, contact number, delivery address, and the contents of the profile you build.",
-      "Your profile is public by default, because that is what makes your card work. Anyone who taps it can see what you have chosen to publish. You can set a profile to private from your dashboard at any time.",
+      "Your profile is public by default, because that is what makes your card work. Anyone who taps it can see what you have chosen to publish. You can ask us to set a profile to private at any time.",
       "Analytics are anonymous. We record how often a profile is viewed and which buttons are pressed, along with broad device and source information. We do not build a list of who looked at your profile by name, and we do not sell your data to anyone.",
       "Payments are processed by PayMongo. Your card and bank details are handled entirely by them and never reach our servers.",
       "You can ask us to delete your account and all associated data at any time by contacting us. Note that your card stops working once the profile behind it is removed.",
@@ -382,10 +382,10 @@ const LEGAL = {
     title: "Cookie Policy",
     updated: "Last updated 1 October 2026",
     body: [
-      "We use essential cookies only. These keep you signed in and make sure your session is secure. Without them the dashboard and checkout cannot work.",
+      "We use essential cookies only. These keep your session secure so the checkout cannot be interrupted. Nothing else is stored.",
       "We do not use advertising cookies, behavioural tracking, or third-party trackers anywhere on the site or on your public profile.",
       "Analytics are collected without cookies being attached to you, and no data is sold to third parties.",
-      "You can clear or block cookies in your browser at any time. Doing so will sign you out and require you to sign in again.",
+      "You can clear or block cookies in your browser at any time. Doing so will reset your in-progress checkout.",
     ],
   },
   shipping: {

@@ -1088,93 +1088,6 @@ code {
 .pay-pick button.sel { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
 .pay-pick small { color: var(--muted); font-weight: 500; font-size: 11px; }
 
-/* --------------------------------------------------------- auth/dashboard */
-
-/* --------------------------------------------------------------- sign in */
-
-.auth-wrap { max-width: 500px; }
-.auth { padding: 38px 40px 34px; }
-
-.auth-lockup { display: flex; align-items: center; justify-content: center; gap: var(--in-3); margin-bottom: 26px; }
-.auth-mark {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 52px; height: 52px; border-radius: 14px; flex: none;
-  background: var(--green); box-shadow: 0 8px 26px rgba(34, 233, 72, 0.38);
-}
-.auth-lockup > div { display: flex; flex-direction: column; gap: 5px; }
-.auth-lockup .wordmark { font-size: 27px; }
-.auth-lockup em {
-  font-style: normal; font-size: 10px; font-weight: 700;
-  letter-spacing: 2.6px; text-transform: uppercase; color: var(--accent-ink);
-}
-
-.auth h1 { text-align: center; font-size: 28px; margin: 0 0 26px; letter-spacing: -0.02em; }
-
-/* White pill with the Google mark, as in the reference. */
-.btn-google {
-  display: flex; align-items: center; justify-content: center; gap: var(--in-2);
-  width: 100%; background: #ffffff; color: #1f1f1f;
-  border: 1px solid var(--border); border-radius: 999px;
-  padding: 13px 20px; font-weight: 600; font-size: 15px;
-  transition: background 0.18s ease, transform 0.18s ease;
-}
-.btn-google:hover { background: #f2f2f2; transform: translateY(-1px); }
-
-/* OR with rules running out to both edges. */
-.auth .or {
-  display: flex; align-items: center; gap: var(--sp-4);
-  margin: var(--in-5) 0; color: var(--muted); font-size: 12.5px;
-}
-.auth .or::before, .auth .or::after {
-  content: ""; flex: 1; height: 1px; background: var(--border);
-}
-.auth .or span { flex: none; }
-
-.auth label { text-transform: uppercase; letter-spacing: 1.1px; font-size: 11px; font-weight: 700; color: var(--accent-ink); }
-
-.password-wrap { position: relative; }
-.password-wrap input { padding-right: 46px; }
-.reveal {
-  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
-  background: none; border: 0; color: var(--faint);
-  padding: var(--in-1); border-radius: 8px; display: flex; transition: color 0.18s ease;
-}
-.reveal:hover { color: var(--text); }
-
-.auth-submit { margin-top: var(--in-4); text-transform: uppercase; letter-spacing: 1.4px; font-weight: 700; padding: var(--in-3) 20px; }
-.auth-forgot { display: block; margin: var(--sp-4) auto 0; color: var(--muted); font-weight: 500; font-size: 14px; }
-.auth-forgot:hover { color: var(--green); }
-.auth-demo { margin: var(--in-4) 0 0; }
-
-.auth .check { margin: var(--in-4) 0 0; }
-.auth .check label { text-transform: none; letter-spacing: 0; font-size: 14px; font-weight: 500; color: var(--muted); }
-
-.tabs { display: flex; gap: var(--sp-2); flex-wrap: wrap; margin: var(--sp-4) 0; border-bottom: 1px solid var(--border); padding-bottom: var(--sp-3); }
-.tabs button {
-  background: var(--panel); border: 1px solid var(--border); color: var(--text);
-  border-radius: 999px; padding: var(--sp-2) var(--in-3); font-weight: 600; text-transform: capitalize;
-}
-.tabs button.sel { background: var(--green); color: var(--on-green); font-weight: 800; border-color: transparent; }
-.tabs button .badge {
-  display: inline-block; margin-left: var(--in-1); font-size: 10px; font-weight: 800;
-  background: var(--panel-3); color: var(--muted); border-radius: 999px; padding: 1px var(--in-1);
-}
-
-.dash-grid { display: grid; grid-template-columns: 1fr 330px; gap: var(--in-3); align-items: start; }
-@media (max-width: 900px) { .dash-grid { grid-template-columns: 1fr; } }
-
-.conn {
-  display: flex; align-items: center; gap: var(--sp-3); justify-content: space-between;
-  border-bottom: 1px solid var(--border); padding: var(--sp-3) 0; flex-wrap: wrap;
-}
-.conn:last-child { border-bottom: 0; }
-.conn .who { display: flex; flex-direction: column; }
-.conn .who small { color: var(--muted); }
-.conn button {
-  background: transparent; border: 1px solid var(--green); color: var(--green);
-  border-radius: 999px; padding: var(--in-1) var(--sp-3); font-weight: 600; font-size: 13px;
-}
-
 .profile-card {
   background: var(--panel); border: 1px solid var(--border);
   border-radius: 20px; padding: 26px var(--in-5); text-align: center;
@@ -1182,32 +1095,6 @@ code {
 .profile-card h1 { font-size: 26px; margin: var(--sp-3) 0 var(--sp-1); }
 .profile-card .role { color: var(--muted); margin: 0 0 var(--in-3); }
 
-.member-row {
-  display: flex; align-items: center; gap: var(--sp-3); justify-content: space-between;
-  border-bottom: 1px solid var(--border); padding: 11px 0;
-}
-.member-row:last-child { border-bottom: 0; }
-
-/* -------------------------------------------------------------- dashboard */
-
-.dash-head {
-  display: flex; gap: var(--in-3); align-items: center; justify-content: space-between;
-  flex-wrap: wrap; border: 1px solid var(--border); background: var(--panel);
-  border-radius: 16px; padding: var(--sp-4) var(--in-4); margin: var(--in-3) 0;
-}
-.dash-head h1 { font-size: 24px; margin: 0 0 var(--sp-1); }
-
-.mini-chart { display: flex; align-items: flex-end; gap: var(--in-1); height: 120px; margin: var(--in-3) 0; }
-.mini-chart i {
-  flex: 1; background: var(--green-soft); border-radius: 6px 6px 0 0;
-  position: relative; min-height: 4px;
-}
-.mini-chart i b {
-  position: absolute; inset: auto 0 0; background: var(--green);
-  border-radius: 6px 6px 0 0; display: block;
-}
-.spark-labels { display: flex; gap: var(--in-1); }
-.spark-labels span { flex: 1; text-align: center; font-size: 10px; color: var(--faint); }
 
 /* ----------------------------------------------------------------- footer */
 

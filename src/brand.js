@@ -1,6 +1,6 @@
 // Linkodra PH - brand tokens, product tiers and checkout rules.
 // This module is the single source of truth for pricing, tier gating and
-// shipping, so marketing pages, the order wizard and the dashboard never drift.
+// shipping, so the marketing pages and the order flow never drift.
 
 export const BRAND = {
   name: "Linkodra",

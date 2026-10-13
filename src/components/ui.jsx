@@ -83,20 +83,6 @@ export function Wizard({ step, steps, onJump }) {
   );
 }
 
-export function Stat({ label, value, sub, bar }) {
-  return (
-    <div className="panel stat">
-      <small>{label}</small>
-      <b>{value}</b>
-      {sub && <small>{sub}</small>}
-      {typeof bar === "number" && (
-        <div className="bar">
-          <i style={{ width: `${Math.max(3, Math.min(100, bar))}%` }} />
-        </div>
-      )}
-    </div>
-  );
-}
 
 // Renders a feature list, showing which items are outside the viewer's tier.
 export function FeatureList({ items, tierId }) {
@@ -117,31 +103,6 @@ export function FeatureList({ items, tierId }) {
   );
 }
 
-// Upgrade prompt used wherever a higher tier unlocks something.
-export function Locked({ title, note, tierName, onUpgrade, go }) {
-  return (
-    <div className="locked">
-      <div className="panel" aria-hidden="true">
-        <h3>{title}</h3>
-        <div className="mini-chart">
-          {[38, 62, 45, 80, 54, 70].map((h, i) => (
-            <i key={i} style={{ height: "100%" }}>
-              <b style={{ height: `${h}%` }} />
-            </i>
-          ))}
-        </div>
-        <p className="muted small">Sample data</p>
-      </div>
-      <div className="locked-note">
-        <strong>{tierName} tier feature</strong>
-        <span>{note}</span>
-        <button className="btn primary sm" onClick={() => (onUpgrade ? onUpgrade() : go?.("pricing"))}>
-          Upgrade
-        </button>
-      </div>
-    </div>
-  );
-}
 
 export function Empty({ title, note, action }) {
   return (
@@ -162,27 +123,5 @@ export function SectionHead({ eyebrow, title, lede }) {
       <h1>{title}</h1>
       {lede && <p className="lede">{lede}</p>}
     </>
-  );
-}
-
-// Simple bar chart used by the dashboard analytics tabs.
-export function BarChart({ values, labels, title }) {
-  const max = Math.max(...values, 1);
-  return (
-    <div>
-      {title && <h3>{title}</h3>}
-      <div className="mini-chart">
-        {values.map((v, i) => (
-          <i key={i} style={{ height: "100%" }}>
-            <b style={{ height: `${(v / max) * 100}%` }} />
-          </i>
-        ))}
-      </div>
-      <div className="spark-labels">
-        {labels.map((l, i) => (
-          <span key={i}>{l}</span>
-        ))}
-      </div>
-    </div>
   );
 }

@@ -2,14 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import { Navbar, Footer, Chat, Cookies } from "./components/Layout.jsx";
 import { Home } from "./pages/marketing.jsx";
 import { Order } from "./pages/Order.jsx";
-import { Dashboard, PublicProfile, ComingSoon } from "./pages/app.jsx";
+import { PublicProfile, ComingSoon } from "./pages/app.jsx";
 import { About, Teams, Legal } from "./pages/support.jsx";
 import "./index.css";
 
 const NAV_MAP = {
   home: "/",
   order: "/order",
-  dashboard: "/dashboard",
   profile: "/c/john",
   about: "/about",
   teams: "/teams",
@@ -95,7 +94,6 @@ export default function App() {
     ["/feat", "features", () => <Home go={go} section="features" />],
     ["/pric", "pricing", () => <Home go={go} section="pricing" />],
     ["/order", "order", () => <Order initialTier={tier} go={go} />],
-    ["/dashboard", "dashboard", () => <Dashboard go={go} />],
     ["/c/", "profile", () => <PublicProfile code={path.slice(3)} go={go} />],
     ["/help", "help", () => <Home go={go} section="help" />],
     ["/faq", "faq", () => <Home go={go} section="faq" />],
