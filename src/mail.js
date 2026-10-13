@@ -1,9 +1,10 @@
-// Payment confirmation emails via Google SMTP.
+// Payment confirmation emails.
 //
-// Sends through your Gmail using a SecureToken (smtpjs, free). The app
-// password itself never appears anywhere in this codebase - only the token
-// from mail-config.js. Fire-and-forget: callers never await a failure, so
-// checkout can never break because an email failed.
+// Sends through the first configured sender in mail-config.js:
+//   1. Resend via your own tiny PHP endpoint (proper path, key stays server-side)
+//   2. Gmail SMTP via SecureToken (works today, no backend)
+// Fire-and-forget: callers never await a failure, so checkout can never break
+// because an email failed.
 
 import { MAIL_CONFIG, isMailConfigured } from "./mail-config.js";
 import { formatPeso } from "./receipt.js";
@@ -56,13 +57,29 @@ function loadSmtpJs() {
  * Resolves { sent: true } or { sent: false, reason } - never rejects.
  */
 export async function sendPaymentSuccessEmail({ to, name, tierName, amount, refNo }) {
-  if (!MAIL_CONFIG.smtpjsToken) {
-    return { sent: false, reason: "mail-not-configured" };
-  }
   if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
     return { sent: false, reason: "bad-recipient" };
   }
   try {
+    if (MAIL_CONFIG.resendEndpoint && MAIL_CONFIG.mailToken) {
+      const res = await fetch(MAIL_CONFIG.resendEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: MAIL_CONFIG.mailToken,
+          to,
+          name: name || "",
+          tier: tierName || "Linkodra card",
+          amount: formatPeso(amount),
+          ref: refNo || "",
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      return data && data.sent ? { sent: true } : { sent: false, reason: data.reason || "send-failed" };
+    }
+    if (!MAIL_CONFIG.smtpjsToken) {
+      return { sent: false, reason: "mail-not-configured" };
+    }
     const Email = await loadSmtpJs();
     const message = await Email.send({
       SecureToken: MAIL_CONFIG.smtpjsToken,

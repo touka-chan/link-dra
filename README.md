@@ -141,22 +141,33 @@ Scrollbars are hidden site-wide via CSS (`scrollbar-width: none` +
 `scripts/test-receipt.mjs` covers the parser against GCash / Maya / noisy
 samples: `node scripts/test-receipt.mjs`.
 
-## Confirmation emails (free, Google SMTP)
+## Confirmation emails (free)
 
-Browsers cannot speak SMTP directly, and your Gmail app password must NEVER go
-into code or git (public repo + view-source = anyone could send mail as you).
-So sending uses a SecureToken instead — no password anywhere in this project.
+The checkout sends the buyer a payment confirmation. Secrets NEVER go into
+code or git. Two senders, first configured wins:
 
-1. Google Account > Security > turn on 2-Step Verification.
-2. Security > App passwords > create one (e.g. "Linkodra") > copy the
-   16-letter password. If it was ever pasted anywhere public, revoke it there
-   and make a fresh one.
-3. Go to https://smtpjs.com > "Encrypt your SMTP credentials": host
-   `smtp.gmail.com`, port `587`, your Gmail + the app password. Optionally
-   lock the token to your domain.
-4. Paste ONLY the SecureToken into `smtpjsToken` in `src/mail-config.js`,
-   rebuild. Until then, sending is skipped silently and checkout works
-   normally.
+**Resend (proper path, needs PHP hosting once).**
+1. On this onboarding screen: click **Add API Key**, name it `Linkodra`,
+   copy the `re_...` key (shown once). Do NOT paste it into code or chat.
+2. Sidebar **Domains** > add `linkodra.ph` > paste the DNS records into your
+   domain's DNS. Until verified, Resend only delivers to your own account
+   email, so do this before real orders.
+3. Upload `server/resend-endpoint.php` to your hosting as e.g.
+   `https://linkodra.ph/mail/send.php`.
+4. On the server, set env vars `RESEND_API_KEY` (the `re_...` key) and
+   `LINKODRA_MAIL_TOKEN` to the `mailToken` value in `src/mail-config.js`.
+5. Put the file's URL in `resendEndpoint` in `src/mail-config.js`, rebuild.
+
+**Gmail SMTP via SecureToken (works today, no backend).**
+1. Google Account > Security > 2-Step Verification on.
+2. Security > App passwords > create one > copy the 16-letter password.
+3. https://smtpjs.com > "Encrypt your SMTP credentials": host
+   `smtp.gmail.com`, port `587`, Gmail + app password. Optionally lock the
+   token to your domain.
+4. Paste ONLY the SecureToken into `smtpjsToken`, rebuild.
+
+Until anything is configured, sending is skipped silently and checkout works
+normally.
 
 ## Shipping and promos
 
