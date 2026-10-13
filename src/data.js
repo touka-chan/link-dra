@@ -25,7 +25,7 @@ export const STEPS = [
 
 export const FAQS = [
   { q: "How long does shipping take?", a: "Standard shipping within the Philippines takes 3-5 business days. For a card with printed name, allow +2-3 business days for printing and QA." },
-  { q: "Can I use my own logo on the Standard card?", a: "Logo printing is Pro only. Upload SVG or high-res PNG during checkout. Basic prints name with Linkodra branding. Standard prints name + phone, no logo." },
+  { q: "Can I use my own logo on the Standard card?", a: "Logo printing is Pro only, and artwork is handled by our team rather than at checkout. Send your logo to hello@linkodra.com after ordering and we will print it on your Pro card. Basic prints name with Linkodra branding. Standard prints name + phone, no logo." },
   { q: "Do I need an app to scan the card?", a: "No. iPhone XR and newer + most Android 2018+ read NFC natively. QR backup works with any camera." },
   { q: "Can I update my profile after I receive the card?", a: "Yes - your physical card points to your live digital profile. Update name, title, photo, links anytime. No reprint." },
   { q: "What happens if I lose my card?", a: "Your profile stays live at your linkodra.com link. Order a replacement anytime, it links to the same profile." },

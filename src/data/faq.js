@@ -51,7 +51,7 @@ export const FAQS = [
   { g: "Ordering & Delivery", q: "Can I order in bulk?", a: "Yes. Order as many cards as you need at checkout, or contact us for volume pricing and shared branding for an organisation." },
   { g: "Ordering & Delivery", q: "Can I upgrade later?", a: "Yes. Contact us and we will issue the higher-tier card and switch on the extra features against your existing profile." },
   { g: "Ordering & Delivery", q: "How does the AI card scanner handle a bad photo?", a: "It reads what it can and marks the rest for you to fill in, so a shadow across the phone number does not lose the entry. You always review a scan before it saves." },
-  { g: "Ordering & Delivery", q: "Do you offer custom designs?", a: "The three built-in designs cover most people. For organisation branding across a whole team, contact us and we will talk through what is possible at volume." },
+  { g: "Ordering & Delivery", q: "Do you offer custom designs?", a: "Every card uses the same Linkodra Green Gradient face in landscape format, which is what the preview shows. For organisation branding across a whole team, contact us and we will talk through what is possible at volume." },
 
   // Privacy & Security
   { g: "Privacy & Security", q: "Is my data safe?", a: "It is encrypted in transit and at rest. We do not sell your data and run no advertising or tracking cookies on your profile." },

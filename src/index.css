@@ -928,8 +928,6 @@ code {
   transition: transform 0.3s ease;
 }
 .nfc-card:hover { transform: translateY(-2px); }
-.nfc-card.portrait { aspect-ratio: 0.63; max-width: 306px; margin: 0 auto; }
-.nfc-card.design-neon { background: #071007; }
 .nfc-card.design-solid { background: #0a1a0e; }
 
 /* Soft mesh of green blooms over near-black, so the face reads as printed
@@ -973,10 +971,7 @@ code {
   display: flex; gap: var(--in-3); align-items: center;
   margin: var(--in-4) 0; min-height: 78px;
 }
-.nfc-card.portrait .nfc-mid { flex-direction: column; align-items: center; justify-content: center; }
-.card-holder { margin-top: auto; }
 .card-name { font-size: 20px; font-weight: 800; line-height: 1.25; }
-.nfc-card.portrait .card-name { font-size: 22px; }
 .card-sub { color: var(--card-ink-dim); font-size: 13px; margin-top: var(--sp-1); line-height: 1.45; }
 .card-foot {
   display: flex; justify-content: space-between; align-items: center;
@@ -1062,8 +1057,9 @@ code {
   display: flex; align-items: center; justify-content: center;
   font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #fff;
 }
-.design-swatch.swatch-minimalist { background: #0b0e0b; color: #22e948; }
-.design-swatch.swatch-neon { background: #071007; color: #22e948; }
+.design-swatch.swatch-gradient {
+  background: linear-gradient(150deg, #16c939 0%, #0b4a1c 46%, #050705 100%);
+}
 .design-swatch.swatch-gradient {
   background: linear-gradient(150deg, #16c939 0%, #0b4a1c 46%, #050705 100%);
   color: #fff;

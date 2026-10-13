@@ -105,11 +105,14 @@ export const COMPARE = [
   { label: "Priority support", values: [0, 0, 1] },
 ];
 
+// The client sells a single card face and a single orientation, so there is no
+// picker to offer: the order form and the preview both use the only entry.
 export const DESIGNS = [
-  { id: "minimalist", name: "Linkodra Minimalist", bg: "#0b0e0b", ink: "#22e948" },
-  { id: "neon", name: "Linkodra Neon", bg: "#071007", ink: "#22e948" },
   { id: "gradient", name: "Linkodra Green Gradient", bg: "linear-gradient(150deg,#16c939 0%,#0b4a1c 46%,#050705 100%)", ink: "#ffffff" },
 ];
+
+export const DEFAULT_DESIGN = DESIGNS[0].id;
+export const DEFAULT_ORIENTATION = "landscape";
 
 // Shipping is worked out from the island group of the selected province.
 export const SHIPPING = [

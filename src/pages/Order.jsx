@@ -9,7 +9,13 @@
 // two seams where a real backend records the order.
 
 import { useEffect, useState } from "react";
-import { BRAND, DESIGNS, REFERRAL_RATE, tierById } from "../brand.js";
+import {
+  BRAND,
+  DEFAULT_DESIGN,
+  DEFAULT_ORIENTATION,
+  REFERRAL_RATE,
+  tierById,
+} from "../brand.js";
 import { CardPreview } from "../components/brand.jsx";
 import { PayModal } from "../components/PayModal.jsx";
 import { Field, Segmented } from "../components/ui.jsx";
@@ -77,8 +83,10 @@ function AddressFields({ value, onChange, geo, error }) {
 export function Order({ initialTier, go }) {
   const [tier, setTier] = useState(initialTier || "standard");
 
-  const [orientation, setOrientation] = useState("portrait");
-  const [design, setDesign] = useState("gradient");
+  // No orientation or design picker: the client offers one card face, landscape
+  // only, so these are fixed rather than chosen.
+  const [orientation] = useState(DEFAULT_ORIENTATION);
+  const [design] = useState(DEFAULT_DESIGN);
   const [finish, setFinish] = useState("glossy");
   const [printName, setPrintName] = useState("");
 
@@ -293,35 +301,12 @@ export function Order({ initialTier, go }) {
             name={printName}
             tier={tier}
             design={design}
-            orientation={orientation}
             finish={finish}
             code="yourcode"
           />
 
           <div className="panel">
             <h3>Make it yours</h3>
-
-            <label>Orientation</label>
-            <Segmented
-              value={orientation}
-              onChange={setOrientation}
-              options={[{ value: "portrait", label: "Portrait" }, { value: "landscape", label: "Landscape" }]}
-            />
-
-            <label>Design</label>
-            <div className="design-pick">
-              {DESIGNS.map((d) => (
-                <button key={d.id} className={design === d.id ? "sel" : ""} onClick={() => setDesign(d.id)}>
-                  <span
-                    className={`design-swatch swatch-${d.id}`}
-                    style={{ background: d.id === "gradient" ? d.bg : undefined }}
-                  >
-                    LK
-                  </span>
-                  {d.name.replace("Linkodra ", "")}
-                </button>
-              ))}
-            </div>
 
             <label>Finish</label>
             <Segmented

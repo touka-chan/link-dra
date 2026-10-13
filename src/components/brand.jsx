@@ -5,6 +5,7 @@
 // anchored at the bottom, in Linkodra's green palette.
 
 import { useState } from "react";
+import { DEFAULT_DESIGN, DESIGNS } from "../brand.js";
 
 // The mark on its own, for the card artwork where the wordmark is set as text.
 export function LogoMark({ size = 40 }) {
@@ -76,7 +77,7 @@ export function HeroCard({ name, title, company, phone }) {
     <div className="card-stage">
       <div className="card-stage-float">
         <div className="card-stage-inner">
-          <div className="nfc-card portrait design-gradient glossy">
+          <div className="nfc-card design-gradient glossy">
             <div className="nfc-wordmark">
               <LogoMark size={40} />
               <span>
@@ -107,20 +108,21 @@ export function CardPreview({
   company = "",
   phone = "",
   tier = "standard",
-  design = "gradient",
-  orientation = "portrait",
+  design = DEFAULT_DESIGN,
   finish = "glossy",
   code = "yourcode",
 }) {
   const [isBack, setIsBack] = useState(false);
-  const portrait = orientation === "portrait";
+  // Orders saved before the single-face redesign can still carry "minimalist",
+  // "neon" or "portrait". Those classes are gone, so an unrecognised value
+  // falls back to the one face that still exists rather than rendering blank.
+  const face = DESIGNS.some((d) => d.id === design) ? design : DEFAULT_DESIGN;
   const subtitle = [title, company].filter(Boolean).join(", ");
   const showPhone = tier !== "basic" && !!phone;
 
   const classes = [
     "nfc-card",
-    portrait ? "portrait" : "",
-    `design-${design}`,
+    `design-${face}`,
     finish === "glossy" ? "glossy" : "matte",
     isBack ? "back" : "",
   ]
@@ -136,41 +138,24 @@ export function CardPreview({
         onClick={() => setIsBack((v) => !v)}
       >
         {!isBack ? (
-          portrait ? (
-            <>
-              <div className="nfc-row">
-                <span className="nfc-badge">LINKODRA</span>
-                <span>TAP · CONNECT · SHARE</span>
-              </div>
-              <div className="nfc-mid" style={{ justifyContent: "center", flex: 1 }}>
-                <ContactlessGlyph size={68} />
-              </div>
-              <div className="card-holder">
+          <>
+            <div className="nfc-row">
+              <span className="nfc-badge">LINKODRA PH</span>
+              <span>TAP · CONNECT · SHARE</span>
+            </div>
+            <div className="nfc-mid">
+              <ContactlessGlyph />
+              <div>
                 <div className="card-name">{name || "Your Name"}</div>
                 {subtitle && <div className="card-sub">{subtitle}</div>}
                 {showPhone && <div className="card-sub">{phone}</div>}
               </div>
-            </>
-          ) : (
-            <>
-              <div className="nfc-row">
-                <span className="nfc-badge">LINKODRA PH</span>
-                <span>TAP · CONNECT · SHARE</span>
-              </div>
-              <div className="nfc-mid">
-                <ContactlessGlyph />
-                <div>
-                  <div className="card-name">{name || "Your Name"}</div>
-                  {subtitle && <div className="card-sub">{subtitle}</div>}
-                  {showPhone && <div className="card-sub">{phone}</div>}
-                </div>
-              </div>
-              <div className="card-foot">
-                <strong>Linkodra</strong>
-                <span>One Tap. Endless Connections.</span>
-              </div>
-            </>
-          )
+            </div>
+            <div className="card-foot">
+              <strong>Linkodra</strong>
+              <span>One Tap. Endless Connections.</span>
+            </div>
+          </>
         ) : (
           <>
             <div className="nfc-row">

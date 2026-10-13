@@ -59,7 +59,7 @@ export const HELP_ARTICLES = [
     t: "What do I choose on the Configure step?",
     d: "Orientation, design, finish and what gets printed.",
     cat: "Ordering & Pricing",
-    body: "Landscape and portrait are both standard card formats. Three designs are available and the preview updates as you type. Matte or glossy changes the coating only. The name field is what gets printed, and the logo field appears on Pro.",
+    body: "Every card ships in the same landscape format with the Linkodra Green Gradient face, so what you see in the preview is what gets printed. Matte or glossy changes the coating only. The name field is what gets printed.",
   },
   {
     t: "Can I use my own logo?",
