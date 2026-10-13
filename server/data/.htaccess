@@ -1,0 +1,3 @@
+# Orders, receipts and the mail log live under this folder on the server.
+# Never serve them over HTTP.
+Require all denied
