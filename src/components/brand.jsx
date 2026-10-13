@@ -184,7 +184,7 @@ export function CardPreview({
             )}
             {tier === "pro" && <div className="qr-box" style={{ marginTop: 8 }}>PROFILE + vCard</div>}
             <div className="card-sub" style={{ textAlign: "center", marginTop: 10 }}>
-              linkodra.ph/{code}
+              linkodra.com/{code}
             </div>
           </>
         )}

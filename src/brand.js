@@ -9,8 +9,8 @@ export const BRAND = {
   sub: "Smart NFC Business Cards",
   mantra: ["TAP", "CONNECT", "SHARE"],
   payoff: "One Tap. Endless Connections.",
-  url: "linkodra.ph",
-  email: "hello@linkodra.ph",
+  url: "linkodra.com",
+  email: "hello@linkodra.com",
   phone: "+63 916 682 4068",
   address: "Balagtas, Batangas City, Philippines",
 };

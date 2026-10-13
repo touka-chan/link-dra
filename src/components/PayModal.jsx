@@ -36,7 +36,9 @@ const readAsDataURL = (f) =>
     }
   });
 
-const QR_SRC = "/qr.png";
+// Relative, not root-absolute: the app may be served from a subfolder such as
+// /app/, where "/qr.png" would 404 against the WordPress root.
+const QR_SRC = "qr.png";
 
 function QrImage() {
   const [missing, setMissing] = useState(false);
