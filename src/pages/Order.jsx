@@ -236,8 +236,7 @@ export function Order({ initialTier, go }) {
                 {order.customer.province}. Estimate: 3-5 business days, plus 2-3 days for printing and quality checks.
               </p>
               <div className="btn-row">
-                <button className="btn primary" onClick={() => go("profile")}>View your profile</button>
-                <button className="btn ghost" onClick={() => go("home")}>Back to home</button>
+                <button className="btn primary" onClick={() => go("home")}>Back to home</button>
               </div>
             </>
           ) : (
