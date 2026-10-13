@@ -27,6 +27,10 @@ $DEFAULTS = [
   "LINKODRA_MAIL_TOKEN" => "",
   "OWNER_EMAIL" => "linkodra.ph@gmail.com",
   "FROM" => "Linkodra <orders@linkodra.com>", // must be your verified Resend domain
+  // Sends allowed per hour, per IP. Each order uses one buyer send plus one or
+  // two owner notices, so keep these comfortably above real traffic.
+  "MAIL_RATE_BUYER" => "60",
+  "MAIL_RATE_OWNER" => "60",
 ];
 $localFile = __DIR__ . "/mail-config.local.php";
 $local = file_exists($localFile) ? require $localFile : [];
@@ -59,10 +63,18 @@ try {
   $db = null;
 }
 
-// --- rate limit: 10 sends/hour/IP --------------------------------------------
-function rateOk() {
+// --- rate limit -------------------------------------------------------------
+// Guarded per IP per bucket, because a mobile carrier puts thousands of
+// subscribers behind one address: a tight cap there locks out real customers.
+// Each order fires three sends (buyer receipt, owner notice, delivery update),
+// so the caps are set well above that and are overridable in
+// mail-config.local.php via MAIL_RATE_BUYER / MAIL_RATE_OWNER.
+function rateOk($bucket = "buyer") {
+  global $cfg;
   $ip = $_SERVER["REMOTE_ADDR"] ?? "x";
-  $file = sys_get_temp_dir() . "/lk-mail-" . md5($ip) . ".json";
+  $limit = (int) $cfg($bucket === "owner" ? "MAIL_RATE_OWNER" : "MAIL_RATE_BUYER");
+  if ($limit <= 0) return true; // 0 disables the limit
+  $file = sys_get_temp_dir() . "/lk-mail-" . md5($ip . $bucket) . ".json";
   $hits = [];
   if (file_exists($file)) {
     $hits = array_values(array_filter(
@@ -70,7 +82,7 @@ function rateOk() {
       fn($t) => $t > time() - 3600
     ));
   }
-  if (count($hits) >= 10) return false;
+  if (count($hits) >= $limit) return false;
   $hits[] = time();
   @file_put_contents($file, json_encode($hits));
   return true;
@@ -133,7 +145,7 @@ $in = json_decode(file_get_contents("php://input"), true) ?: [];
 if (!hash_equals((string)$cfg("LINKODRA_MAIL_TOKEN"), (string)($in["token"] ?? "x"))) {
   out(403, ["sent" => false, "ok" => false, "reason" => "forbidden"]);
 }
-if (!rateOk()) {
+if (!rateOk(($in["action"] ?? "") === "order" ? "owner" : "buyer")) {
   out(429, ["sent" => false, "ok" => false, "reason" => "rate-limited"]);
 }
 if (!$cfg("RESEND_API_KEY")) {
