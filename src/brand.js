@@ -96,6 +96,46 @@ export const DESIGNS = [
 export const DEFAULT_DESIGN = DESIGNS[0].id;
 export const DEFAULT_ORIENTATION = "landscape";
 
+// Links the buyer fills in for their own private landing page, collected after
+// delivery details. Every field is optional. `base` lets a buyer type a bare
+// handle such as "linkodra.ph" or "@linkodra" and still produce a usable URL.
+export const PROFILE_LINK_FIELDS = [
+  { id: "facebook", label: "Facebook page", base: "https://www.facebook.com/", placeholder: "linkodra.ph", inputMode: "url" },
+  { id: "instagram", label: "Instagram", base: "https://www.instagram.com/", placeholder: "@yourhandle", inputMode: "url" },
+  { id: "tiktok", label: "TikTok", base: "https://www.tiktok.com/@", placeholder: "yourhandle", inputMode: "url" },
+  { id: "linkedin", label: "LinkedIn", base: "https://www.linkedin.com/in/", placeholder: "yourname", inputMode: "url" },
+  { id: "x", label: "X (Twitter)", base: "https://x.com/", placeholder: "yourhandle", inputMode: "url" },
+  { id: "youtube", label: "YouTube", base: "https://www.youtube.com/@", placeholder: "yourchannel", inputMode: "url" },
+  { id: "email", label: "Email", placeholder: "you@company.ph", type: "email" },
+  { id: "website", label: "Website", base: "https://", placeholder: "yourcompany.ph", inputMode: "url" },
+  { id: "number", label: "Number", placeholder: "+63 917 000 0000", type: "tel" },
+  { id: "gbp", label: "Google Business Profile", base: "https://", placeholder: "Business Profile share link", inputMode: "url" },
+];
+
+export const emptyProfileLinks = () =>
+  PROFILE_LINK_FIELDS.reduce((acc, f) => ({ ...acc, [f.id]: "" }), {});
+
+// Turns typed input into something clickable. Anything already carrying a
+// scheme is left alone, so pasting a full link works exactly as it stands.
+// Otherwise the value is read as a handle relative to the field, which is how
+// people actually type: "linkodra.ph" in the Facebook box means their page
+// there, not the website. A base that already ends in a path is stripped from
+// the front first, so "/in/john" does not become ".../in//in/john".
+export function normaliseProfileLink(field, value) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "";
+  if (/^[a-z][a-z0-9+.-]*:/i.test(raw)) return raw; // has http:, mailto:, tel:
+  if (!field.base) return raw;
+
+  const handle = raw.replace(/^@/, "").replace(/^\/+|\/+$/g, "");
+  const basePath = field.base.replace(/^https?:\/\/[^/]+/i, "").replace(/\/+$/, "");
+  const trimmed =
+    basePath && handle.toLowerCase().startsWith(`${basePath.toLowerCase()}/`)
+      ? handle.slice(basePath.length + 1)
+      : handle;
+  return trimmed ? field.base + trimmed : "";
+}
+
 // Shipping is worked out from the island group of the selected province.
 export const SHIPPING = [
   { zone: "Metro Manila", fee: 99, days: "2-4 business days" },

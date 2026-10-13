@@ -13,7 +13,10 @@ import {
   BRAND,
   DEFAULT_DESIGN,
   DEFAULT_ORIENTATION,
+  PROFILE_LINK_FIELDS,
   REFERRAL_RATE,
+  emptyProfileLinks,
+  normaliseProfileLink,
   tierById,
 } from "../brand.js";
 import { CardPreview } from "../components/brand.jsx";
@@ -94,6 +97,9 @@ const [tier, setTier] = useState(tierById(initialTier).id);
 
   const [contact, setContact] = useState({ fullName: "", email: "", phone: "" });
   const [address, setAddress] = useState({ street: "", province: "", city: "", barangay: "", zip: "", notes: "" });
+  // The buyer's own landing page links. Collected after delivery details and
+  // entirely optional, so it opens as an empty set and stays empty on skip.
+  const [profileLinks, setProfileLinks] = useState(emptyProfileLinks());
   const [errors, setErrors] = useState({});
 
   const [order, setOrder] = useState(null);
@@ -212,6 +218,59 @@ const [tier, setTier] = useState(tierById(initialTier).id);
     setOrder(updated);
   };
 
+  // Saves the buyer's private landing page links. Nothing here is required, so
+  // this only reports a problem when a field was filled in but is unusable.
+  const saveProfileLinks = () => {
+    const next = {};
+    const clean = {};
+    for (const f of PROFILE_LINK_FIELDS) {
+      const raw = String(profileLinks[f.id] ?? "").trim();
+      if (!raw) continue;
+      if (f.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
+        next[f.id] = "That does not look like an email address.";
+        continue;
+      }
+      const url = f.type === "tel" ? raw : normaliseProfileLink(f, raw);
+      if (f.type !== "tel" && !/^https?:\/\/.+\..+/.test(url)) {
+        next[f.id] = "Enter a full link, for example https://yourpage.com.";
+        continue;
+      }
+      clean[f.id] = url;
+    }
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
+
+    const updated = { ...order, profileLinks, links: clean, linksSaved: true };
+    write("order", updated);
+    notifyOwner({
+      order: {
+        id: updated.id,
+        code: updated.code,
+        tier: updated.tier,
+        total: updated.total,
+        paid: updated.paid,
+        refNo: updated.payment.refNo,
+        email: updated.customer.email,
+        name: updated.customer.fullName,
+        phone: updated.customer.phone,
+        address: updated.customer,
+        card: updated.card,
+        links: clean,
+        linksUpdate: true,
+      },
+      receipt: null,
+    });
+    setOrder(updated);
+  };
+
+  // Skipping still marks the step done, otherwise the links form would keep
+  // reappearing on reload. Nothing is sent to the owner on this path.
+  const skipProfileLinks = () => {
+    const updated = { ...order, linksSaved: true };
+    write("order", updated);
+    setOrder(updated);
+  };
+
   if (order) {
     return (
       <section className="section narrow">
@@ -237,14 +296,49 @@ const [tier, setTier] = useState(tierById(initialTier).id);
             </div>
           </div>
 
-          {order.deliverySaved ? (
+          {order.linksSaved ? (
             <>
               <p className="muted small">
                 Delivering to {order.customer.street}, {order.customer.barangay}, {order.customer.city},{" "}
                 {order.customer.province}. Estimate: 3-5 business days, plus 2-3 days for printing and quality checks.
               </p>
+              {Object.keys(order.links || {}).length > 0 && (
+                <p className="muted small">
+                  Your landing page links are saved. We have emailed them to our team so we can set up{" "}
+                  <strong>{BRAND.url}/{order.code}</strong> before the card ships.
+                </p>
+              )}
               <div className="btn-row">
                 <button className="btn primary" onClick={() => go("home")}>Back to home</button>
+              </div>
+            </>
+          ) : order.deliverySaved ? (
+            <>
+              <p className="muted small">
+                Delivering to {order.customer.street}, {order.customer.barangay}, {order.customer.city},{" "}
+                {order.customer.province}. Estimate: 3-5 business days, plus 2-3 days for printing and quality checks.
+              </p>
+              <h3 style={{ marginTop: 24 }}>Your landing page links</h3>
+              <p className="muted small">
+                These go on your private landing page. All optional, and you can skip it and send them to us later.
+              </p>
+              <div className="link-grid">
+                {PROFILE_LINK_FIELDS.map((f) => (
+                  <Field key={f.id} label={f.label} id={`link-${f.id}`} error={errors[f.id]}>
+                    <input
+                      id={`link-${f.id}`}
+                      type={f.type ?? "text"}
+                      inputMode={f.inputMode}
+                      value={profileLinks[f.id] ?? ""}
+                      placeholder={f.placeholder}
+                      onChange={(e) => setProfileLinks({ ...profileLinks, [f.id]: e.target.value })}
+                    />
+                  </Field>
+                ))}
+              </div>
+              <div className="btn-row">
+                <button className="btn primary" onClick={saveProfileLinks}>Save my links</button>
+                <button className="btn ghost" onClick={skipProfileLinks}>Skip for now</button>
               </div>
             </>
           ) : (

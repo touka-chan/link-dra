@@ -1060,6 +1060,16 @@ code {
   display: flex; align-items: center; justify-content: center;
   font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #fff;
 }
+/* Ten optional link fields read better in two columns than in a single long
+   column that pushes the buttons below the fold on a phone. */
+.link-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--in-3); margin: var(--in-4) 0;
+}
+@media (max-width: 720px) {
+  .link-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
 .design-swatch.swatch-gradient {
   background: linear-gradient(150deg, #16c939 0%, #0b4a1c 46%, #050705 100%);
 }

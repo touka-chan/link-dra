@@ -197,7 +197,27 @@ if (($in["action"] ?? "") === "order") {
   $card = is_array($c)
     ? implode(" · ", array_filter([$c["orientation"] ?? "", $c["design"] ?? "", $c["finish"] ?? "", isset($c["printName"]) ? "Print: " . $c["printName"] : ""]))
     : "";
-  $subject = "New Linkodra order " . $id . " - " . ($o["tier"] ?? "card");
+
+  // The buyer's private landing page links, sent after delivery details.
+  // Each is already normalised to a full URL on the client, so it is rendered
+  // as a clickable link rather than bare text.
+  $linksHtml = "";
+  $lk = $o["links"] ?? [];
+  if (is_array($lk) && $lk) {
+    $rows = "";
+    foreach ($lk as $name => $value) {
+      $url = esc((string)$value);
+      $rows .= "<li><strong>" . esc(ucwords(str_replace("_", " ", (string)$name))) . "</strong>: "
+        . "<a href=\"" . $url . "\">" . $url . "</a></li>";
+    }
+    $linksHtml = "<p><strong>Landing page links</strong></p><ul>" . $rows . "</ul>";
+  }
+
+  $isLinksUpdate = !empty($o["linksUpdate"]);
+  $isDeliveryUpdate = !empty($o["deliveryUpdate"]);
+  $subject = $isLinksUpdate
+    ? "Linkodra profile links " . $id
+    : ($isDeliveryUpdate ? "Linkodra delivery " . $id . " - " . ($o["tier"] ?? "card") : "New Linkodra order " . $id . " - " . ($o["tier"] ?? "card"));
   $html = "<p>New order <strong>" . esc($id) . "</strong> (" . esc($o["tier"] ?? "") . ").</p>"
     . "<p>Total: <strong>" . esc($o["total"] ?? "") . "</strong><br>"
     . "Paid via QR: <strong>" . esc($o["paid"] ?? "") . "</strong><br>"
@@ -207,6 +227,7 @@ if (($in["action"] ?? "") === "order") {
     . "Phone: " . esc($o["phone"] ?? "") . "<br>"
     . "Address: " . esc($addr) . "</p>"
     . "<p>Card: " . esc($card) . "</p>"
+    . $linksHtml
     . ($savedReceipt ? "<p>Receipt attached (" . esc($savedReceipt) . ").</p>" : "<p>No receipt file attached.</p>");
 
   $owner = $cfg("OWNER_EMAIL");
