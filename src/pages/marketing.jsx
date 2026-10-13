@@ -231,20 +231,10 @@ export function Features({ go }) {
         ))}
       </div>
 
-      <h2>Standard and Pro</h2>
+      <h2>Standard</h2>
+      <p className="lede">Everything the Standard card adds over Basic.</p>
       <div className="cards3">
-        {TIER_FEATURES.filter((f) => f.minTier === 2).map((f) => (
-          <div className="panel" key={f.title}>
-            <span className="eyebrow">{f.tierLabel}</span>
-            <h3>{f.title}</h3>
-            <p className="muted">{f.body}</p>
-          </div>
-        ))}
-      </div>
-
-      <h2>Pro only</h2>
-      <div className="cards2">
-        {TIER_FEATURES.filter((f) => f.minTier === 3).map((f) => (
+        {TIER_FEATURES.filter((f) => f.minTier >= 2).map((f) => (
           <div className="panel" key={f.title}>
             <span className="eyebrow">{f.tierLabel}</span>
             <h3>{f.title}</h3>
@@ -261,7 +251,7 @@ export function Features({ go }) {
             <h3>{a.title}</h3>
             <p className="muted">{a.body}</p>
             <p className="small green" style={{ marginBottom: 0 }}>
-              {a.minTier === 1 ? "Every tier" : a.minTier === 2 ? "Standard and Pro" : "Pro only"}
+              {a.minTier === 1 ? "Every tier" : "Standard"}
             </p>
           </div>
         ))}
@@ -290,7 +280,7 @@ export function Pricing({ go }) {
         Pick your card. <span className="green">Elevate your presence.</span>
       </h1>
       <p className="lede">
-        Three tiers, one price each, no subscription. Start with what you need now and move up whenever you want.
+        Two tiers, one price each, no subscription. Start with what you need now and move up whenever you want.
       </p>
 
       <div className="tier-set">

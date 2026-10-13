@@ -393,7 +393,7 @@ const LEGAL = {
     updated: "Last updated 1 October 2026",
     body: [
       "Standard delivery within the Philippines is two to four business days in Metro Manila, three to five in Luzon, four to six in Visayas, and five to seven in Mindanao.",
-      "Standard and Pro cards carry a printed name, so they need an extra two to three business days for production and quality checks before dispatch.",
+      "Standard cards carry a printed name, so they need an extra two to three business days for production and quality checks before dispatch.",
       "You may cancel free of charge before your card enters production, which is within twenty-four hours of ordering. After that the files are already with the printer.",
       "Cards that arrive damaged, or with a printing fault, are replaced free of charge. Send us a photo and your order number.",
       "Change of mind after delivery is not covered, because every card is personalised to you.",

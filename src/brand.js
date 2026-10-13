@@ -50,26 +50,8 @@ export const TIERS = [
     name: "Standard",
     price: 1399,
     pitch: "Personalised presentation and analytics",
-    desc: "More reach, and a scanner for the cards you still get handed.",
+    desc: "The full card, with dual QR, engagement tracking and monthly reports.",
     popular: true,
-    features: [
-      F("shield", "Premium PVC card"),
-      F("user", "Cardholder's name"),
-      F("qr", "Profile QR code"),
-      F("chart", "Overview analytics"),
-      F("users", "Audience analytics"),
-      F("network", "Connections"),
-      F("scan", "AI business card scanner"),
-      F("send", "Send my details instantly"),
-    ],
-  },
-  {
-    id: "pro",
-    rank: 3,
-    name: "Pro",
-    price: 1999,
-    pitch: "For advanced networking professionals",
-    desc: "Your logo, an offline vCard QR, and the full analytics suite.",
     features: [
       F("shield", "Premium PVC card"),
       F("user", "Cardholder's name"),
@@ -92,17 +74,17 @@ export const tierById = (id) => TIERS.find((t) => t.id === id) ?? TIERS[1];
 export const tierRank = (id) => tierById(id).rank;
 
 // Compare table on the pricing page. 0 = not included, 1 = included,
-// 2 = included and called out. Rows are rendered in order.
+// 2 = included and called out. Rows are rendered in order, one value per tier.
 export const COMPARE = [
-  { label: "Card branding", values: ["Linkodra + name", "Custom name", "Custom name + logo"] },
-  { label: "NFC tap to profile", values: [1, 1, 1] },
-  { label: "Profile QR code", values: [0, 1, 1] },
-  { label: "Offline vCard QR", values: [0, 0, 1] },
-  { label: "Analytics", values: ["Overview", "Overview + Audience", "Overview + Audience + Engagement + Reports"] },
-  { label: "Connections hub", values: [1, 1, 1] },
-  { label: "Send my details", values: [0, 1, 1] },
-  { label: "AI business card scanner", values: [0, 1, 1] },
-  { label: "Priority support", values: [0, 0, 1] },
+  { label: "Card branding", values: ["Linkodra + name", "Custom name + logo"] },
+  { label: "NFC tap to profile", values: [1, 1] },
+  { label: "Profile QR code", values: [0, 1] },
+  { label: "Offline vCard QR", values: [0, 1] },
+  { label: "Analytics", values: ["Overview", "Overview + Audience + Engagement + Reports"] },
+  { label: "Connections hub", values: [1, 1] },
+  { label: "Send my details", values: [0, 1] },
+  { label: "AI business card scanner", values: [0, 1] },
+  { label: "Priority support", values: [0, 1] },
 ];
 
 // The client sells a single card face and a single orientation, so there is no

@@ -38,28 +38,28 @@ export const TIER_FEATURES = [
     title: "AI business card scanner",
     body: "Photograph a paper business card and Linkodra reads the name, title, company, phone and email straight into your connections. No typing.",
     minTier: 2,
-    tierLabel: "Standard and Pro",
+    tierLabel: "Standard",
   },
   {
     icon: "sparkle",
     title: "Audience analytics",
     body: "Understand who is tapping and when, so you know which events and follow-ups are actually working.",
     minTier: 2,
-    tierLabel: "Standard and Pro",
+    tierLabel: "Standard",
   },
   {
     icon: "bolt",
     title: "Engagement tracking",
     body: "See which buttons on your profile get pressed, and which ones nobody touches.",
-    minTier: 3,
-    tierLabel: "Pro only",
+    minTier: 2,
+    tierLabel: "Standard",
   },
   {
     icon: "shield",
     title: "Offline vCard QR",
     body: "A second QR code that saves your contact with no internet connection at all. Built for venues with patchy signal.",
-    minTier: 3,
-    tierLabel: "Pro only",
+    minTier: 2,
+    tierLabel: "Standard",
   },
 ];
 
@@ -77,12 +77,12 @@ export const ANALYTICS_TABS = [
   {
     title: "Engagement",
     body: "A full breakdown of clicks per link type: email, phone, WhatsApp, website, social icons and share.",
-    minTier: 3,
+    minTier: 2,
   },
   {
     title: "Reports",
     body: "A tidy monthly summary of your networking activity, delivered to your inbox.",
-    minTier: 3,
+    minTier: 2,
   },
 ];
 
@@ -115,7 +115,7 @@ export const DEVICE_SUPPORT = [
   },
   {
     title: "No NFC?",
-    body: "Standard and Pro cards print a QR code on the back that any camera app can read.",
+    body: "Standard cards print a QR code on the back that any camera app can read.",
   },
 ];
 

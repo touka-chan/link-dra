@@ -165,9 +165,11 @@ export function CardPreview({
             {tier === "basic" ? (
               <div className="qr-box" style={{ marginTop: 18 }}>NO QR ON THIS TIER</div>
             ) : (
-              <div className="fake-qr" />
+              <>
+                <div className="fake-qr" />
+                <div className="qr-box" style={{ marginTop: 8 }}>PROFILE + vCard</div>
+              </>
             )}
-            {tier === "pro" && <div className="qr-box" style={{ marginTop: 8 }}>PROFILE + vCard</div>}
             <div className="card-sub" style={{ textAlign: "center", marginTop: 10 }}>
               linkodra.com/{code}
             </div>

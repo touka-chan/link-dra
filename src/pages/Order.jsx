@@ -81,7 +81,9 @@ function AddressFields({ value, onChange, geo, error }) {
 }
 
 export function Order({ initialTier, go }) {
-  const [tier, setTier] = useState(initialTier || "standard");
+  // tierById resolves an unknown id to Standard, so a stale ?tier=pro link from
+// before the Pro tier was retired cannot put the page into a removed tier.
+const [tier, setTier] = useState(tierById(initialTier).id);
 
   // No orientation or design picker: the client offers one card face, landscape
   // only, so these are fixed rather than chosen.
@@ -284,7 +286,7 @@ export function Order({ initialTier, go }) {
           <div>
             <h3>1. Choose your tier</h3>
             <div className="tier-pick">
-              {["basic", "standard", "pro"].map((id) => {
+              {["basic", "standard"].map((id) => {
                 const t = tierById(id);
                 return (
                   <button key={id} className={tier === id ? "sel" : ""} onClick={() => setTier(id)}>

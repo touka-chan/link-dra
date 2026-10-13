@@ -175,10 +175,10 @@ export function Footer({ go }) {
 
 const ANSWERS = [
   { k: ["order", "buy", "purchase"], a: "Open Get Your Card, pick a tier, personalise the print details, then enter your delivery address and pay. It takes about two minutes, and your profile is ready to edit as soon as payment clears." },
-  { k: ["tier", "difference", "basic", "pro"], a: "Basic covers tap-to-open with overview analytics. Standard adds a profile QR, audience analytics and the AI card scanner. Pro adds your logo, an offline vCard QR, engagement tracking and monthly reports." },
+  { k: ["tier", "difference", "basic", "standard"], a: "Basic covers tap-to-open with overview analytics. Standard adds a dual QR including an offline vCard, your logo, audience and engagement analytics, the AI card scanner and monthly reports." },
   { k: ["referral", "commission", "earn"], a: "Share your personal referral link and you earn a commission on each card ordered through it. Payouts go out by GCash or bank transfer." },
   { k: ["tap", "nfc", "not working", "isn't tapping"], a: "Check NFC is switched on, take off any metal case, and hold the card flat against the top back of the phone for two full seconds. If it still will not fire, scan the QR code instead and tell us so we can check the chip." },
-  { k: ["shipping", "delivery", "arrive"], a: "Metro Manila is two to four business days, Luzon three to five, Visayas four to six, Mindanao five to seven. Standard and Pro cards add two to three days for production." },
+  { k: ["shipping", "delivery", "arrive"], a: "Metro Manila is two to four business days, Luzon three to five, Visayas four to six, Mindanao five to seven. Standard cards add two to three days for production." },
 ];
 
 export function Chat() {

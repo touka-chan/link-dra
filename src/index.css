@@ -618,14 +618,17 @@ h1, h2, h3, h4 { line-height: 1.18; }
 /* --------------------------------------------------------------- tier card */
 
 /* The featured card is lifted by translateY(-16px). Without the padding it
-   rides up over the lede above it, so reserve that space here instead. */
+   rides up over the lede above it, so reserve that space here instead.
+   Two tiers remain after Pro was retired, so the grid is capped rather than
+   stretched: a third empty column would leave a hole in the row. */
 .tier-set {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(2, minmax(0, 380px));
+  justify-content: center;
   gap: 26px; align-items: start;
   padding-top: 20px;
 }
 @media (max-width: 940px) {
-  .tier-set { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; gap: 30px; }
+  .tier-set { grid-template-columns: minmax(0, 1fr); max-width: 440px; margin: 0 auto; gap: 30px; }
   .tier-card.is-featured { transform: none; }
 }
 

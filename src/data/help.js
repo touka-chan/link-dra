@@ -33,19 +33,19 @@ export const HELP_ARTICLES = [
     t: "What if their phone has no NFC?",
     d: "Every card also works as a plain QR code.",
     cat: "Getting Started",
-    body: "Standard and Pro cards print a QR code on the back that opens the same profile. Point any camera app at it and the page loads. Basic cards are tap-only by design, so if you expect a lot of older hardware in your network, Standard is the safer choice.",
+    body: "Standard cards print a QR code on the back that opens the same profile. Point any camera app at it and the page loads. Basic cards are tap-only by design, so if you expect a lot of older hardware in your network, Standard is the safer choice.",
   },
   {
     t: "Which phones are compatible?",
     d: "iOS and Android coverage, and what to do below that.",
     cat: "Getting Started",
-    body: "Any iPhone from the XR onward taps straight out of the box, and most Android phones from around 2018 onward work with NFC enabled in settings. Older or budget devices without NFC are covered by the QR code on Standard and Pro cards.",
+    body: "Any iPhone from the XR onward taps straight out of the box, and most Android phones from around 2018 onward work with NFC enabled in settings. Older or budget devices without NFC are covered by the QR code on Standard cards.",
   },
   {
     t: "What is the difference between the tiers?",
-    d: "Basic, Standard and Pro side by side.",
+    d: "Basic, Standard side by side.",
     cat: "Getting Started",
-    body: "Basic covers the essentials: a printed name, tap-to-open, and overview analytics. Standard adds a profile QR code, audience analytics and the AI card scanner. Pro adds your logo, a dual QR including an offline vCard, engagement tracking and monthly reports. The pricing section below has the full matrix.",
+    body: "Basic covers the essentials: a printed name, tap-to-open, and overview analytics. Standard adds a dual QR including an offline vCard, your logo, audience and engagement analytics, the AI card scanner and monthly reports. The pricing section below has the full matrix.",
   },
 
   // Ordering & Pricing
@@ -63,7 +63,7 @@ export const HELP_ARTICLES = [
   },
   {
     t: "Can I use my own logo?",
-    d: "Logo printing is a Pro feature.",
+    d: "Logo printing is a Standard feature.",
     cat: "Ordering & Pricing",
     body: "Upload an SVG or a high-resolution PNG during checkout and it is printed on the card. Basic prints Linkodra branding with your name. Standard prints your name, but no logo.",
   },
@@ -71,7 +71,7 @@ export const HELP_ARTICLES = [
     t: "How long does delivery take?",
     d: "Timelines by zone, plus the extra time for printing.",
     cat: "Ordering & Pricing",
-    body: "Metro Manila is two to four business days, Luzon three to five, Visayas four to six, and Mindanao five to seven. Standard and Pro cards with printed names need an extra two to three business days for production and quality checks.",
+    body: "Metro Manila is two to four business days, Luzon three to five, Visayas four to six, and Mindanao five to seven. Standard cards with printed names need an extra two to three business days for production and quality checks.",
   },
   {
     t: "How is shipping calculated?",
@@ -133,7 +133,7 @@ export const HELP_ARTICLES = [
     t: "Can people save my details to their phone?",
     d: "The one-tap vCard save button.",
     cat: "Your Digital Profile",
-    body: "Yes. Every profile has a Save Contact button that downloads a vCard file straight to the visitor's phone. Pro cards also print a second QR code that does the same job with no internet connection.",
+    body: "Yes. Every profile has a Save Contact button that downloads a vCard file straight to the visitor's phone. Standard cards also print a second QR code that does the same job with no internet connection.",
   },
   {
     t: "Can I hide my profile?",
@@ -153,7 +153,7 @@ export const HELP_ARTICLES = [
     t: "What analytics do I get?",
     d: "Overview, Audience, Engagement and Reports.",
     cat: "Analytics & Insights",
-    body: "Every tier includes Overview: views, unique visitors, saves and clicks, with a trend chart. Standard adds Audience, covering device, browser, operating system, source and peak hours. Pro adds Engagement, which ranks your links, and a monthly report in your inbox.",
+    body: "Every tier includes Overview: views, unique visitors, saves and clicks, with a trend chart. Standard adds Audience, covering device, browser, operating system, source and peak hours, plus Engagement, which ranks your links, and a monthly report in your inbox.",
   },
   {
     t: "How current is the data?",
@@ -169,15 +169,15 @@ export const HELP_ARTICLES = [
   },
   {
     t: "Which of my links get the most clicks?",
-    d: "Engagement tracking, Pro only.",
+    d: "Engagement tracking, Standard only.",
     cat: "Analytics & Insights",
     body: "The Engagement tab breaks clicks down by link type: email, phone, WhatsApp, website, each social icon, and the share button. It tells you which of your calls to action actually works.",
   },
   {
     t: "Where do monthly reports arrive?",
-    d: "What is in the Pro report.",
+    d: "What is in the Standard report.",
     cat: "Analytics & Insights",
-    body: "A tidy summary of the month lands in your inbox: views, saves, clicks, your top link and how it compares with the previous month. It is a Pro feature.",
+    body: "A tidy summary of the month lands in your inbox: views, saves, clicks, your top link and how it compares with the previous month. It is a Standard feature.",
   },
 
   // Connections
@@ -197,7 +197,7 @@ export const HELP_ARTICLES = [
     t: "How does the AI business card scanner work?",
     d: "Turning a paper card into a saved contact.",
     cat: "Connections",
-    body: "Take a photo of a paper business card and the scanner reads the name, title, company, phone and email straight into your Connections list. You review it before it saves. Available on Standard and Pro.",
+    body: "Take a photo of a paper business card and the scanner reads the name, title, company, phone and email straight into your Connections list. You review it before it saves. Available on Standard.",
   },
   {
     t: "What does Send My Details do?",
@@ -207,7 +207,7 @@ export const HELP_ARTICLES = [
   },
   {
     t: "What is the offline vCard QR code?",
-    d: "The second QR code printed on Pro cards.",
+    d: "The second QR code printed on Standard cards.",
     cat: "Connections",
     body: "It encodes your contact details directly rather than a web link, so someone can save you to their phone with no internet connection at all. Useful at events with patchy signal.",
   },
