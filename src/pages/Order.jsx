@@ -5,8 +5,9 @@
 // PayMongo checkout session would be created.
 
 import { useEffect, useState } from "react";
-import { BRAND, DESIGNS, PAYMENT_METHODS, REFERRAL_RATE, applyPromo, shippingFor, tierById } from "../brand.js";
+import { BRAND, DESIGNS, REFERRAL_RATE, applyPromo, shippingFor, tierById } from "../brand.js";
 import { CardPreview } from "../components/brand.jsx";
+import { PayModal } from "../components/PayModal.jsx";
 import { Field, Segmented, Wizard } from "../components/ui.jsx";
 import { write } from "../store.js";
 
@@ -81,10 +82,14 @@ export function Order({ initialTier, go }) {
   const [errors, setErrors] = useState({});
 
   const [promo, setPromo] = useState("");
-  const [pay, setPay] = useState("qrph");
-  const [simulateFailure, setSimulateFailure] = useState(false);
   const [order, setOrder] = useState(null);
   const [paying, setPaying] = useState(false);
+
+  // Manual QR payment: the Continue button shows a spinner, then the modal
+  // below collects the receipt. Proof survives steps 2 and 3 with the order.
+  const [preparing, setPreparing] = useState(false);
+  const [payOpen, setPayOpen] = useState(false);
+  const [proof, setProof] = useState(null);
 
   // The PSGC dataset is ~540 KB, so it is only pulled in once the buyer reaches
   // step 2. Vite splits it into its own chunk.
@@ -130,7 +135,19 @@ export function Order({ initialTier, go }) {
     if (!EMAIL_RE.test(contact.email.trim())) next.email = "Enter a valid email address.";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
-    setStep(2);
+    // Brief spinner, then the manual QR payment modal.
+    setPreparing(true);
+    setTimeout(() => {
+      setPreparing(false);
+      setPayOpen(true);
+    }, 900);
+  };
+
+  // A different tier means a different amount due, so a previous receipt
+  // cannot carry over.
+  const pickTier = (id) => {
+    setTier(id);
+    setProof(null);
   };
 
   const goToReview = () => {
@@ -140,20 +157,20 @@ export function Order({ initialTier, go }) {
 
   const placeOrder = () => {
     setPaying(true);
-    // Stands in for the PayMongo checkout round-trip.
+    // Payment was already verified from the uploaded receipt. This only
+    // records the order with its proof attached.
     setTimeout(() => {
       setPaying(false);
-      if (simulateFailure) {
-        setOrder({ failed: true });
-        return;
-      }
       const code = Math.random().toString(36).slice(2, 8);
       const placed = {
         id: `LK-${Date.now().toString().slice(-6)}`,
         code,
         tier: tier,
         total,
-        method: pay,
+        paid: proof?.amount ?? 0,
+        payment: proof
+          ? { method: "Manual QR", refNo: proof.refNo, fileName: proof.fileName }
+          : { method: "Manual QR", refNo: "", fileName: "" },
         customer: { ...contact, ...address },
         card: { orientation, design, finish, printName, logoName },
       };
@@ -163,26 +180,7 @@ export function Order({ initialTier, go }) {
     }, 900);
   };
 
-  if (order?.failed) {
-    return (
-      <section className="section narrow">
-        <div className="panel">
-          <h1>Payment did not go through</h1>
-          <p className="muted">
-            No charge was made. Bank debits often expire while the app session sits idle, so reopening your banking
-            app and retrying usually fixes it. You can also switch to another method below.
-          </p>
-          <div className="btn-row">
-            <button className="btn primary" onClick={() => setOrder(null)}>Try again</button>
-            <button className="btn ghost" onClick={() => go("contact")}>Contact support</button>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   if (order) {
-    const method = PAYMENT_METHODS.find((m) => m.id === order.method);
     return (
       <section className="section narrow">
         <div className="panel success">
@@ -196,7 +194,10 @@ export function Order({ initialTier, go }) {
           <div className="panel tight" style={{ margin: "16px 0" }}>
             <div className="summary-row"><span>Order</span><strong>{order.id}</strong></div>
             <div className="summary-row"><span>Tier</span><strong>{tierById(order.tier).name}</strong></div>
-            <div className="summary-row"><span>Payment</span><strong>{method?.name}</strong></div>
+            <div className="summary-row"><span>Payment</span><strong>Manual QR</strong></div>
+            {order.payment.refNo && (
+              <div className="summary-row"><span>Reference no.</span><strong>{order.payment.refNo}</strong></div>
+            )}
             <div className="summary-row"><span>Total paid</span><strong>₱{order.total.toLocaleString()}</strong></div>
             <div className="summary-row">
               <span>Your profile</span>
@@ -235,7 +236,7 @@ export function Order({ initialTier, go }) {
               {["basic", "standard", "pro"].map((id) => {
                 const t = tierById(id);
                 return (
-                  <button key={id} className={tier === id ? "sel" : ""} onClick={() => setTier(id)}>
+                  <button key={id} className={tier === id ? "sel" : ""} onClick={() => pickTier(id)}>
                     {t.popular && <span className="flag">MOST POPULAR</span>}
                     <b>{t.name}</b>
                     <span>₱{t.price.toLocaleString()}</span>
@@ -301,9 +302,24 @@ export function Order({ initialTier, go }) {
               </Field>
             )}
 
-            <button className="btn primary full" onClick={goToDetails}>Continue</button>
+            <button className="btn primary full" onClick={goToDetails} disabled={preparing}>
+              {preparing ? <><span className="spinner" /> Preparing payment</> : "Continue"}
+            </button>
           </div>
         </div>
+      )}
+
+      {payOpen && (
+        <PayModal
+          tierName={selected.name}
+          due={selected.price}
+          onClose={() => setPayOpen(false)}
+          onConfirm={(p) => {
+            setProof(p);
+            setPayOpen(false);
+            setStep(2);
+          }}
+        />
       )}
 
       {step === 2 && (
@@ -366,20 +382,20 @@ export function Order({ initialTier, go }) {
             <input id="promo" value={promo} onChange={(e) => setPromo(e.target.value)} placeholder="Promo code" />
           </Field>
 
-          <label>Payment method</label>
-          <div className="pay-pick">
-            {PAYMENT_METHODS.map((m) => (
-              <button key={m.id} className={pay === m.id ? "sel" : ""} onClick={() => setPay(m.id)}>
-                {m.name}
-                <small>{m.note}</small>
-              </button>
-            ))}
-          </div>
-
-          <div className="check">
-            <input id="simfail" type="checkbox" checked={simulateFailure} onChange={(e) => setSimulateFailure(e.target.checked)} />
-            <label htmlFor="simfail">Simulate a declined payment (demo)</label>
-          </div>
+          <label>Payment</label>
+          {proof ? (
+            <div className="panel tight pm-proof">
+              <div className="summary-row"><span>Method</span><strong>Manual QR</strong></div>
+              <div className="summary-row"><span>Reference no.</span><strong>{proof.refNo}</strong></div>
+              <div className="summary-row"><span>Amount on receipt</span><strong>₱{proof.amount.toLocaleString("en-PH", { minimumFractionDigits: 2 })}</strong></div>
+              <div className="summary-row"><span>Receipt</span><strong>{proof.fileName}</strong></div>
+              {proof.dataUrl && (
+                <img className="pm-thumb sm" src={proof.dataUrl} alt="Uploaded payment receipt" />
+              )}
+            </div>
+          ) : (
+            <p className="field-note">No receipt attached yet. Go back to Configure and press Continue to pay.</p>
+          )}
 
           <div className="totals">
             <div><span>Card</span><span>₱{selected.price.toLocaleString()}</span></div>
@@ -389,17 +405,27 @@ export function Order({ initialTier, go }) {
               <span>{shippingFee === 0 && address.province ? "Free" : `₱${shippingFee.toLocaleString()}`}</span>
             </div>
             <div className="grand"><span>Total</span><span>₱{total.toLocaleString()}</span></div>
+            <div><span>Paid via QR</span><span>₱{(proof?.amount ?? 0).toLocaleString("en-PH", { minimumFractionDigits: 2 })}</span></div>
+            {proof && total - proof.amount > 0.005 && (
+              <div><span>Balance (shipping)</span><span>₱{(total - proof.amount).toLocaleString("en-PH", { minimumFractionDigits: 2 })}</span></div>
+            )}
           </div>
           {!address.province && <p className="field-note">Shipping is worked out from your delivery province.</p>}
+          {proof && total - proof.amount > 0.005 && (
+            <p className="field-note">
+              Your receipt covers the card. The shipping balance is settled on delivery arrangement — message us after
+              checkout and we will confirm it.
+            </p>
+          )}
 
           <div className="btn-row">
             <button className="btn ghost" onClick={() => setStep(2)}>Back</button>
-            <button className="btn primary big" onClick={placeOrder} disabled={paying}>
-              {paying ? <><span className="spinner" /> Processing</> : `Pay ₱${total.toLocaleString()}`}
+            <button className="btn primary big" onClick={placeOrder} disabled={paying || !proof}>
+              {paying ? <><span className="spinner" /> Processing</> : "Place order"}
             </button>
           </div>
           <p className="small muted center">
-            Demo checkout. No card is charged and no payment details are collected.
+            Manual QR payment. Your receipt is attached to this order for verification.
           </p>
         </div>
       )}

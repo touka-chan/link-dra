@@ -98,8 +98,9 @@ tapped card work; the four places in the help centre, FAQ and privacy policy tha
 the control are only true because of it.
 
 **Backend seams.** Six contained points, all frontend for now:
-`src/store.js` (localStorage), `placeOrder()` (PayMongo), `signIn()` (auth),
-`AddressFields` (geo API), `/c/:code` (profile endpoint), contact form submit.
+`src/store.js` (localStorage), `placeOrder()` (order record with receipt proof),
+`src/receipt.js` + `PayModal` (manual QR + receipt OCR), `AddressFields` (geo API),
+`/c/:code` (profile endpoint), contact form submit.
 
 ## Verification
 
@@ -121,12 +122,26 @@ node scripts/shots.mjs --theme=light --only=home
 The in-app browser panel is not a substitute: it renders narrower than the viewport it
 reports, so `vw` units and media queries resolve against the wrong width.
 
+## Manual QR payment and receipt scanning
+
+Step 1's Continue shows a spinner, then a modal with the static payment QR from
+`public/qr.png` (drop your GCash QR there under exactly that name). The buyer
+pays the exact tier amount manually, uploads the e-wallet receipt screenshot,
+and a free in-browser OCR pass (tesseract.js, no API key) reads the reference
+number and amount. Both fields stay editable, the receipt must show at least 9
+reference digits, and the scanned amount must match the tier price to the
+centavo before Confirm unlocks step 2. The proof (ref, amount, filename)
+travels with the order into review and the confirmation screen.
+
+`scripts/test-receipt.mjs` covers the parser against GCash / Maya / noisy
+samples: `node scripts/test-receipt.mjs`.
+
 ## Shipping and promos
 
 Shipping follows the island group of the selected province: Metro Manila ₱99, Luzon ₱149,
 Visayas ₱199, Mindanao ₱249. Promo codes `LINKODRA10` (10% off) and `FREESHIP` (free
-shipping) apply on the review step. The checkout has a "simulate declined payment"
-checkbox to exercise the failure path.
+shipping) apply on the review step. The QR receipt covers the card price; any shipping
+balance is shown on review and settled on delivery arrangement.
 
 ## Hosting in WordPress
 
