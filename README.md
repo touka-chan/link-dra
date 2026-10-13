@@ -169,11 +169,12 @@ code or git. Two senders, first configured wins:
 Until anything is configured, sending is skipped silently and checkout works
 normally.
 
-## Localhost email test (no PHP, no hosting)
+## Localhost backend + database (no PHP, no hosting)
 
-You have Node but no PHP, so a Node twin of the endpoint is included. Secrets
-live in a `.env` file (git-ignored, never committed) instead of the command
-line — that also works in Git Bash, where PowerShell's `$env:` syntax fails.
+`npm run backend:local` starts a Node backend on http://127.0.0.1:8080 with a
+file SQLite database at `data/linkodra.db` (git-ignored). Secrets live in a
+`.env` file (git-ignored, never committed) instead of the command line — that
+also works in Git Bash, where PowerShell's `$env:` syntax fails.
 
 Terminal 1 — the site:
 ```
@@ -190,9 +191,9 @@ RESEND_API_KEY=re_...
 LINKODRA_MAIL_TOKEN=ccb5183db855d2fc733b24778b1842f1ea0e93aac5fcbf05
 ```
 
-Terminal 2 — the mail endpoint:
+Terminal 2 — the backend:
 ```
-npm run mail:local
+npm run backend:local
 ```
 
 Browser console on the site (one time):
@@ -200,8 +201,14 @@ Browser console on the site (one time):
 localStorage.setItem("lk-mail-endpoint", "http://127.0.0.1:8080/send")
 ```
 
+Endpoints: `POST /send` (mail, same guardrails as production),
+`POST /api/orders` (the checkout calls this itself, best-effort),
+`GET /api/orders?token=...` (newest first, for verification),
+`GET /health`. Every send is recorded in the `mail_log` table either way.
+
 Then place a test order. Two Resend rules apply on localhost too: the API key
-must be real, and until your domain is verified Resend only delivers to your
+must be valid (a revoked or mistyped key answers 401 and nothing is
+delivered), and until your domain is verified Resend only delivers to your
 own Resend account email — so use that address as the order email for the
 test. Watch Terminal 2 for `resend failed` lines if nothing arrives.
 

@@ -11,6 +11,19 @@ import { formatPeso } from "./receipt.js";
 
 export { isMailConfigured };
 
+/**
+ * Base URL of the backend (local dev server or deployed endpoint file's
+ * folder), or null when mail is unconfigured. The console override
+ * (`lk-mail-endpoint`) wins so localhost testing never touches git.
+ */
+export function getApiBase() {
+  const override =
+    (typeof localStorage !== "undefined" && localStorage.getItem("lk-mail-endpoint")) ||
+    MAIL_CONFIG.resendEndpoint;
+  if (!override) return null;
+  return override.replace(/\/send(\.php)?$/, "").replace(/\/$/, "") || null;
+}
+
 function escapeHtml(s) {
   return String(s || "")
     .replace(/&/g, "&amp;")

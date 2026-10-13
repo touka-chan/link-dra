@@ -9,7 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "gen:geo": "node scripts/gen-geo.mjs",
-    "mail:local": "node server/resend-local.mjs"
+    "backend:local": "node server/backend.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

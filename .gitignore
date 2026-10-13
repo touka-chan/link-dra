@@ -16,6 +16,9 @@ dist-ssr
 # Local secrets. .env.example is the committed template.
 .env
 
+# Local SQLite database (orders + mail log live here).
+data/
+
 # Screenshot sweep output, including the throwaway Chrome profiles it seeds.
 .shots
 
