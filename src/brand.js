@@ -86,7 +86,6 @@ export const tierRank = (id) => tierById(id).rank;
 // 2 = included and called out. Rows are rendered in order.
 export const COMPARE = [
   { label: "Card branding", values: ["Linkodra + name", "Custom name", "Custom name + logo"] },
-  { label: "Printed phone number", values: [0, 1, 1] },
   { label: "NFC tap to profile", values: [1, 1, 1] },
   { label: "Profile QR code", values: [0, 1, 1] },
   { label: "Offline vCard QR", values: [0, 0, 1] },

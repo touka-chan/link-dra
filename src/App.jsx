@@ -1,24 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 import { Navbar, Footer, Chat, Cookies } from "./components/Layout.jsx";
-import { Home, HowItWorks, Features, Pricing } from "./pages/marketing.jsx";
+import { Home } from "./pages/marketing.jsx";
 import { Order } from "./pages/Order.jsx";
-import { Login, Forgot, Dashboard, PublicProfile, ComingSoon } from "./pages/app.jsx";
-import { HelpCenter, Faq, Contact, About, Teams, Legal } from "./pages/support.jsx";
+import { Dashboard, PublicProfile, ComingSoon } from "./pages/app.jsx";
+import { About, Teams, Legal } from "./pages/support.jsx";
 import "./index.css";
 
 const NAV_MAP = {
   home: "/",
-  how: "/how-it-works",
-  features: "/features",
-  pricing: "/pricing",
   order: "/order",
-  login: "/login",
-  forgot: "/forgot-password",
   dashboard: "/dashboard",
   profile: "/c/john",
-  help: "/help-center",
-  faq: "/faq",
-  contact: "/contact",
   about: "/about",
   teams: "/teams",
   soon: "/coming-soon",
@@ -29,6 +21,10 @@ const NAV_MAP = {
   dispute: "/legal/dispute",
 };
 
+// Nav items do not open pages. They scroll to blocks on the single landing
+// page, wherever the visitor currently is.
+const SECTIONS = new Set(["how", "features", "pricing", "help", "faq", "contact"]);
+
 const LEGAL_DOCS = new Set(["privacy", "terms", "cookies", "shipping", "dispute"]);
 
 function parseHash() {
@@ -37,8 +33,15 @@ function parseHash() {
   return { path, tier: new URLSearchParams(query || "").get("tier") };
 }
 
+function scrollToSection(id, smooth = true) {
+  document
+    .getElementById(`section-${id}`)
+    ?.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+}
+
 export default function App() {
   const [hash, setHash] = useState(parseHash);
+  const [pendingSection, setPendingSection] = useState(null);
 
   useEffect(() => {
     const onChange = () => {
@@ -49,7 +52,27 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onChange);
   }, []);
 
+  // A section requested from another route waits until the landing page has
+  // rendered, then glides to it.
+  useEffect(() => {
+    if (!pendingSection) return;
+    const t = setTimeout(() => {
+      scrollToSection(pendingSection);
+      setPendingSection(null);
+    }, 80);
+    return () => clearTimeout(t);
+  }, [pendingSection, hash]);
+
   const go = useCallback((id, tier) => {
+    if (SECTIONS.has(id)) {
+      if (parseHash().path === "/") {
+        scrollToSection(id);
+      } else {
+        setPendingSection(id);
+        window.location.hash = "/";
+      }
+      return;
+    }
     const target = NAV_MAP[id] ?? "/";
     const next = id === "order" && tier ? `${target}?tier=${tier}` : target;
     if (window.location.hash === `#${next}`) {
@@ -66,18 +89,17 @@ export default function App() {
 
   // A table rather than a chain of branches. Each entry matches a path prefix and
   // returns the nav key plus a render function; only the first match is invoked.
+  // Old section URLs land on the matching block of the one-page landing.
   const ROUTES = [
-    ["/how", "how", () => <HowItWorks go={go} />],
-    ["/feat", "features", () => <Features go={go} />],
-    ["/pric", "pricing", () => <Pricing go={go} />],
+    ["/how", "how", () => <Home go={go} section="how" />],
+    ["/feat", "features", () => <Home go={go} section="features" />],
+    ["/pric", "pricing", () => <Home go={go} section="pricing" />],
     ["/order", "order", () => <Order initialTier={tier} go={go} />],
-    ["/login", "login", () => <Login go={go} />],
-    ["/forgot", "login", () => <Forgot go={go} />],
     ["/dashboard", "dashboard", () => <Dashboard go={go} />],
     ["/c/", "profile", () => <PublicProfile code={path.slice(3)} go={go} />],
-    ["/help", "help", () => <HelpCenter go={go} />],
-    ["/faq", "faq", () => <Faq />],
-    ["/contact", "contact", () => <Contact />],
+    ["/help", "help", () => <Home go={go} section="help" />],
+    ["/faq", "faq", () => <Home go={go} section="faq" />],
+    ["/contact", "contact", () => <Home go={go} section="contact" />],
     ["/about", "about", () => <About go={go} />],
     ["/teams", "teams", () => <Teams go={go} />],
     ["/coming-soon", "soon", () => <ComingSoon go={go} />],

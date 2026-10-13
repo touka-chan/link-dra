@@ -1,5 +1,8 @@
-// Public marketing pages: home, how it works, features and pricing.
+// Public marketing pages: one-page landing plus the section blocks it is
+// composed from. The nav scrolls to anchors on the landing instead of
+// opening separate pages.
 
+import { useEffect } from "react";
 import { TIERS, COMPARE } from "../brand.js";
 import { HeroCard } from "../components/brand.jsx";
 import { Icon } from "../components/icons.jsx";
@@ -15,6 +18,7 @@ import {
 } from "../data/content.js";
 import { FAQS } from "../data/faq.js";
 import { DEMO_PROFILE } from "../data/profile.js";
+import { Contact, Faq, HelpCenter } from "./support.jsx";
 
 function TierCard({ tier, onSelect, compact = false }) {
   const featured = tier.popular;
@@ -46,8 +50,14 @@ function TierCard({ tier, onSelect, compact = false }) {
   );
 }
 
-export function Home({ go }) {
+export function Home({ go, section }) {
   const p = DEMO_PROFILE;
+
+  // Deep links (for example #/pricing) land on the matching block.
+  useEffect(() => {
+    if (!section) return;
+    document.getElementById(`section-${section}`)?.scrollIntoView({ behavior: "auto", block: "start" });
+  }, [section]);
 
   return (
     <>
@@ -93,22 +103,17 @@ export function Home({ go }) {
         </div>
       </section>
 
-      <section className="band">
-        <div className="band-head">
-          <h2>The Lineup</h2>
-          <p>Choose the tier that fits how you network. Every card is premium PVC with reliable NFC.</p>
-        </div>
-        <div className="tier-set">
-          {TIERS.map((t) => (
-            <TierCard key={t.id} tier={t} onSelect={(id) => go("order", id)} />
-          ))}
-        </div>
-        <div className="carousel-dots" aria-hidden="true">
-          {TIERS.map((t) => (
-            <span key={t.id} />
-          ))}
-        </div>
-      </section>
+      <div id="section-how" className="anchor">
+        <HowItWorks go={go} />
+      </div>
+
+      <div id="section-features" className="anchor">
+        <Features go={go} />
+      </div>
+
+      <div id="section-pricing" className="anchor">
+        <Pricing go={go} />
+      </div>
 
       <section className="band">
         <div className="testimonial">
@@ -127,6 +132,18 @@ export function Home({ go }) {
           </div>
         </div>
       </section>
+
+      <div id="section-help" className="anchor">
+        <HelpCenter go={go} />
+      </div>
+
+      <div id="section-faq" className="anchor">
+        <Faq />
+      </div>
+
+      <div id="section-contact" className="anchor">
+        <Contact />
+      </div>
 
       <section className="band final-cta">
         <h2>

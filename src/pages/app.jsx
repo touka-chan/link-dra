@@ -1,10 +1,8 @@
-// Account surfaces: sign-in, password reset, the dashboard, and the public
-// profile that a card tap opens.
+// Account surfaces: the dashboard and the public profile that a card tap opens.
 
 import { useMemo, useState } from "react";
 import { BRAND, REFERRAL_RATE, TIERS, tierById } from "../brand.js";
-import { LogoMark, Wordmark } from "../components/brand.jsx";
-import { GoogleMark, Icon } from "../components/icons.jsx";
+import { Icon } from "../components/icons.jsx";
 import { BarChart, Empty, Field, Locked, Segmented, Stat } from "../components/ui.jsx";
 import { read, remove, write } from "../store.js";
 import {
@@ -19,122 +17,6 @@ const LS_USER = "user";
 const LS_PROFILE = "profile";
 const LS_CONNECTIONS = "connections";
 const LS_SENT = "sent";
-
-export function Login({ go }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(true);
-  const [reveal, setReveal] = useState(false);
-
-  const signIn = (method) => {
-    write(LS_USER, {
-      name: email.split("@")[0] || "Linkodra User",
-      email: email || "you@linkodra.ph",
-      method,
-      remember,
-    });
-    go("dashboard");
-  };
-
-  return (
-    <section className="section narrow auth-wrap">
-      <div className="panel auth">
-        <div className="auth-lockup">
-          <span className="auth-mark"><LogoMark size={30} /></span>
-          <div>
-            <Wordmark />
-            <em>TAP · CONNECT · SHARE</em>
-          </div>
-        </div>
-
-        <h1>Welcome back</h1>
-
-        <button className="btn-google" onClick={() => signIn("google")}>
-          <GoogleMark />
-          Sign in with Google
-        </button>
-
-        <div className="or"><span>OR</span></div>
-
-        <Field label="Email or username" id="email">
-          <input
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            autoComplete="username"
-          />
-        </Field>
-
-        <Field label="Password" id="password">
-          <div className="password-wrap">
-            <input
-              id="password"
-              type={reveal ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              autoComplete="current-password"
-            />
-            <button
-              type="button"
-              className="reveal"
-              onClick={() => setReveal((v) => !v)}
-              aria-label={reveal ? "Hide password" : "Show password"}
-            >
-              <Icon name={reveal ? "eyeOff" : "eye"} size={18} />
-            </button>
-          </div>
-        </Field>
-
-        <div className="check">
-          <input id="remember" type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-          <label htmlFor="remember">Remember me</label>
-        </div>
-
-        <button className="btn primary full auth-submit" onClick={() => signIn("password")}>
-          Sign in
-        </button>
-
-        <button className="link full auth-forgot" onClick={() => go("forgot")}>
-          Forgot your password?
-        </button>
-
-        <p className="small muted center auth-demo">Demo sign-in. Any details work and nothing leaves this browser.</p>
-      </div>
-    </section>
-  );
-}
-
-export function Forgot({ go }) {
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-
-  return (
-    <section className="section narrow">
-      <div className="panel">
-        <h1>Reset your password</h1>
-        {!sent ? (
-          <>
-            <p className="muted">Enter the email on your account and we will send you a reset link.</p>
-            <Field label="Email" id="reset-email">
-              <input id="reset-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.ph" />
-            </Field>
-            <div className="btn-row">
-              <button className="btn primary" onClick={() => setSent(true)}>Send reset link</button>
-              <button className="btn ghost" onClick={() => go("login")}>Back to sign in</button>
-            </div>
-          </>
-        ) : (
-          <div className="panel success">
-            <p>If an account exists for <strong>{email || "that address"}</strong>, a reset link is on its way. The link expires in an hour.</p>
-            <button className="btn ghost" onClick={() => go("login")}>Back to sign in</button>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
 
 function ProfileTab({ profile, setProfile, user, go }) {
   const [saved, setSaved] = useState(false);
@@ -526,10 +408,10 @@ export function Dashboard({ go }) {
     return (
       <section className="section narrow">
         <div className="panel">
-          <h1>Sign in to continue</h1>
-          <p className="muted">Your dashboard holds your profile, analytics and connections.</p>
+          <h1>Get a card to unlock your dashboard</h1>
+          <p className="muted">Your dashboard is created automatically when you order. It holds your profile, analytics and connections.</p>
           <div className="btn-row">
-            <button className="btn primary" onClick={() => go("login")}>Go to sign in</button>
+            <button className="btn primary" onClick={() => go("order")}>Get Your Card</button>
           </div>
         </div>
       </section>
@@ -668,8 +550,8 @@ export function PublicProfile({ code, go }) {
             The cardholder has chosen not to publish their details. Nothing is shown to visitors, but the card
             itself is still working.
           </p>
-          <button className="btn primary full" onClick={() => go("login")}>
-            Sign in to manage your profile
+          <button className="btn primary full" onClick={() => go("dashboard")}>
+            Open your dashboard
           </button>
         </div>
       </section>

@@ -23,7 +23,7 @@ export const FAQS = [
   { g: "The NFC Card", q: "Do I need an app?", a: "No, and neither does the person you hand the card to. Tapping uses the reader already inside iOS and Android." },
   { g: "The NFC Card", q: "Will it work on every phone?", a: "With any NFC-enabled phone, which covers virtually every modern handset. For devices without NFC, Standard and Pro cards also carry a QR code that any camera app can read." },
   { g: "The NFC Card", q: "What is the card made of?", a: "Premium PVC, the same material banks use for payment cards. It resists water and is built to survive a wallet for years." },
-  { g: "The NFC Card", q: "Can I print my own logo?", a: "Yes on Pro. You upload an SVG or high-resolution PNG during checkout. Basic prints Linkodra branding with your name, Standard prints your name and phone number." },
+  { g: "The NFC Card", q: "Can I print my own logo?", a: "Yes on Pro. You upload an SVG or high-resolution PNG during checkout. Basic prints Linkodra branding with your name, Standard prints your name." },
   { g: "The NFC Card", q: "What if I lose it?", a: "Your profile stays live and keeps working. You can order a replacement whenever you want and it links to the same profile with no setup." },
   { g: "The NFC Card", q: "Can the chip be reprogrammed?", a: "The chip ships pre-programmed with your permanent profile link. We advise against changing it, since it would break the link to your live profile." },
   { g: "The NFC Card", q: "Do I need internet for someone to use it?", a: "The profile itself needs a connection, but Pro cards print an offline vCard QR code, so your contact details can still be saved with no internet at all." },
@@ -45,7 +45,7 @@ export const FAQS = [
 
   // Ordering & Delivery
   { g: "Ordering & Delivery", q: "How do I order?", a: "Go to Order, pick a tier, personalise the print details, enter your delivery address, and pay. Your profile is ready to edit as soon as payment clears." },
-  { g: "Ordering & Delivery", q: "How long does shipping take?", a: "Metro Manila two to four business days, Luzon three to five, Visayas four to six, Mindanao five to seven. Printed Standard and Pro cards add two to three days for production and quality checks." },
+  { g: "Ordering & Delivery", q: "How long does shipping take?", a: "Metro Manila two to four business days, Luzon three to five, Visayas four to six, Mindanao five to seven. Standard and Pro cards add two to three days for production and quality checks." },
   { g: "Ordering & Delivery", q: "What do the cards cost?", a: "Basic is ₱699, Standard is ₱1,399, and Pro is ₱1,999, per card. The pricing page has the full comparison." },
   { g: "Ordering & Delivery", q: "How is shipping calculated?", a: "By the province you enter at checkout, grouped into zones by island group. The fee appears on the review step before you pay." },
   { g: "Ordering & Delivery", q: "Can I order in bulk?", a: "Yes. Order as many cards as you need at checkout, or contact us for volume pricing and shared branding for an organisation." },

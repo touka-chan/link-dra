@@ -45,7 +45,7 @@ export const HELP_ARTICLES = [
     t: "What is the difference between the tiers?",
     d: "Basic, Standard and Pro side by side.",
     cat: "Getting Started",
-    body: "Basic covers the essentials: a printed name, tap-to-open, and overview analytics. Standard adds a printed phone number, a profile QR code, audience analytics and the AI card scanner. Pro adds your logo, a dual QR including an offline vCard, engagement tracking and monthly reports. The pricing page has the full matrix.",
+    body: "Basic covers the essentials: a printed name, tap-to-open, and overview analytics. Standard adds a profile QR code, audience analytics and the AI card scanner. Pro adds your logo, a dual QR including an offline vCard, engagement tracking and monthly reports. The pricing section below has the full matrix.",
   },
 
   // Ordering & Pricing
@@ -59,13 +59,13 @@ export const HELP_ARTICLES = [
     t: "What do I choose on the Configure step?",
     d: "Orientation, design, finish and what gets printed.",
     cat: "Ordering & Pricing",
-    body: "Landscape and portrait are both standard card formats. Three designs are available and the preview updates as you type. Matte or glossy changes the coating only. The name and phone fields are what get printed, and the logo field appears on Pro.",
+    body: "Landscape and portrait are both standard card formats. Three designs are available and the preview updates as you type. Matte or glossy changes the coating only. The name field is what gets printed, and the logo field appears on Pro.",
   },
   {
     t: "Can I use my own logo?",
     d: "Logo printing is a Pro feature.",
     cat: "Ordering & Pricing",
-    body: "Upload an SVG or a high-resolution PNG during checkout and it is printed on the card. Basic prints Linkodra branding with your name. Standard prints your name and phone number, but no logo.",
+    body: "Upload an SVG or a high-resolution PNG during checkout and it is printed on the card. Basic prints Linkodra branding with your name. Standard prints your name, but no logo.",
   },
   {
     t: "How long does delivery take?",
@@ -234,16 +234,16 @@ export const HELP_ARTICLES = [
 
   // Account & Security
   {
-    t: "How do I sign in?",
-    d: "Email, password, or Google.",
+    t: "How do I open my dashboard?",
+    d: "It is created when you order.",
     cat: "Account & Security",
-    body: "Use the Login link in the header. You can sign in with an email address and password, or through Google. Remember me keeps you signed in on a personal device.",
+    body: "Your dashboard is created automatically when your order payment clears, using the email you entered at checkout. Open it anytime to edit your profile, check analytics and manage connections.",
   },
   {
-    t: "I forgot my password.",
-    d: "Getting a reset link.",
+    t: "I lost access to my dashboard.",
+    d: "Getting back in.",
     cat: "Account & Security",
-    body: "Use Forgot your password on the login screen and we will email a reset link. The link expires after an hour. If it does not arrive, check spam before asking us to resend.",
+    body: "Use the same email you ordered with and contact us so we can restore your access. If it still does not work, check spam for our reply before asking us to resend.",
   },
   {
     t: "Is my data safe?",

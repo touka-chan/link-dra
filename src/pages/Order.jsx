@@ -74,9 +74,6 @@ export function Order({ initialTier, go }) {
   const [design, setDesign] = useState("gradient");
   const [finish, setFinish] = useState("glossy");
   const [printName, setPrintName] = useState("");
-  const [printTitle, setPrintTitle] = useState("");
-  const [printCompany, setPrintCompany] = useState("");
-  const [printPhone, setPrintPhone] = useState("");
   const [logoName, setLogoName] = useState("");
 
   const [contact, setContact] = useState({ fullName: "", email: "", phone: "" });
@@ -104,7 +101,6 @@ export function Order({ initialTier, go }) {
   }, [step, geo.length]);
 
   const selected = tierById(tier);
-  const showPhone = tier !== "basic";
   const showLogo = tier === "pro";
 
   // Shipping follows the island group of the chosen province.
@@ -159,7 +155,7 @@ export function Order({ initialTier, go }) {
         total,
         method: pay,
         customer: { ...contact, ...address },
-        card: { orientation, design, finish, printName, printTitle, printCompany, printPhone, logoName },
+        card: { orientation, design, finish, printName, logoName },
       };
       write("order", placed);
       write("user", { name: contact.fullName || printName, email: contact.email, tier, code });
@@ -252,9 +248,6 @@ export function Order({ initialTier, go }) {
 
           <CardPreview
             name={printName}
-            title={printTitle}
-            company={printCompany}
-            phone={showPhone ? printPhone : ""}
             tier={tier}
             design={design}
             orientation={orientation}
@@ -301,23 +294,6 @@ export function Order({ initialTier, go }) {
             <Field label="Email" id="step1Email" error={errors.email} hint="Order updates and your profile invite go here.">
               <input id="step1Email" type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} placeholder="you@company.ph" autoComplete="email" />
             </Field>
-
-            {tier !== "basic" && (
-              <div className="field-row">
-                <Field label="Title to print" id="printTitle">
-                  <input id="printTitle" value={printTitle} onChange={(e) => setPrintTitle(e.target.value)} placeholder="Sales Manager" />
-                </Field>
-                <Field label="Company to print" id="printCompany">
-                  <input id="printCompany" value={printCompany} onChange={(e) => setPrintCompany(e.target.value)} placeholder="Peak Creatives" />
-                </Field>
-              </div>
-            )}
-
-            {showPhone && (
-              <Field label="Phone to print" id="printPhone" hint={tier === "basic" ? "Not printed on Basic." : "Printed on Standard and Pro."}>
-                <input id="printPhone" value={printPhone} onChange={(e) => setPrintPhone(e.target.value)} placeholder="+63 917 000 0000" />
-              </Field>
-            )}
 
             {showLogo && (
               <Field label="Company logo" id="logo" hint="Pro only. SVG or high-resolution PNG.">
@@ -375,8 +351,6 @@ export function Order({ initialTier, go }) {
             <span>Print</span>
             <strong>
               {printName}
-              {(printTitle || printCompany) && ` · ${[printTitle, printCompany].filter(Boolean).join(", ")}`}
-              {showPhone && printPhone ? ` · ${printPhone}` : ""}
             </strong>
           </div>
           <div className="summary-row">
