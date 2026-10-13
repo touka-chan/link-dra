@@ -1320,6 +1320,13 @@ code {
 .pm-upload.dragging { border-color: var(--green); background: rgba(34, 233, 72, 0.06); }
 .pm-thumb { max-width: 100%; max-height: 230px; border-radius: 8px; display: block; margin: 0 auto; }
 .pm-thumb.sm { max-height: 130px; margin-top: 10px; }
+/* The scanned amount is not editable. It is dimmed and refuses the caret so it
+   reads as a result of the scan rather than something still being filled in. */
+.pm-locked {
+  background: var(--bg-soft) !important; color: var(--muted) !important;
+  cursor: not-allowed; border-style: dashed !important;
+}
+
 .pm-progress { height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 99px; margin: 12px 0; overflow: hidden; }
 .pm-progress i { display: block; height: 100%; background: var(--green); border-radius: 99px; transition: width 0.2s ease; }
 .pm-proof { margin: 10px 0; }

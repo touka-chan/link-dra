@@ -4,7 +4,10 @@
 // form: a loading spinner first, then this dialog with the static payment QR,
 // an uploader for the GCash / e-wallet receipt, and a free in-browser OCR
 // pass (tesseract.js) that reads the reference number and amount off the
-// receipt. Both values stay editable so a bad scan can be fixed by hand.
+// receipt. The reference stays editable so a bad scan can be corrected by hand,
+// but the amount is locked to whatever the scan read: it is the figure the order
+// is verified against, and letting it be typed would let a buyer claim any
+// payment amount passed.
 
 import { useEffect, useRef, useState } from "react";
 import { Field } from "./ui.jsx";
@@ -15,7 +18,6 @@ import {
   amountMatches,
   cleanDigits,
   formatPeso,
-  parseMoney,
   parseReceiptText,
   preprocessReceipt,
 } from "../receipt.js";
@@ -69,7 +71,9 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
   const [progress, setProgress] = useState(0);
   const [scanned, setScanned] = useState(false);
   const [refNo, setRefNo] = useState("");
-  const [amountText, setAmountText] = useState("");
+  // Written only by the scan. Never bound to an input's onChange, so it cannot
+  // be altered by hand.
+  const [scannedAmount, setScannedAmount] = useState(null);
   const [error, setError] = useState("");
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef(null);
@@ -98,7 +102,7 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
     setError("");
     setScanned(false);
     setRefNo("");
-    setAmountText("");
+    setScannedAmount(null);
     setProgress(0);
     setFile(f);
     const url = URL.createObjectURL(f);
@@ -127,16 +131,16 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
       const parsed = parseReceiptText(data.text || "");
       setScanned(true);
       setRefNo(parsed.refNo || "");
-      setAmountText(parsed.amount != null ? parsed.amount.toFixed(2) : "");
+      setScannedAmount(parsed.amount);
       if (!parsed.refNo && parsed.amount == null) {
-        setError("The scan could not read this receipt. Try a brighter, uncropped screenshot, or type the details in by hand.");
+        setError("The scan could not read this receipt. Try a brighter, uncropped screenshot that shows the reference number and the total.");
       } else if (!parsed.refNo) {
         setError("Reference number not found. Check the screenshot shows the full receipt, or type it in below.");
       } else if (parsed.amount == null) {
-        setError("Amount not found. Type the exact amount from the receipt below.");
+        setError("Amount not found in the scan. Rescan with a clearer screenshot that shows the total you paid.");
       }
     } catch {
-      if (alive.current) setError("Scanning failed in this browser. You can still type the reference number and amount by hand.");
+      if (alive.current) setError("Scanning failed in this browser. You can type the reference number below, but the amount has to come from a successful scan.");
       setScanned(true);
     } finally {
       if (alive.current) setScanning(false);
@@ -145,9 +149,13 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
 
   const confirm = async () => {
     const digits = cleanDigits(refNo);
-    const amount = parseMoney(amountText);
+    const amount = scannedAmount;
     if (digits.length < MIN_REF_DIGITS) {
       setError(`Reference number looks short. GCash and Maya references are at least ${MIN_REF_DIGITS} digits.`);
+      return;
+    }
+    if (amount == null) {
+      setError("The scan did not find an amount on that receipt, so it cannot be verified yet. Rescan with a clearer screenshot showing the total.");
       return;
     }
     if (!amountMatches(amount, due)) {
@@ -276,12 +284,20 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
                   inputMode="numeric"
                 />
               </Field>
-              <Field label="Amount on receipt" id="pm-amount">
+              <Field
+                label="Amount on receipt"
+                id="pm-amount"
+                hint={scannedAmount == null ? "Not read by the scan." : "Read from the scan. Cannot be changed."}
+                error={scannedAmount == null ? "Rescan to read the amount." : ""}
+              >
                 <input
                   id="pm-amount"
-                  value={amountText}
-                  onChange={(e) => setAmountText(e.target.value)}
-                  placeholder="1399.00"
+                  className="pm-locked"
+                  value={scannedAmount == null ? "" : scannedAmount.toFixed(2)}
+                  readOnly
+                  aria-readonly="true"
+                  tabIndex={-1}
+                  placeholder="Not detected"
                   inputMode="decimal"
                 />
               </Field>
