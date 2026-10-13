@@ -129,11 +129,11 @@ export function Order({ initialTier, go }) {
   };
 
   const goToDetails = () => {
-    if (!printName.trim()) {
-      setErrors({ printName: "Enter the name to print on the card." });
-      return;
-    }
-    setErrors({});
+    const next = {};
+    if (!printName.trim()) next.printName = "Enter the name to print on the card.";
+    if (!EMAIL_RE.test(contact.email.trim())) next.email = "Enter a valid email address.";
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
     setStep(2);
   };
 
@@ -295,7 +295,11 @@ export function Order({ initialTier, go }) {
             />
 
             <Field label="Name to print" id="printName" error={errors.printName}>
-              <input id="printName" value={printName} onChange={(e) => setPrintName(e.target.value)} placeholder="Juan Dela Cruz" />
+              <input id="printName" value={printName} onChange={(e) => setPrintName(e.target.value)} placeholder="Juan Dela Cruz" autoComplete="name" />
+            </Field>
+
+            <Field label="Email" id="step1Email" error={errors.email} hint="Order updates and your profile invite go here.">
+              <input id="step1Email" type="email" value={contact.email} onChange={(e) => setContact({ ...contact, email: e.target.value })} placeholder="you@company.ph" autoComplete="email" />
             </Field>
 
             {tier !== "basic" && (
