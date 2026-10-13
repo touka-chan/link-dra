@@ -81,7 +81,6 @@ export function Order({ initialTier, go }) {
   const [design, setDesign] = useState("gradient");
   const [finish, setFinish] = useState("glossy");
   const [printName, setPrintName] = useState("");
-  const [logoName, setLogoName] = useState("");
 
   const [contact, setContact] = useState({ fullName: "", email: "", phone: "" });
   const [address, setAddress] = useState({ street: "", province: "", city: "", barangay: "", zip: "", notes: "" });
@@ -110,7 +109,6 @@ export function Order({ initialTier, go }) {
   }, [order, geo.length]);
 
   const selected = tierById(tier);
-  const showLogo = tier === "pro";
 
   const startPayment = () => {
     const next = {};
@@ -145,7 +143,7 @@ export function Order({ initialTier, go }) {
         paid: proof.amount,
         payment: { method: "Manual QR", refNo: proof.refNo, fileName: proof.fileName },
         customer: { ...contact },
-        card: { orientation, design, finish, printName, logoName },
+        card: { orientation, design, finish, printName },
         deliverySaved: false,
       };
       write("order", placed);
@@ -343,12 +341,6 @@ export function Order({ initialTier, go }) {
             <Field label="Mobile number" id="step1Phone" error={errors.phone} hint="For delivery updates.">
               <input id="step1Phone" value={contact.phone} onChange={(e) => setContact({ ...contact, phone: e.target.value })} placeholder="+63 917 000 0000" autoComplete="tel" />
             </Field>
-
-            {showLogo && (
-              <Field label="Company logo" id="logo" hint="Pro only. SVG or high-resolution PNG.">
-                <input id="logo" type="file" accept="image/svg+xml,image/png" onChange={(e) => setLogoName(e.target.files?.[0]?.name ?? "")} />
-              </Field>
-            )}
 
             <button className="btn primary full" onClick={startPayment} disabled={preparing}>
               {preparing ? <><span className="spinner" /> Preparing payment</> : `Continue - pay ₱${selected.price.toLocaleString()}`}
