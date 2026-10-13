@@ -4,10 +4,10 @@
 // form: a loading spinner first, then this dialog with the static payment QR,
 // an uploader for the GCash / e-wallet receipt, and a free in-browser OCR
 // pass (tesseract.js) that reads the reference number and amount off the
-// receipt. The reference stays editable so a bad scan can be corrected by hand,
-// but the amount is locked to whatever the scan read: it is the figure the order
-// is verified against, and letting it be typed would let a buyer claim any
-// payment amount passed.
+// receipt. Both values are locked to the scan and cannot be typed: they are
+// what the order is verified against, and either one being editable would let a
+// buyer claim a payment the receipt does not show. Rescanning is the only way
+// to change them.
 
 import { useEffect, useRef, useState } from "react";
 import { Field } from "./ui.jsx";
@@ -70,10 +70,12 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
   const [scanning, setScanning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [scanned, setScanned] = useState(false);
-  const [refNo, setRefNo] = useState("");
-  // Written only by the scan. Never bound to an input's onChange, so it cannot
-  // be altered by hand.
-  const [scannedAmount, setScannedAmount] = useState(null);
+  // The whole result of one scan pass, written together and never by hand.
+  // Both the reference and the amount are locked to this: they are what the
+  // order is verified against, so letting either be typed would let a buyer
+  // claim a payment the receipt does not show. Rescan is the only way to
+  // change them.
+  const [scanResult, setScanResult] = useState(null);
   const [error, setError] = useState("");
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef(null);
@@ -101,8 +103,7 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
     }
     setError("");
     setScanned(false);
-    setRefNo("");
-    setScannedAmount(null);
+    setScanResult(null);
     setProgress(0);
     setFile(f);
     const url = URL.createObjectURL(f);
@@ -130,28 +131,28 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
       if (!alive.current) return;
       const parsed = parseReceiptText(data.text || "");
       setScanned(true);
-      setRefNo(parsed.refNo || "");
-      setScannedAmount(parsed.amount);
+      setScanResult({ refNo: parsed.refNo || "", amount: parsed.amount });
       if (!parsed.refNo && parsed.amount == null) {
-        setError("The scan could not read this receipt. Try a brighter, uncropped screenshot that shows the reference number and the total.");
+        setError("The scan could not read this receipt. Rescan with a brighter, uncropped screenshot that shows the reference number and the total.");
       } else if (!parsed.refNo) {
-        setError("Reference number not found. Check the screenshot shows the full receipt, or type it in below.");
+        setError("Reference number not found in the scan. Rescan with a fuller screenshot, making sure the reference number is not cut off at the edges.");
       } else if (parsed.amount == null) {
         setError("Amount not found in the scan. Rescan with a clearer screenshot that shows the total you paid.");
       }
     } catch {
-      if (alive.current) setError("Scanning failed in this browser. You can type the reference number below, but the amount has to come from a successful scan.");
+      if (alive.current) setError("Scanning failed in this browser. Rescan to try again, or upload a different screenshot.");
       setScanned(true);
+      setScanResult({ refNo: "", amount: null });
     } finally {
       if (alive.current) setScanning(false);
     }
   };
 
   const confirm = async () => {
-    const digits = cleanDigits(refNo);
-    const amount = scannedAmount;
+    const digits = cleanDigits(scanResult?.refNo ?? "");
+    const amount = scanResult?.amount ?? null;
     if (digits.length < MIN_REF_DIGITS) {
-      setError(`Reference number looks short. GCash and Maya references are at least ${MIN_REF_DIGITS} digits.`);
+      setError(`The scan did not read a full reference number. Rescan with a screenshot where the reference is complete and not cut off at the edges.`);
       return;
     }
     if (amount == null) {
@@ -198,6 +199,12 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
     });
     onConfirm(proof);
   };
+
+  // Both values come from the scan and cannot be typed, so an incomplete scan
+  // leaves Rescan as the only way forward. Surfacing that as the primary action
+  // is better than offering Confirm and failing after the buyer presses it.
+  const scanComplete =
+    cleanDigits(scanResult?.refNo ?? "").length >= MIN_REF_DIGITS && scanResult?.amount != null;
 
   return (
     <div className="overlay" onClick={() => !scanning && onClose()} role="presentation">
@@ -275,25 +282,33 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
         {scanned && (
           <>
             <div className="field-row">
-              <Field label="Reference number" id="pm-ref" hint="Digits only. Editable if the scan misread.">
+              <Field
+                label="Reference number"
+                id="pm-ref"
+                hint={scanResult?.refNo ? "Read from the scan. Cannot be changed." : "Not read by the scan."}
+                error={scanResult?.refNo ? "" : "Rescan to read it."}
+              >
                 <input
                   id="pm-ref"
-                  value={refNo}
-                  onChange={(e) => setRefNo(e.target.value)}
-                  placeholder="1234 5678 90123"
+                  className="pm-locked"
+                  value={scanResult?.refNo ?? ""}
+                  readOnly
+                  aria-readonly="true"
+                  tabIndex={-1}
+                  placeholder="Not detected"
                   inputMode="numeric"
                 />
               </Field>
               <Field
                 label="Amount on receipt"
                 id="pm-amount"
-                hint={scannedAmount == null ? "Not read by the scan." : "Read from the scan. Cannot be changed."}
-                error={scannedAmount == null ? "Rescan to read the amount." : ""}
+                hint={scanResult?.amount != null ? "Read from the scan. Cannot be changed." : "Not read by the scan."}
+                error={scanResult?.amount == null ? "Rescan to read the amount." : ""}
               >
                 <input
                   id="pm-amount"
                   className="pm-locked"
-                  value={scannedAmount == null ? "" : scannedAmount.toFixed(2)}
+                  value={scanResult?.amount == null ? "" : scanResult.amount.toFixed(2)}
                   readOnly
                   aria-readonly="true"
                   tabIndex={-1}
@@ -303,12 +318,20 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
               </Field>
             </div>
             <div className="btn-row">
-              <button className="btn ghost" onClick={() => { setScanned(false); setError(""); }}>
-                Rescan
-              </button>
-              <button className="btn primary" onClick={confirm}>
-                Confirm payment
-              </button>
+              {scanComplete ? (
+                <>
+                  <button className="btn ghost" onClick={() => { setScanned(false); setError(""); }}>
+                    Rescan
+                  </button>
+                  <button className="btn primary" onClick={confirm}>
+                    Confirm payment
+                  </button>
+                </>
+              ) : (
+                <button className="btn primary full" onClick={() => { setScanned(false); setError(""); }}>
+                  Scan again with a better screenshot
+                </button>
+              )}
             </div>
           </>
         )}
