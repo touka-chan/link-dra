@@ -141,12 +141,23 @@ Scrollbars are hidden site-wide via CSS (`scrollbar-width: none` +
 `scripts/test-receipt.mjs` covers the parser against GCash / Maya / noisy
 samples: `node scripts/test-receipt.mjs`.
 
-## Confirmation emails (free, via Gmail SMTP)
+## Confirmation emails (free)
 
-Browsers cannot speak SMTP directly, so sending goes through EmailJS's free
-tier, which relays via the Gmail account you connect. Until configured,
-sending is skipped silently and checkout works normally.
+Browsers cannot speak SMTP directly, and your app password must NEVER go into
+code or git (public repo + view-source = anyone could send mail as you). Two
+free options, auto-detected from `src/mail-config.js`:
 
+**Option B - Gmail SMTP via SecureToken (no password in code).**
+1. Google Account > Security > turn on 2-Step Verification.
+2. Security > App passwords > create one (e.g. "Linkodra") > copy the
+   16-letter password. If it was ever pasted anywhere public, revoke it there
+   and make a fresh one.
+3. Go to https://smtpjs.com > "Encrypt your SMTP credentials": host
+   `smtp.gmail.com`, port `587`, your Gmail + the app password. Optionally
+   lock the token to your domain.
+4. Paste ONLY the SecureToken into `src/mail-config.js`, rebuild.
+
+**Option A - EmailJS (no password involved at all).**
 1. Free account at https://www.emailjs.com
 2. Add an Email Service, connect your Gmail (this is the SMTP part).
 3. New Email Template using these variables: `{{to_name}}` `{{tier_name}}`
