@@ -218,27 +218,19 @@ const [tier, setTier] = useState(tierById(initialTier).id);
     setOrder(updated);
   };
 
-  // Saves the buyer's private landing page links. Nothing here is required, so
-  // this only reports a problem when a field was filled in but is unusable.
+  // Saves the buyer's private landing page links. Nothing is validated and
+  // nothing is rejected: whatever was typed is normalised into something
+  // clickable and sent on. A buyer should never be told their own link is
+  // malformed, and the team can correct anything odd from the notification
+  // email. Hygiene below is not validation - it only strips characters that
+  // have no business in a link, and caps the length.
   const saveProfileLinks = () => {
-    const next = {};
     const clean = {};
     for (const f of PROFILE_LINK_FIELDS) {
-      const raw = String(profileLinks[f.id] ?? "").trim();
+      const raw = String(profileLinks[f.id] ?? "").replace(/[\p{Cc}<>]/gu, "").trim();
       if (!raw) continue;
-      if (f.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
-        next[f.id] = "That does not look like an email address.";
-        continue;
-      }
-      const url = f.type === "tel" ? raw : normaliseProfileLink(f, raw);
-      if (f.type !== "tel" && !/^https?:\/\/.+\..+/.test(url)) {
-        next[f.id] = "Enter a full link, for example https://yourpage.com.";
-        continue;
-      }
-      clean[f.id] = url;
+      clean[f.id] = (f.type === "tel" ? raw : normaliseProfileLink(f, raw)).slice(0, 300);
     }
-    setErrors(next);
-    if (Object.keys(next).length > 0) return;
 
     const updated = { ...order, profileLinks, links: clean, linksSaved: true };
     write("order", updated);
@@ -324,7 +316,7 @@ const [tier, setTier] = useState(tierById(initialTier).id);
               </p>
               <div className="link-grid">
                 {PROFILE_LINK_FIELDS.map((f) => (
-                  <Field key={f.id} label={f.label} id={`link-${f.id}`} error={errors[f.id]}>
+                  <Field key={f.id} label={f.label} id={`link-${f.id}`}>
                     <input
                       id={`link-${f.id}`}
                       type={f.type ?? "text"}
