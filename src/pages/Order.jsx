@@ -22,8 +22,10 @@ function AddressFields({ value, onChange, geo, error }) {
   const province = geo.find((p) => p.p === value.province);
   const city = province?.c.find((c) => c.n === value.city);
 
-  // Changing a parent clears its children so the form never holds a stale value.
-  const setProvince = (name) => onChange({ province: name, city: "", barangay: "" });
+  // Changing a parent clears its children so the form never holds a stale
+  // value. Both must spread `value`: dropping it silently discards street,
+  // zip and notes, which then read as undefined further down.
+  const setProvince = (name) => onChange({ ...value, province: name, city: "", barangay: "" });
   const setCity = (name) => onChange({ ...value, city: name, barangay: "" });
 
   return (
@@ -112,9 +114,12 @@ export function Order({ initialTier, go }) {
 
   const startPayment = () => {
     const next = {};
-    if (!printName.trim()) next.printName = "Enter the name to print on the card.";
-    if (!EMAIL_RE.test(contact.email.trim())) next.email = "Enter a valid email address.";
-    if (contact.phone.replace(/\D/g, "").length < 7) next.phone = "Enter a mobile number we can reach you on.";
+    const name = printName || "";
+    const mail = contact.email || "";
+    const tel = contact.phone || "";
+    if (!name.trim()) next.printName = "Enter the name to print on the card.";
+    if (!EMAIL_RE.test(mail.trim())) next.email = "Enter a valid email address.";
+    if (tel.replace(/\D/g, "").length < 7) next.phone = "Enter a mobile number we can reach you on.";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
     // Brief spinner, then the manual QR payment modal.
@@ -167,13 +172,17 @@ export function Order({ initialTier, go }) {
 
   const saveDelivery = () => {
     const next = {};
-    if (!address.street.trim()) next.street = "Enter your street address.";
-    if (!address.province) next.province = "Choose a province.";
-    if (!address.city) next.city = "Choose a city or municipality.";
-    if (!address.barangay) next.barangay = "Choose a barangay.";
+    // Coerce first: a restored or stale order can leave fields undefined, and
+    // calling .trim() on that throws instead of showing the field error.
+    const a = { street: "", province: "", city: "", barangay: "", zip: "", notes: "", ...address };
+    if (!a.street.trim()) next.street = "Enter your street address.";
+    if (!a.province) next.province = "Choose a province.";
+    if (!a.city) next.city = "Choose a city or municipality.";
+    if (!a.barangay) next.barangay = "Choose a barangay.";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
-    const updated = { ...order, deliverySaved: true, customer: { ...order.customer, ...address } };
+    setAddress(a);
+    const updated = { ...order, deliverySaved: true, customer: { ...order.customer, ...a } };
     write("order", updated);
     notifyOwner({
       order: {
@@ -186,7 +195,7 @@ export function Order({ initialTier, go }) {
         email: updated.customer.email,
         name: updated.customer.fullName,
         phone: updated.customer.phone,
-        address: { ...address },
+        address: { ...a },
         card: updated.card,
         deliveryUpdate: true,
       },

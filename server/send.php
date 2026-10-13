@@ -87,7 +87,9 @@ function logMail($to, $subject, $status) {
 }
 
 // --- Resend -------------------------------------------------------------------
-function resendSend($to, $subject, $html, $attachments = []) {
+// $debug, when set, carries Resend's own status and body back to the caller so
+// a misconfigured key or unverified domain is visible instead of a bare 502.
+function resendSend($to, $subject, $html, $attachments = [], &$debug = null) {
   global $cfg;
   $payload = ["from" => $cfg("FROM"), "to" => [$to], "subject" => $subject, "html" => $html];
   if ($attachments) $payload["attachments"] = $attachments;
@@ -101,6 +103,7 @@ function resendSend($to, $subject, $html, $attachments = []) {
   ]);
   $resp = curl_exec($ch);
   $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  $debug = ["status" => $code, "body" => substr((string)$resp, 0, 500), "key_prefix" => substr($cfg("RESEND_API_KEY"), 0, 6), "from" => $cfg("FROM")];
   curl_close($ch);
   if ($code < 200 || $code >= 300) error_log("resend failed ($code): $resp");
   return $code >= 200 && $code < 300;
@@ -218,6 +221,9 @@ $html = "<p>Hi " . esc($name ?: "there") . ",</p>"
   . "<p>What happens next: we print your card and email your profile link to " . esc($to) . ". Reply to this email if anything looks wrong.</p>"
   . "<p>- Linkodra</p>";
 
-$ok = resendSend($to, $subject, $html);
+$debug = null;
+$ok = resendSend($to, $subject, $html, [], $debug);
 logMail($to, $subject, $ok ? "sent" : "failed");
-out($ok ? 200 : 502, $ok ? ["sent" => true] : ["sent" => false, "reason" => "send-failed"]);
+if ($ok) out(200, ["sent" => true]);
+// Surface Resend's own complaint; a bare 502 makes every failure look identical.
+out(502, ["sent" => false, "reason" => "send-failed", "debug" => $debug]);
