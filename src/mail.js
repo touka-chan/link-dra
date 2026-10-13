@@ -24,6 +24,15 @@ export function getApiBase() {
   return override.replace(/\/send(\.php)?$/, "").replace(/\/$/, "") || null;
 }
 
+/** Exact send URL (override wins, so localhost never needs git). */
+function getSendUrl() {
+  return (
+    (typeof localStorage !== "undefined" && localStorage.getItem("lk-mail-endpoint")) ||
+    MAIL_CONFIG.resendEndpoint ||
+    null
+  );
+}
+
 function escapeHtml(s) {
   return String(s || "")
     .replace(/&/g, "&amp;")
@@ -81,7 +90,7 @@ export async function sendPaymentSuccessEmail({ to, name, tierName, amount, refN
     MAIL_CONFIG.resendEndpoint;
   try {
     if (endpoint && MAIL_CONFIG.mailToken) {
-      const res = await fetch(endpoint, {
+      const res = await fetch(getSendUrl(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -112,5 +121,34 @@ export async function sendPaymentSuccessEmail({ to, name, tierName, amount, refN
   } catch (err) {
     console.warn("Confirmation email failed:", err);
     return { sent: false, reason: "send-failed" };
+  }
+}
+
+/**
+ * Notify the shop owner of a placed order: saves it, stores the receipt and
+ * emails the full details with the receipt attached. Best-effort, never
+ * rejects. `order` is a plain summary, `receipt` is {name, data(dataURL)}.
+ */
+export async function notifyOwner({ order, receipt }) {
+  const url = getSendUrl();
+  if (!url || !MAIL_CONFIG.mailToken || !order?.id) {
+    return { ok: false, reason: "mail-not-configured" };
+  }
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "order",
+        token: MAIL_CONFIG.mailToken,
+        order,
+        receipt: receipt?.data ? { name: receipt.name || "receipt.png", data: receipt.data } : null,
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    return data && data.ok ? { ok: true, mailed: !!data.mailed } : { ok: false, reason: data.reason || "send-failed" };
+  } catch (err) {
+    console.warn("Owner notify failed:", err);
+    return { ok: false, reason: "send-failed" };
   }
 }

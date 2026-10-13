@@ -16,6 +16,9 @@ dist-ssr
 # Local secrets. .env.example is the committed template.
 .env
 
+# Server-side mail secrets (lives on the host, never in git).
+server/mail-config.local.php
+
 # Local SQLite database (orders + mail log live here).
 data/
 

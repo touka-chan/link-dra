@@ -147,16 +147,16 @@ The checkout sends the buyer a payment confirmation. Secrets NEVER go into
 code or git. Two senders, first configured wins:
 
 **Resend (proper path, needs PHP hosting once).**
-1. On this onboarding screen: click **Add API Key**, name it `Linkodra`,
+1. Resend dashboard: click **Add API Key**, name it `Linkodra`,
    copy the `re_...` key (shown once). Do NOT paste it into code or chat.
-2. Sidebar **Domains** > add `linkodra.ph` > paste the DNS records into your
-   domain's DNS. Until verified, Resend only delivers to your own account
-   email, so do this before real orders.
-3. Upload `server/resend-endpoint.php` to your hosting as e.g.
-   `https://linkodra.ph/mail/send.php`.
-4. On the server, set env vars `RESEND_API_KEY` (the `re_...` key) and
-   `LINKODRA_MAIL_TOKEN` to the `mailToken` value in `src/mail-config.js`.
-5. Put the file's URL in `resendEndpoint` in `src/mail-config.js`, rebuild.
+2. Sidebar **Domains** > add `linkodra.com` > paste the DNS records into
+   Cloudflare (your DNS). Until verified, Resend only delivers to your own
+   account email, so do this before real orders.
+3. Upload `server/send.php` (+ `server/data/.htaccess`) to your hosting as
+   `https://linkodra.com/mail/send.php`, and create
+   `mail-config.local.php` beside it (see `server/mail-config.sample.php`).
+4. The app already points at that URL (`resendEndpoint`), so just rebuild
+   after uploading.
 
 **Gmail SMTP via SecureToken (works today, no backend).**
 1. Google Account > Security > 2-Step Verification on.
@@ -168,6 +168,49 @@ code or git. Two senders, first configured wins:
 
 Until anything is configured, sending is skipped silently and checkout works
 normally.
+
+## Deploying full stack on linkodra.com (Hostinger + WordPress)
+
+Frontend, backend and database each have a home. Do it in this order.
+
+**0. Resend domain first — nothing delivers without it.**
+Resend dashboard > Domains > add `linkodra.com` > paste the DNS records into
+Cloudflare (your DNS). Wait for Verified. Until then Resend only delivers to
+your own account email.
+
+**1. Backend: upload two files + one config.**
+Hostinger > File Manager > `public_html`, create folder `mail`, upload:
+- `server/send.php` → `public_html/mail/send.php`
+- `server/data/.htaccess` → `public_html/mail/data/.htaccess`
+- new file `public_html/mail/mail-config.local.php` (create in File Manager):
+```php
+<?php
+return [
+  "RESEND_API_KEY" => "re_...",
+  "LINKODRA_MAIL_TOKEN" => "ccb5183db855d2fc733b24778b1842f1ea0e93aac5fcbf05",
+  "OWNER_EMAIL" => "linkodra.ph@gmail.com",
+  "FROM" => "Linkodra <orders@linkodra.com>",
+];
+```
+`mail-config.local.php` is git-ignored: it lives on the server only.
+Smoke test: open
+`https://linkodra.com/mail/send.php?action=list&token=ccb5183db855d2fc733b24778b1842f1ea0e93aac5fcbf05`
+in a browser — expect `{"ok":true,"orders":[]}`.
+
+**2. Frontend: upload the built app.**
+```
+npm run build
+```
+Upload everything inside `dist/` to `public_html/app/` (create the folder).
+Then WordPress > Appearance > Menus > add a Custom Link to
+`https://linkodra.com/app/` labeled "Get Your Card". LiteSpeed Cache >
+Exclusions: exclude `/app/*` so the app is never cached as a page.
+
+**3. Test for real.** Open `https://linkodra.com/app/#/order`, place an order
+with your own email. You should get: buyer confirmation email, owner email
+with the receipt attached, a row in `mail/orders.db`, and the receipt under
+`mail/data/receipts/`. View orders anytime at the `?action=list&token=...`
+URL above (bookmark it, never share it).
 
 ## Localhost backend + database (no PHP, no hosting)
 

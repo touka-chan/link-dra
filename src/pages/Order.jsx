@@ -9,7 +9,7 @@ import { BRAND, DESIGNS, REFERRAL_RATE, applyPromo, shippingFor, tierById } from
 import { CardPreview } from "../components/brand.jsx";
 import { PayModal } from "../components/PayModal.jsx";
 import { Field, Segmented, Wizard } from "../components/ui.jsx";
-import { getApiBase } from "../mail.js";
+import { notifyOwner } from "../mail.js";
 import { write } from "../store.js";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -177,26 +177,24 @@ export function Order({ initialTier, go }) {
       };
       write("order", placed);
       write("user", { name: contact.fullName || printName, email: contact.email, tier, code });
-      // Best-effort: also record the order in the backend DB when one is
-      // reachable (local backend). Never blocks the confirmation screen.
-      const apiBase = getApiBase();
-      if (apiBase) {
-        fetch(`${apiBase}/api/orders`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: placed.id,
-            code,
-            tier,
-            total,
-            paid: placed.paid,
-            refNo: placed.payment.refNo,
-            email: contact.email,
-            name: contact.fullName || printName,
-            payload: placed,
-          }),
-        }).catch(() => {});
-      }
+      // Best-effort: record the order server-side and email the shop owner
+      // with the receipt attached. Never blocks the confirmation screen.
+      notifyOwner({
+        order: {
+          id: placed.id,
+          code,
+          tier,
+          total,
+          paid: placed.paid,
+          refNo: placed.payment.refNo,
+          email: contact.email,
+          name: contact.fullName || printName,
+          phone: contact.phone,
+          address: { ...address },
+          card: { orientation, design, finish, printName },
+        },
+        receipt: proof?.receiptData ? { name: proof.fileName, data: proof.receiptData } : null,
+      });
       setOrder(placed);
     }, 900);
   };

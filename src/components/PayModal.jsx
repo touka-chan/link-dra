@@ -23,6 +23,19 @@ import {
 const escapeHtml = (s) =>
   String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
+const readAsDataURL = (f) =>
+  new Promise((resolve) => {
+    if (!f) return resolve("");
+    try {
+      const r = new FileReader();
+      r.onload = () => resolve(typeof r.result === "string" ? r.result : "");
+      r.onerror = () => resolve("");
+      r.readAsDataURL(f);
+    } catch {
+      resolve("");
+    }
+  });
+
 const QR_SRC = "/qr.png";
 
 function QrImage() {
@@ -139,7 +152,13 @@ export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onCl
       setError(`This receipt shows ${formatPeso(amount)} but this order needs exactly ${formatPeso(due)}. Pay the exact amount, then upload that receipt.`);
       return;
     }
-    const proof = { refNo: digits, amount, fileName: file?.name || "receipt", dataUrl: preview };
+    const proof = {
+      refNo: digits,
+      amount,
+      fileName: file?.name || "receipt",
+      dataUrl: preview,
+      receiptData: await readAsDataURL(file),
+    };
     // SweetAlert loads on demand so its weight never touches the first paint.
     const [{ default: Swal }] = await Promise.all([
       import("sweetalert2"),
