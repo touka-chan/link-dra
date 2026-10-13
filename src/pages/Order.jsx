@@ -313,6 +313,8 @@ export function Order({ initialTier, go }) {
         <PayModal
           tierName={selected.name}
           due={selected.price}
+          buyerName={printName}
+          buyerEmail={contact.email}
           onClose={() => setPayOpen(false)}
           onConfirm={(p) => {
             setProof(p);

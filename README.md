@@ -130,11 +130,31 @@ pays the exact tier amount manually, uploads the e-wallet receipt screenshot,
 and a free in-browser OCR pass (tesseract.js, no API key) reads the reference
 number and amount. Both fields stay editable, the receipt must show at least 9
 reference digits, and the scanned amount must match the tier price to the
-centavo before Confirm unlocks step 2. The proof (ref, amount, filename)
-travels with the order into review and the confirmation screen.
+centavo before Confirm unlocks. Confirming shows a SweetAlert success dialog
+(lazy-loaded, dark themed to match the site), then continues to step 2. The
+proof (ref, amount, filename) travels with the order into review and the
+confirmation screen.
+
+Scrollbars are hidden site-wide via CSS (`scrollbar-width: none` +
+`::-webkit-scrollbar`) while wheel / touch / keyboard scrolling keeps working.
 
 `scripts/test-receipt.mjs` covers the parser against GCash / Maya / noisy
 samples: `node scripts/test-receipt.mjs`.
+
+## Confirmation emails (free, via Gmail SMTP)
+
+Browsers cannot speak SMTP directly, so sending goes through EmailJS's free
+tier, which relays via the Gmail account you connect. Until configured,
+sending is skipped silently and checkout works normally.
+
+1. Free account at https://www.emailjs.com
+2. Add an Email Service, connect your Gmail (this is the SMTP part).
+3. New Email Template using these variables: `{{to_name}}` `{{tier_name}}`
+   `{{amount}}` `{{ref_no}}` `{{order_email}}`. Suggested body: greeting,
+   "your payment for the {{tier_name}} card ({{amount}}, ref {{ref_no}}) is
+   verified", and what happens next (profile link, delivery estimate).
+4. Paste the Service ID, Template ID and Public Key into `src/mail-config.js`,
+   rebuild. Never put a password or app password in the repo.
 
 ## Shipping and promos
 

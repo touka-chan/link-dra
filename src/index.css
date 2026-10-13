@@ -155,6 +155,11 @@
 
 * { box-sizing: border-box; }
 
+/* Scrollbars are hidden site-wide (page, modal, dropdowns) while scrolling
+   itself keeps working via wheel, touch and keyboard. */
+* { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+*::-webkit-scrollbar { display: none !important; }
+
 html { scroll-behavior: smooth; }
 
 body {

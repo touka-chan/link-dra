@@ -8,6 +8,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Field } from "./ui.jsx";
+import { isMailConfigured } from "../mail-config.js";
+import { sendPaymentSuccessEmail } from "../mail.js";
 import {
   MIN_REF_DIGITS,
   amountMatches,
@@ -17,6 +19,9 @@ import {
   parseReceiptText,
   preprocessReceipt,
 } from "../receipt.js";
+
+const escapeHtml = (s) =>
+  String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 const QR_SRC = "/qr.png";
 
@@ -42,7 +47,7 @@ function QrImage() {
   );
 }
 
-export function PayModal({ tierName, due, onConfirm, onClose }) {
+export function PayModal({ tierName, due, buyerName, buyerEmail, onConfirm, onClose }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
   const [scanning, setScanning] = useState(false);
@@ -123,7 +128,7 @@ export function PayModal({ tierName, due, onConfirm, onClose }) {
     }
   };
 
-  const confirm = () => {
+  const confirm = async () => {
     const digits = cleanDigits(refNo);
     const amount = parseMoney(amountText);
     if (digits.length < MIN_REF_DIGITS) {
@@ -134,7 +139,35 @@ export function PayModal({ tierName, due, onConfirm, onClose }) {
       setError(`This receipt shows ${formatPeso(amount)} but this order needs exactly ${formatPeso(due)}. Pay the exact amount, then upload that receipt.`);
       return;
     }
-    onConfirm({ refNo: digits, amount, fileName: file?.name || "receipt", dataUrl: preview });
+    const proof = { refNo: digits, amount, fileName: file?.name || "receipt", dataUrl: preview };
+    // SweetAlert loads on demand so its weight never touches the first paint.
+    const [{ default: Swal }] = await Promise.all([
+      import("sweetalert2"),
+      import("sweetalert2/dist/sweetalert2.min.css"),
+    ]);
+    await Swal.fire({
+      icon: "success",
+      title: "Payment successful",
+      html: `<p style="margin:0">Your ${formatPeso(due)} payment for the <strong>${tierName}</strong> card is verified.</p>${
+        isMailConfigured() && buyerEmail
+          ? `<p style="margin:8px 0 0">A confirmation email is on its way to <strong>${escapeHtml(buyerEmail)}</strong>.</p>`
+          : ""
+      }`,
+      confirmButtonText: "Continue to details",
+      confirmButtonColor: "#16a34a",
+      background: "#0c130d",
+      color: "#ffffff",
+      allowOutsideClick: false,
+    });
+    // Email runs in the background; checkout never waits on it.
+    sendPaymentSuccessEmail({
+      to: buyerEmail,
+      name: buyerName,
+      tierName,
+      amount,
+      refNo: digits,
+    });
+    onConfirm(proof);
   };
 
   return (
