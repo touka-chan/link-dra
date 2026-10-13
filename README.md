@@ -171,17 +171,27 @@ normally.
 
 ## Localhost email test (no PHP, no hosting)
 
-You have Node but no PHP, so a Node twin of the endpoint is included:
+You have Node but no PHP, so a Node twin of the endpoint is included. Secrets
+live in a `.env` file (git-ignored, never committed) instead of the command
+line — that also works in Git Bash, where PowerShell's `$env:` syntax fails.
 
 Terminal 1 — the site:
 ```
 npm run dev
 ```
 
-Terminal 2 — the mail endpoint (PowerShell, keys stay in this window only):
+One time — copy the template and fill your real key:
 ```
-$env:RESEND_API_KEY = "re_..."
-$env:LINKODRA_MAIL_TOKEN = "ccb5183db855d2fc733b24778b1842f1ea0e93aac5fcbf05"
+copy .env.example .env
+```
+then edit `.env`:
+```
+RESEND_API_KEY=re_...
+LINKODRA_MAIL_TOKEN=ccb5183db855d2fc733b24778b1842f1ea0e93aac5fcbf05
+```
+
+Terminal 2 — the mail endpoint:
+```
 npm run mail:local
 ```
 

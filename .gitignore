@@ -13,6 +13,9 @@ dist-ssr
 *.local
 .openchamber
 
+# Local secrets. .env.example is the committed template.
+.env
+
 # Screenshot sweep output, including the throwaway Chrome profiles it seeds.
 .shots
 

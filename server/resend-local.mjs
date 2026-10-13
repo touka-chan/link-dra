@@ -11,6 +11,33 @@
 // never carries a localhost URL.
 
 import http from "node:http";
+import fs from "node:fs";
+import path from "node:path";
+
+// Secrets come from a `.env` file in the project root (never committed -
+// see .env.example). Shell env vars still win when both are set.
+function loadEnv() {
+  let text;
+  try {
+    text = fs.readFileSync(path.join(process.cwd(), ".env"), "utf8");
+  } catch {
+    return;
+  }
+  for (const line of text.split("\n")) {
+    const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
+    if (!m || process.env[m[1]] !== undefined) continue;
+    let v = m[2];
+    if (
+      (v.startsWith('"') && v.endsWith('"') && v.length >= 2) ||
+      (v.startsWith("'") && v.endsWith("'") && v.length >= 2)
+    ) {
+      v = v.slice(1, -1);
+    }
+    if (v === "" || v.startsWith("#")) continue;
+    process.env[m[1]] = v;
+  }
+}
+loadEnv();
 
 const PORT = 8080;
 const FROM = "Linkodra <orders@linkodra.ph>"; // must be your verified Resend domain
