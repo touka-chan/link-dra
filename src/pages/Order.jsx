@@ -282,7 +282,6 @@ export function Order({ initialTier, go }) {
                 const t = tierById(id);
                 return (
                   <button key={id} className={tier === id ? "sel" : ""} onClick={() => setTier(id)}>
-                    {t.popular && <span className="flag">MOST POPULAR</span>}
                     <b>{t.name}</b>
                     <span>₱{t.price.toLocaleString()}</span>
                     <small>{t.pitch}</small>

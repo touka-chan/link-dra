@@ -15,6 +15,15 @@ export const BRAND = {
   address: "Balagtas, Batangas City, Philippines",
 };
 
+// Official profiles. Kept here so the footer, profile page and chat widget all
+// link to the same place instead of hardcoding URLs in each component.
+const SOCIALS = [
+  { id: "facebook", label: "Facebook", handle: "Linkodra PH", url: "https://www.facebook.com/linkodra.ph" },
+  { id: "instagram", label: "Instagram", handle: "@linkodra.ph", url: "https://www.instagram.com/linkodra.ph" },
+];
+
+export { SOCIALS };
+
 // Each feature carries an icon key and an off flag, because the pricing cards
 // show exclusions explicitly ("No QR Code") rather than silently omitting them.
 const F = (icon, label, off = false) => ({ icon, label, off });

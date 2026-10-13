@@ -220,10 +220,20 @@ const paths = {
       <path d="m3.5 16.5 8.5 4.5 8.5-4.5" />
     </>
   ),
+  facebook: (
+    <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.63A22 22 0 0 0 14.3 3.5c-2.4 0-4.05 1.47-4.05 4.17v2.23H7.5V13h2.75v8h3.25Z" />
+  ),
+  instagram: (
+    <>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17" cy="7" r="1.1" fill="currentColor" stroke="none" />
+    </>
+  ),
 };
 
 // Stroke-based marks read as line art; fill-based ones are solid glyphs.
-const FILLED = new Set(["heart"]);
+const FILLED = new Set(["heart", "facebook"]);
 
 // Icons that read as heavy marks rather than hairline strokes.
 const HEAVY = new Set(["plus"]);

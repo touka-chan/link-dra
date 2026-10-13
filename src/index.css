@@ -617,9 +617,12 @@ h1, h2, h3, h4 { line-height: 1.18; }
 
 /* --------------------------------------------------------------- tier card */
 
+/* The featured card is lifted by translateY(-16px). Without the padding it
+   rides up over the lede above it, so reserve that space here instead. */
 .tier-set {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 26px; align-items: start;
+  padding-top: 20px;
 }
 @media (max-width: 940px) {
   .tier-set { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; gap: 30px; }
@@ -1046,7 +1049,6 @@ code {
 .tier-pick button b { font-size: 16px; }
 .tier-pick button span { color: var(--green); font-weight: 800; }
 .tier-pick button small { color: var(--muted); }
-.tier-pick .flag { top: -9px; font-size: 9px; }
 
 .design-pick { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--in-2); }
 .design-pick button {
@@ -1119,6 +1121,18 @@ code {
 /* Contact links were falling back to the browser's default blue. */
 .footer a { color: var(--muted); text-decoration: none; }
 .footer a:hover { color: var(--green); }
+
+/* Social links sit under the contact column and open the real profiles in a
+   new tab, so they carry rel=noopener and a visible label rather than an
+   icon alone. */
+.foot-social { display: flex; flex-wrap: wrap; gap: var(--in-2); margin-top: var(--in-4); }
+.foot-social a {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 13px; border: 1px solid var(--border); border-radius: 999px;
+  font-size: 13.5px; font-weight: 600; transition: border-color 0.2s ease, color 0.2s ease;
+}
+.foot-social a:hover { border-color: var(--green); }
+.foot-social a svg { flex: none; }
 
 .foot-brand { display: flex; flex-direction: column; align-items: flex-start; }
 .foot-lockup { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-1); }

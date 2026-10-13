@@ -2,7 +2,7 @@
 // The nav label list lives here and is also used to mark the active route.
 
 import { useEffect, useState } from "react";
-import { BRAND } from "../brand.js";
+import { BRAND, SOCIALS } from "../brand.js";
 import { LogoMark, Wordmark } from "./brand.jsx";
 import { Icon } from "./icons.jsx";
 import { useTheme } from "../theme.js";
@@ -145,6 +145,20 @@ export function Footer({ go }) {
             <br />
             {BRAND.address}
           </p>
+          <div className="foot-social">
+            {SOCIALS.map((s) => (
+              <a
+                key={s.id}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`${s.label} - ${s.handle}`}
+              >
+                <Icon name={s.id} size={15} />
+                <span>{s.label}</span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
       <div className="foot-base">
