@@ -1,48 +1,72 @@
-# Linkodra public_html .htaccess
+# Linkodra - public_html/.htaccess
 #
-# The React app is served from the domain root, so linkodra.com shows the site
-# instead of a /app/ path. Two things have to keep working alongside it:
-# WordPress, which owns index.php and the wp-* tree, and the mail backend in
-# /mail. Neither is rewritten here.
+# Serves the React app at the domain root so linkodra.com is the site, with no
+# /app/ path. The build emits relative asset URLs and navigation is hash based,
+# so the server only ever needs to hand back index.html for "/".
 #
-# Upload to: public_html/.htaccess
+# WordPress stays installed for editing posts and menus only. Its admin, login
+# and asset paths are exempted below, and its rewrite rules are kept at the end
+# so nothing it owns is swallowed by the app.
+#
+# UPLOAD AS: public_html/.htaccess   (no .htaccess suffix on the filename)
 
-# Prefer the React index.html over WordPress's index.php for directory URLs.
-# Without this, whichever index the host lists first wins and the app may never
-# load at the root.
+Options -Indexes
 DirectoryIndex index.html index.php
 
 <IfModule mod_rewrite.c>
-  RewriteEngine On
+RewriteEngine On
+RewriteBase /
 
-  # Hash routing means the browser only ever asks for "/" and the static files
-  # beside it, so nothing needs rewriting. These rules exist only so that a real
-  # file is preferred and existing server paths are left alone.
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
+# --- the app -------------------------------------------------------------
+# "/" and index.html resolve to the app. This is explicit rather than left to
+# DirectoryIndex, because LiteSpeed lists index.php first for WordPress and a
+# bare DirectoryIndex directive is not reliably honoured.
+RewriteRule ^$ index.html [L]
+RewriteRule ^index\.html$ - [L]
 
-  # Mail API, WordPress admin and login must never be captured by the app.
-  RewriteRule ^mail/ - [L]
-  RewriteRule ^wp-admin/ - [L]
-  RewriteRule ^wp-content/ - [L]
-  RewriteRule ^wp-includes/ - [L]
-  RewriteRule ^wp-login\.php$ - [L]
-  RewriteRule ^xmlrpc\.php$ - [L]
+# Old /app/ paths still resolve to the moved files, so any bookmarked or
+# shared link from before the move keeps working.
+RewriteRule ^app/assets/(.*)$ assets/$1 [L]
+RewriteRule ^app/fonts/(.*)$ fonts/$1 [L]
+RewriteRule ^app/(qr\.png|favicon\.svg|icons\.svg)$ $1 [L]
+RewriteRule ^app/?$ index.html [L]
+
+# --- must never be captured by the app ------------------------------------
+# The mail API answers on its own paths and WordPress owns these.
+RewriteRule ^mail/ - [L]
+RewriteRule ^wp-admin/ - [L]
+RewriteRule ^wp-content/ - [L]
+RewriteRule ^wp-includes/ - [L]
+RewriteRule ^wp-login\.php$ - [L]
+RewriteRule ^wp-cron\.php$ - [L]
+RewriteRule ^wp-trackback\.php$ - [L]
+RewriteRule ^wp-signup\.php$ - [L]
+RewriteRule ^wp-activate\.php$ - [L]
+RewriteRule ^wp-mail\.php$ - [L]
+RewriteRule ^wp-settings\.php$ - [L]
+RewriteRule ^wp-blog-header\.php$ - [L]
+RewriteRule ^wp-comments-post\.php$ - [L]
+RewriteRule ^wp-links-opml\.php$ - [L]
+RewriteRule ^xmlrpc\.php$ - [L]
+
+# --- WordPress keeps its own rules ----------------------------------------
+# Anything that is not a real file or folder falls through to WordPress, which
+# preserves permalinks for admin use. The app is hash routed, so it never
+# depends on these.
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
 </IfModule>
 
-# Never serve secrets or the order database, whatever the path.
-<FilesMatch "\.(sql|sqlite|sqlite3|db|env|log)$">
+# --- secrets ---------------------------------------------------------------
+# The order database, receipts and the Resend key must never be downloadable.
+<FilesMatch "\.(sql|sqlite|sqlite3|db|env|log|ini)$">
   Require all denied
 </FilesMatch>
-<FilesMatch "^(mail-config\.local\.php|\.env|\.htaccess|\.htpasswd)$">
+<FilesMatch "^(mail-config\.local\.php|wp-config\.php|\.htaccess|\.htpasswd|llms\.txt)$">
   Require all denied
 </FilesMatch>
 
-# Keep the old /app/ folder working as a fallback if it is left in place.
-<IfModule mod_rewrite.c>
-  RewriteRule ^app/assets/(.*)$ assets/$1 [L]
-  RewriteRule ^app/fonts/(.*)$ fonts/$1 [L]
-  RewriteRule ^app/(qr\.png|favicon\.svg|icons\.svg|index\.html)$ $1 [L]
-  RewriteRule ^app/?$ index.html [L]
-</IfModule>
+# The /app/ folder is being retired; do not advertise it if it lingers.
+RedirectMatch 301 ^/app/$ /
