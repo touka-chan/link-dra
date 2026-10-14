@@ -390,7 +390,6 @@ const [tier, setTier] = useState(tierById(initialTier).id);
             tier={tier}
             design={design}
             finish={finish}
-            code="yourcode"
           />
 
           <div className="panel">

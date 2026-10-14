@@ -923,73 +923,81 @@ code {
 }
 .card-preview-zone small { display: block; max-width: 360px; line-height: 1.55; color: var(--muted); }
 
+/* The printed card face.
+   Solid near-black stock with green line art only. The flowing corner streaks
+   are stroked SVG paths rather than a gradient fill, which keeps the artwork
+   inside the brand rule that the rest of the site uses flat colour. */
 .nfc-card {
-  display: block; width: 100%; max-width: 380px; aspect-ratio: 1.6;
-  background: #0b0e0b; border: 1px solid var(--border); border-radius: 18px;
-  color: #fff; padding: var(--in-4); text-align: left;
-  box-shadow: var(--shadow);
+  position: relative; display: block; width: 100%; max-width: 430px;
+  aspect-ratio: 1.6; padding: 0; border: 0; border-radius: 16px;
+  background: #060806; color: #fff; text-align: left; overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
   transition: transform 0.3s ease;
+  font-family: var(--font);
 }
 .nfc-card:hover { transform: translateY(-2px); }
-.nfc-card.design-solid { background: #0a1a0e; }
+.nfc-card.matte { box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5); }
 
-/* Soft mesh of green blooms over near-black, so the face reads as printed
-   gradient stock rather than a flat CSS fill. */
-.nfc-card.design-gradient {
-  background:
-    radial-gradient(90% 62% at 16% 8%, rgba(190, 255, 150, 0.55), transparent 55%),
-    radial-gradient(70% 48% at 88% 26%, rgba(34, 233, 72, 0.4), transparent 60%),
-    radial-gradient(120% 70% at 40% 108%, rgba(9, 70, 24, 0.9), transparent 62%),
-    linear-gradient(158deg, #0f4520 0%, #071a0d 58%, #050705 100%);
-  /* No stroke at all: the gradient carries the card edge on its own. */
-  border: 0;
-}
-.nfc-card.glossy { position: relative; overflow: hidden; }
-.nfc-card.glossy::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(118deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 34%);
-  pointer-events: none;
-}
-.nfc-card.matte { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); }
+.card-ribbons { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.card-ribbons-top-left { transform-origin: top left; }
 
-/* Card face type: logo lockup top-left, contactless centred, details anchored bottom. */
-.nfc-wordmark { display: flex; align-items: center; gap: var(--sp-3); }
-.nfc-wordmark > span {
-  display: flex; flex-direction: column; line-height: 1;
-  font-size: 19px; font-weight: 800; letter-spacing: 0.5px; color: #fff;
-}
-.nfc-wordmark em {
-  font-style: normal; font-size: 8.5px; font-weight: 600;
-  letter-spacing: 2.4px; text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.72); margin-top: var(--in-1);
-}
-.mono-sm { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+.card-face { position: relative; z-index: 1; height: 100%; padding: 6.5% 6%; display: flex; flex-direction: column; }
+.card-face-top { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-3); }
+.card-face-bottom { margin-top: auto; }
+.card-rule { height: 1px; margin: 4.5% 0; background: rgba(34, 233, 72, 0.55); }
 
-.nfc-row {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: var(--in-2); font-size: 10px; color: #d8ffe2; font-weight: 800; letter-spacing: 1.6px;
+.card-lockup { display: flex; align-items: center; gap: 10px; }
+.card-lockup-text { display: flex; flex-direction: column; line-height: 1; }
+.card-lockup-text strong { font-size: 20px; font-weight: 800; letter-spacing: -0.2px; color: #fff; }
+.card-lockup-text strong b { font-weight: 800; color: #22e948; }
+.card-lockup-text em {
+  font-style: normal; margin-top: 6px; font-size: 8px; font-weight: 700;
+  letter-spacing: 2.6px; color: rgba(255, 255, 255, 0.68);
 }
-.nfc-badge { color: #22e948; }
-.nfc-mid {
-  display: flex; gap: var(--in-3); align-items: center;
-  margin: var(--in-4) 0; min-height: 78px;
+
+.card-name { font-size: 30px; font-weight: 800; line-height: 1.1; letter-spacing: -0.4px; color: #fff; }
+.card-role {
+  margin-top: 8px; font-size: 11px; font-weight: 600; letter-spacing: 2.4px;
+  text-transform: uppercase; color: rgba(255, 255, 255, 0.62);
 }
-.card-name { font-size: 20px; font-weight: 800; line-height: 1.25; }
-.card-sub { color: var(--card-ink-dim); font-size: 13px; margin-top: var(--sp-1); line-height: 1.45; }
-.card-foot {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: var(--sp-3); flex-wrap: wrap; border-top: 1px solid rgba(255, 255, 255, 0.18);
-  padding-top: var(--sp-3); font-size: 12px;
+.card-role-dim { margin-top: 4px; font-size: 12px; color: rgba(255, 255, 255, 0.45); }
+
+/* --- back face --- */
+.card-face-back { gap: 5%; }
+.card-back-body { flex: 1; display: flex; align-items: center; gap: 5%; min-height: 0; }
+
+.card-shortcuts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; flex: 1; min-width: 0; }
+.card-shortcuts li { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 600; color: rgba(255, 255, 255, 0.88); }
+.card-shortcut-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 24px; height: 24px; border: 1px solid #22e948; border-radius: 50%; color: #22e948;
 }
-.nfc-card.design-gradient .card-foot { border-top-color: rgba(0, 0, 0, 0.2); }
+.card-vertical-rule { width: 1px; align-self: stretch; background: rgba(34, 233, 72, 0.55); }
+
+.card-qr-side { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-width: 0; }
+.card-qr {
+  display: flex; align-items: center; justify-content: center;
+  width: 104px; height: 104px; background: #fff; border-radius: 10px;
+  border: 3px solid #22e948;
+}
+.card-qr svg { color: #0a1208; }
+.card-qr-none {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  width: 92px; height: 92px; border: 1px dashed #22e948; border-radius: 10px;
+  padding: 6px; font-size: 8.5px; font-weight: 800; letter-spacing: 0.8px; color: #22e948;
+}
+.card-url { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 600; color: rgba(255, 255, 255, 0.78); }
+.card-url svg { color: #22e948; flex: none; }
+.card-script {
+  font-family: "Segoe Script", "Brush Script MT", cursive;
+  font-size: 13px; font-style: italic; color: #22e948; text-align: right;
+  white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+  border-bottom: 1.5px solid #22e948; padding-bottom: 2px; line-height: 1.2;
+}
 
 .qr-box {
   border: 1px dashed #22e948; border-radius: 8px; padding: 7px;
   text-align: center; color: #22e948; font-weight: 800; font-size: 11px; letter-spacing: 1px;
-}
-.fake-qr {
-  width: 108px; height: 108px; margin: var(--sp-3) auto; background: #fff;
-  border-radius: 8px; border: 4px solid #22e948;
 }
 
 /* -------------------------------------------------------------- phone mock */
