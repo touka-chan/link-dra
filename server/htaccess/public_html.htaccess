@@ -46,7 +46,12 @@ RewriteEngine On
 RewriteBase /
 
 # the app
-RewriteRule ^$ index.html [L]
+# LiteSpeed hands "/" through to the per-directory rewrite rather than an
+# empty path, so "^$" alone never matches a directory request. Matching on
+# REQUEST_URI is unambiguous. DirectoryIndex alone was not an option either:
+# LiteSpeed lists index.php first for WordPress.
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^ index.html [L]
 RewriteRule ^index\.html$ - [L]
 
 # old /app/ paths, so shared links from before the move survive
