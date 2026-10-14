@@ -1,38 +1,61 @@
-# Linkodra - public_html/.htaccess
-#
-# Serves the React app at the domain root so linkodra.com is the site, with no
-# /app/ path. The build emits relative asset URLs and navigation is hash based,
-# so the server only ever needs to hand back index.html for "/".
-#
-# WordPress stays installed for editing posts and menus only. Its admin, login
-# and asset paths are exempted below, and its rewrite rules are kept at the end
-# so nothing it owns is swallowed by the app.
-#
-# UPLOAD AS: public_html/.htaccess   (no .htaccess suffix on the filename)
+# BEGIN LSCACHE
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteRule litespeed/debug/.*\.log$ - [F,L]
+RewriteRule \.litespeed_conf\.dat - [F,L]
+</IfModule>
+<IfModule LiteSpeed>
+CacheLookup on
+RewriteRule .* - [E=Cache-Control:no-autoflush]
 
-Options -Indexes
-DirectoryIndex index.html index.php
+### marker ASYNC start ###
+RewriteCond %{REQUEST_URI} /wp-admin/admin-ajax\.php
+RewriteCond %{QUERY_STRING} action=async_litespeed
+RewriteRule .* - [E=noabort:1]
+### marker ASYNC end ###
 
+### marker DROPQS start ###
+CacheKeyModify -qs:fbclid
+CacheKeyModify -qs:gclid
+CacheKeyModify -qs:utm*
+CacheKeyModify -qs:_ga
+### marker DROPQS end ###
+
+</IfModule>
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+# END LSCACHE
+# BEGIN NON_LSCACHE
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+# END NON_LSCACHE
+
+# ============================================================
+# BEGIN LINKODRA - the React app is served from the domain root
+# ============================================================
+# Sits after the LiteSpeed cache rules and before the WordPress
+# block, so the app is matched first while everything WordPress
+# and the mail API own is exempted explicitly.
+#
+# The build emits relative asset URLs and navigation is hash
+# based, so the server only ever has to hand back index.html.
+# DirectoryIndex alone was not enough: LiteSpeed lists index.php
+# first for WordPress, so "/" is rewritten explicitly.
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
 
-# --- the app -------------------------------------------------------------
-# "/" and index.html resolve to the app. This is explicit rather than left to
-# DirectoryIndex, because LiteSpeed lists index.php first for WordPress and a
-# bare DirectoryIndex directive is not reliably honoured.
+# the app
 RewriteRule ^$ index.html [L]
 RewriteRule ^index\.html$ - [L]
 
-# Old /app/ paths still resolve to the moved files, so any bookmarked or
-# shared link from before the move keeps working.
+# old /app/ paths, so shared links from before the move survive
 RewriteRule ^app/assets/(.*)$ assets/$1 [L]
 RewriteRule ^app/fonts/(.*)$ fonts/$1 [L]
 RewriteRule ^app/(qr\.png|favicon\.svg|icons\.svg)$ $1 [L]
 RewriteRule ^app/?$ index.html [L]
 
-# --- must never be captured by the app ------------------------------------
-# The mail API answers on its own paths and WordPress owns these.
+# never captured by the app
 RewriteRule ^mail/ - [L]
 RewriteRule ^wp-admin/ - [L]
 RewriteRule ^wp-content/ - [L]
@@ -48,25 +71,33 @@ RewriteRule ^wp-blog-header\.php$ - [L]
 RewriteRule ^wp-comments-post\.php$ - [L]
 RewriteRule ^wp-links-opml\.php$ - [L]
 RewriteRule ^xmlrpc\.php$ - [L]
-
-# --- WordPress keeps its own rules ----------------------------------------
-# Anything that is not a real file or folder falls through to WordPress, which
-# preserves permalinks for admin use. The app is hash routed, so it never
-# depends on these.
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
 </IfModule>
 
-# --- secrets ---------------------------------------------------------------
-# The order database, receipts and the Resend key must never be downloadable.
+# The order database, receipts and the Resend key must never be
+# downloadable. WordPress reads wp-config.php through PHP include,
+# so denying it over HTTP does not affect the admin.
 <FilesMatch "\.(sql|sqlite|sqlite3|db|env|log|ini)$">
   Require all denied
 </FilesMatch>
 <FilesMatch "^(mail-config\.local\.php|wp-config\.php|\.htaccess|\.htpasswd|llms\.txt)$">
   Require all denied
 </FilesMatch>
+# ============================================================
+# END LINKODRA
+# ============================================================
 
-# The /app/ folder is being retired; do not advertise it if it lingers.
-RedirectMatch 301 ^/app/$ /
+# BEGIN WordPress
+# The directives (lines) between "BEGIN WordPress" and "END WordPress" are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+
+# END WordPress
