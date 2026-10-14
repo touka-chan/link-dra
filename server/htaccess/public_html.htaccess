@@ -1,0 +1,48 @@
+# Linkodra public_html .htaccess
+#
+# The React app is served from the domain root, so linkodra.com shows the site
+# instead of a /app/ path. Two things have to keep working alongside it:
+# WordPress, which owns index.php and the wp-* tree, and the mail backend in
+# /mail. Neither is rewritten here.
+#
+# Upload to: public_html/.htaccess
+
+# Prefer the React index.html over WordPress's index.php for directory URLs.
+# Without this, whichever index the host lists first wins and the app may never
+# load at the root.
+DirectoryIndex index.html index.php
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Hash routing means the browser only ever asks for "/" and the static files
+  # beside it, so nothing needs rewriting. These rules exist only so that a real
+  # file is preferred and existing server paths are left alone.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Mail API, WordPress admin and login must never be captured by the app.
+  RewriteRule ^mail/ - [L]
+  RewriteRule ^wp-admin/ - [L]
+  RewriteRule ^wp-content/ - [L]
+  RewriteRule ^wp-includes/ - [L]
+  RewriteRule ^wp-login\.php$ - [L]
+  RewriteRule ^xmlrpc\.php$ - [L]
+</IfModule>
+
+# Never serve secrets or the order database, whatever the path.
+<FilesMatch "\.(sql|sqlite|sqlite3|db|env|log)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "^(mail-config\.local\.php|\.env|\.htaccess|\.htpasswd)$">
+  Require all denied
+</FilesMatch>
+
+# Keep the old /app/ folder working as a fallback if it is left in place.
+<IfModule mod_rewrite.c>
+  RewriteRule ^app/assets/(.*)$ assets/$1 [L]
+  RewriteRule ^app/fonts/(.*)$ fonts/$1 [L]
+  RewriteRule ^app/(qr\.png|favicon\.svg|icons\.svg|index\.html)$ $1 [L]
+  RewriteRule ^app/?$ index.html [L]
+</IfModule>
